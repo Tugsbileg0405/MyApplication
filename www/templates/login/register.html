@@ -1,0 +1,46 @@
+<ion-view view-title="Бүртгүүлэх">
+  <ion-content>
+  <ion-item>
+  <br>
+    <br>
+      <div class="row">
+          <div class="col"></div>
+          <div class="col col-50" style="text-align:center" >
+                    <img src="img/people.png" style="width:100%;height:100%">
+          </div>
+          <div class="col"></div>
+      </div>
+        <br>
+          <br>
+      <div class="list">
+        <form name="myForm" novalidate>
+          <label class="item item-input item-floating-label" id="lgnname">
+
+              <span class="input-label">Нэвтрэх нэр:</span>
+
+              <input type="text" name="username" placeholder="Нэвтрэх нэр" ng-model="reg.uname" required>
+
+  </span>
+          </label>
+          <label class="item item-input item-floating-label">
+              <span class="input-label">Нууц үг:</span>
+              <input type="text" placeholder="Нууц үг" ng-model="reg.pass">
+          </label>
+          <label class="item item-input item-floating-label">
+              <span class="input-label">Э-мэйл:</span>
+              <input type="text" name="email" placeholder="Э-мэйл" ng-model="reg.email" required>
+          </label>
+          <label class="item item-input item-floating-label" id="lgnpass">
+            <span class="input-label">Утасны дугаар:</span>
+              <input type="number" placeholder="Утасны дугаар" ng-model="reg.phone">
+          </label>
+          <br>
+            <button class="button button-full button-dark" ng-click="Register(reg)" type="submit" id="lgnbtn">
+                    Бүртгүүлэх
+            </button>
+            </form>
+      </div>
+
+    </ion-item>
+  </ion-content>
+</ion-view>

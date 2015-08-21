@@ -1,0 +1,19 @@
+<ion-view view-title="Saved">
+	<ion-content>
+   <ion-list can-swipe="true" class="animate-ripple">
+      <ion-item >
+    <div class="list">
+    <a class="item item-thumbnail-left" href="#">
+      <img src="cover.jpg">
+      <h2>{{savedEvent.event_title}}</h2>
+      <p>{{savedEvent.event_start_date}}</p>
+      <p>{{savedEvent.event_location}}</p>
+    </a>
+    </div>
+            <ion-option-button class="button-light icon ion-heart"></ion-option-button>
+            <ion-option-button class="button-light icon ion-email"></ion-option-button>
+                <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
+    <ion-content>
+</ion-view>
