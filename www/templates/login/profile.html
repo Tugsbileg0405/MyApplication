@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view view-title="Хэрэглэгчийн мэдээлэл">
     <ion-content>
         <div class="list">
             <div class="profile-container">
@@ -15,34 +15,19 @@
                 <div class="profile-background" ng-style="{'background-image': 'url(' + user.profilePic + ')'}"></div>
             </div>
             <div class="list">
+           
                 <label class="item item-input field-disabled">
-                    <span class="input-label">Э-мэйл:</span>
-                    <input ng-model="userdata.Email" type="text" placeholder="user@gmail.com">
+                    <span class="input-label">И-мэйл:</span>
+                    <input ng-model="userdata.user.email" type="text" placeholder="И-мэйл хаяг">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Хэрэглэгчийн нэр:</span>
-                    <input ng-model="userdata.Username" type="text" placeholder="Chanu Sukarno">
+                    <input ng-model="userdata.user.fullname" type="text" placeholder="Хэрэглэгчийн нэр">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Улс:</span>
-                    <input ng-model="user.country" type="text" placeholder="INDIA">
-                </label>
-                <label class="item item-input">
+                 <label class="item item-input">
                     <span class="input-label">Утасны дугаар:</span>
-                    <input ng-model="userdata.Phone" type="text" placeholder="+91 8123595959">
+                    <input ng-model="userdata.user.person.person_cell_number" type="text" placeholder="Утасны дугаар">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Төрсөн он сар өдөр:</span>
-                    <input ng-model="user.dobObj" type="date" placeholder="">
-                </label>
-                <label class="item item-input em-gender">
-                    <span class="input-label">Хүйс:</span>
-                    <ion-checkbox class="em-gender-cb" ng-model="isMale" ng-change="isMale ? user.gender='M' : user.gender = 'F';
-                        isFemale = false" ng-checked="user.gender === 'M'">Эрэгтэй</ion-checkbox>
-                    <ion-checkbox class="em-gender-cb" ng-model="isFemale" ng-change="isFemale ? user.gender='F' : user.gender = 'M';
-                        isMale = false" ng-checked="user.gender === 'F'">Эмэгтэй</ion-checkbox>
-                </label>
-
             </div>
         </div>
     </ion-content>

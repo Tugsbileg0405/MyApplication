@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout,$ionicLoading,$localStorage,$cordovaNetwork,$window,$ionicHistory) {
+.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout,$ionicLoading,$localStorage,$cordovaNetwork,$ionicHistory,$http,$window) {
   $ionicLoading.show({
     content: 'Loading',
     animation: 'fade-in',
@@ -16,22 +16,31 @@ angular.module('starter.controllers', [])
     $ionicLoading.hide();
   }, 1000);
 
-   $scope.myGoBack = function() {
-    $ionicHistory.goBack();
-  }
+      var user_id = $localStorage.userdata.user.person.id;
+    console.log(user_id);
+      $http.get('http://52.69.108.195:1337/ticket?ticket_user='+user_id).success(function (response){
+        $scope.tickets = response;
+        console.log($scope.tickets);
+      });
 
   $scope.userdata = $localStorage.userdata;
 
-  $scope.logOut = function(){
-    localStorage.clear();
-    $state.go('main',null,{reload:true});
+
+  $scope.logout = function(){
+    $http.get("http://52.69.108.195:1337/logout").success(function (response){
+        console.log(response.status);
+              localStorage.clear();
+              $state.go('main',{},{reload:true});
+    })
   };
 })
 
 
 
-.controller('PlaylistsCtrl', function($scope,$ionicSlideBoxDelegate,Todo,$timeout,$http,$stateParams,$ionicLoading,$localStorage,$location) {
+.controller('PlaylistsCtrl', function($scope,ionicMaterialInk,ionicMaterialMotion,$ionicSlideBoxDelegate,Todo,$timeout,$http,$stateParams,$ionicLoading,$localStorage,$location) {
   
+
+
   $ionicLoading.show({
     content: 'Loading',
     animation: 'fade-in',
@@ -51,11 +60,8 @@ angular.module('starter.controllers', [])
     })
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
-
   },
   
-
-
 
   $http.get("http://52.69.108.195:1337/event").success(function (response) {
     $scope.lists = response;
@@ -64,15 +70,8 @@ angular.module('starter.controllers', [])
 
   $http.get('http://52.69.108.195:1337/category').success(function (response){
       $scope.categories = response;
-    }),
+    });
 
-  $scope.getlist= function(listid){
-        for (var i = 0 ; i<playlists.lenght; i++) {
-          if (listid === playlists[i].id) {
-          return playlists[i];
-        }
-        };
-  };
 })
 
 .controller('CategoryItemCtrl', function($scope,Todo,$timeout,$http,$stateParams) {
@@ -86,7 +85,6 @@ angular.module('starter.controllers', [])
     })
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
-
   },
 
   $http.get('http://52.69.108.195:1337/category/'+$stateParams.category_Id).success(function (response){
@@ -96,75 +94,159 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage){
+.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage) {
+
+ 
+ $scope.doRefresh = function() {
+      $timeout (function(){
+     var user_id = $localStorage.userdata.user.person.id;
+    console.log(user_id);
+      $http.get('http://52.69.108.195:1337/ticket?ticket_user='+user_id).success(function (response){
+        $scope.tickets = response;
+        console.log($scope.tickets);
+    })
+       $scope.$broadcast('scroll.refreshComplete');
+      },1000);
+  }
+
+    var user_id = $localStorage.userdata.user.person.id;
+    console.log(user_id);
+      $http.get('http://52.69.108.195:1337/ticket?ticket_user='+user_id).success(function (response){
+        $scope.tickets = response;
+        console.log($scope.tickets);
+      })
+      ;
+})
+
+.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading){
 
 
+
+  $scope.isLoggedIn = false;
+  $scope.fbLogin = function(){
+    $facebook.login().then(function(){
+        $scope.isLoggedIn = true;
+        refresh();
+    });
+  }
+  $scope.fbLogout =function(){
+    $facebook.logout().then(function(){
+          $scope.isLoggedIn = false;
+          refresh();
+    });
+  }
+  function refresh() {
+    $facebook.api("/me").then( 
+      function(response) {
+        $scope.welcomeMsg = "Welcome " + response.name;
+        $scope.isLoggedIn=true;
+        $scope.userinfo = response;
+      },
+      function(err) {
+        $scope.welcomeMsg = "Please log in";
+      });
+  }
 
   $scope.login = function(data) {
 
-    if(!data || !data.uname || !data.pass ){
+    if(!data || !data.email || !data.pass ){
       var alert = $ionicPopup.alert({
-      title:'Error',
-      template:'Fill all information'
+      title:'Алдаа',
+      template:'Бүх талбарыг бөглөнө үү!'
     })
     }
     else {
-      Todo.login().success(function(datas){
-        var logindata = datas.results;
-        for (var i = 0 ; i < logindata.length; i++) {
-        if(logindata[i].Username == data.uname && logindata[i].Password == data.pass ) {
-              var userdata = {
-                 Username : logindata[i].Username,
-                 Email : logindata[i].email,
-                 Phone : logindata[i].phone
-              }
-              $localStorage.userdata = userdata;
-              $state.go('app.playlists',{}, {reload:true}); 
-            }
+    $http.post("http://52.69.108.195:1337/login",{email:data.email,password:data.pass}).success(function (response) {
+        if (response.status == true){                  
+              $ionicLoading.hide();          
+             $localStorage.userdata = response;
+              $state.go('app.playlists',{},{reload:true});
+        }
+        else {
+         var alert = $ionicPopup.alert({
+         title:'Алдаа',
+         template:response.message
+    })
         }
       })
-    }
  }
+};
 })
 
-.controller('SavedItemCtrl',function($timeout,$scope,$state,$cordovaCamera,Todo,$ionicPopup,$localStorage){
-
-    $scope.savedData = function(){
-    $http.get("http://52.69.108.195:1337/event/"+$stateParams.playlistId).success(function (response) {
-    $scope.list = response;
-    console.log($scope.list);
-    })
-
-
-
-    }  
-
-
+.controller('SavedItemCtrl',function($timeout,$scope,$state,$ionicPopup,$localStorage,$http,$stateParams){
    
-})
+     $scope.doRefresh = function() {
+      $timeout (function(){
+     console.log(person_id);
+      $http.get("http://52.69.108.195:1337/eventlike?liked_by="+person_id).success(function (response){
+        $scope.likedEvent = response;
+        console.log($scope.likedEvent);
+      })
+       $scope.$broadcast('scroll.refreshComplete');
+      },1000);
+  }
+
+      var person_id = $localStorage.userdata.user.person.id;
+    $scope.deleteSavedEvent = function(data){
+          var event_id = data;
+          console.log(event_id);
+        $http.get("http://52.69.108.195:1337/eventlike?event_info="+event_id+"&liked_by="+person_id).success(function (response) {
+            var deleteItem = response;
+            console.log(deleteItem);
+            for( i in deleteItem) {
+              var id = deleteItem[i].id;
+            }
+             $http.delete("http://52.69.108.195:1337/eventlike/"+id).success(function (response){
+               var alert = $ionicPopup.alert({
+                  title:'Мэдээлэл',
+                  template:'Амжилттай устлаа!'
+                  })
+              $scope.doRefresh();
+          })
+        });
+    }
 
 
-.controller('RegCtrl',function($scope,$state,$cordovaCamera,Todo,$ionicPopup){
- $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+
+    console.log(person_id);
+      $http.get("http://52.69.108.195:1337/eventlike?liked_by="+person_id).success(function (response){
+        $scope.likedEvent = response;
+        console.log($scope.likedEvent);
+      });
+    
+  })
+
+
+
+.controller('RegCtrl',function($scope,$state,$cordovaCamera,Todo,$ionicPopup,$http){
    $scope.Register = function(data) {
     console.log(data);
-    if (!data || !data.uname || !data.pass || !data.email || !data.phone) {
+    if (!data || !data.uname || !data.pass || !data.email || !data.phone || !data.fname || !data.register_id) {
       var alert = $ionicPopup.alert({
-      title:'Error',
-      template:'Fill all information'
+      title:'Алдаа',
+      template:'Бүх талбарыг бөглөнө үү!'
     })
     }
     else {
-      Todo.register({Username:data.uname,Password:data.pass,email:data.email,phone:data.phone}).success(function(data){
-        $state.go('main');
-      })
-   }
+
+      
+      $http.post("http://52.69.108.195:1337/person", {person_firstname:data.fname,person_lastname:data.uname,person_register_id:data.register_id,person_email:data.email,person_cell_number:data.phone}).success(function (response) {
+              var person_id = response.id;
+        $http.post("http://52.69.108.195:1337/user",{email:data.email,person:person_id,password:data.pass}).success(function(){
+      var alert = $ionicPopup.alert({
+      title:'Бүртгүүлэлт',
+      template:'Амжилттай бүртгүүллээ!'
+    })
+      $state.go('main',{},{reload:true});
+        })
+        })
    }  
+ }
 })
 
 .controller('ForgotPasswordCtrl',function($scope,$state){})
 
-.controller('PlaylistCtrl', function($scope, $stateParams,Todo,$timeout,$ionicLoading,$http,$localStorage,$ionicPopup,$ionicModal) {
+.controller('PlaylistCtrl', function($scope,$cordovaSocialSharing, $stateParams,Todo,$timeout,$ionicLoading,$http,$localStorage,$ionicPopup,$ionicModal,$window) {
 $ionicLoading.show({
     content: 'Loading',
     animation: 'fade-in',
@@ -179,6 +261,10 @@ $ionicLoading.show({
   $http.get("http://52.69.108.195:1337/event/"+$stateParams.playlistId).success(function (response) {
     $scope.list = response;
   })
+
+  $scope.shareAnywhere = function() {
+    $cordovaSocialSharing,share("dada","dada",null,"https://urilga.mn"); 
+     }
 
 
     $ionicModal.fromTemplateUrl('templates/image-modal.html', {
@@ -221,18 +307,18 @@ $ionicLoading.show({
   
 
 
-
   $scope.saveEvent = function(){
-    $http.get("http://52.69.108.195:1337/event/"+$stateParams.playlistId).success(function (response) {
-    var events =[];
-    events = response;
-    var alertPopup = $ionicPopup.alert({
-                title: 'Information',
-                template: 'Successfully Saved!'
-            })
-    console.log(events);
-    $localStorage.events = events;
-  })      
+    var person_id = $localStorage.userdata.user.person.id;
+     console.log(person_id);
+     console.log($scope.list.id);
+     $http.post("http://52.69.108.195:1337/eventlike",{event_info:$scope.list.id,liked_by:person_id}).success(function (response){
+       console.log(response);
+        var alert = $ionicPopup.alert({
+            title:'Мэдээлэл',
+            template:'Амжилттай хадгалагдлаа!'
+          })
+     })
+    
   };
 
 

@@ -4,8 +4,18 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ngStorage'])
-.run(function($ionicPlatform,$ionicPopup) {
+angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook'])
+.run(function($ionicPlatform,$ionicPopup,$rootScope) {
+    (function(){
+     (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   }())
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -16,7 +26,7 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+      StatusBar.style(1);
     }
       if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
@@ -34,8 +44,10 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
 
+.config(function($stateProvider, $urlRouterProvider,$facebookProvider) {
+  $facebookProvider.setAppId('437722666411868');
+  $facebookProvider.setPermissions("email,public_profile,user_posts,publish_actions,user_photos");
   $stateProvider
  .state('main',{
       url:'/main',
@@ -98,6 +110,16 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
       'menuContent': {
         templateUrl: 'templates/categoryItems.html',
         controller: 'CategoryItemCtrl'
+      }
+    }
+  })
+
+  .state('app.invitation', {
+    url: '/invitation',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/invitation.html',
+        controller : 'InvitationCtrl'
       }
     }
   })

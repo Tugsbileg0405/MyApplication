@@ -12,18 +12,32 @@
     <br>
     <div class="list">
   <div class="item item-divider item-dark">
-    Хэзээ болох?
+    <h2 style="color:white">Хэзээ болох?</h2>
   </div>
   <div class="item item-text-wrap">
     {{list.event_start_date}}
   </div>
   <div class="item item-divider item-dark">
-    Хаана болох?
+    <h2 style="color:white">Хаана болох?</h2>
   </div>
    <div class="item item-text-wrap">
     {{list.event_location}}
   </div>
-
+  <br>
+  <div class="item tabs tabs-dark tabs-icon-left">
+    <a class="tab-item" ng-click="saveEvent()">
+    <i class="icon ion-ios-cloud-download-outline"></i> 
+      Хадгалах
+    </a>
+    <a class="tab-item" href="#">
+        <i class="icon ion-ios-star-outline"></i>
+      Үнэлгээ
+    </a>
+    <a class="tab-item" href="#">
+         <i class="icon ion-ios-redo-outline" ng-click="shareAnywhere()"></i>
+      Хуваалцах
+    </a>
+  </div>
 </div>
   </div>
 </div>
