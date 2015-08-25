@@ -102,7 +102,13 @@ img {
   right: 0;
   top: 0;
 }
+.slider {
+  height: 100%;
+}
 
+#urilgaDetail {
+  margin-top: 20%;
+}
 /* Fix modal backdrop for smaller devices */
 @media (max-width: 679px) {
   .active .modal-backdrop-bg {

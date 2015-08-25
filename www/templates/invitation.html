@@ -1,32 +1,29 @@
 <ion-view view-title="Миний урилга">
 	<ion-content>
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
-  </ion-refresher>
+    </ion-refresher>
     <ion-list >
-      <ion-item ng-repeat="ticket in tickets| orderBy:createdAt">
+        <ion-item ng-repeat="ticket in tickets">
+              <div class="list" style="border: 12px groove #ff0000;border-radius: 30px 30px 30px 30px" ng-click="show($index)">
+                  <div class="row">
+                        <div class="col"></div>
+                        <div class="col col-50" style="text-align:center" ><img src="img/logo.png"  style="heigth:100%"></div>
+                        <div class="col"></div>
+                  </div>
+                  <div class="card card-light">
+                    <div class="item item-light">
+                      <h2 style="text-align:center">Баяр хүргэе</h2>
+                    </div>
+                    <div class="item item-text-wrap">
+                    <h2 style="text-align:center">Танд <b>{{ticket.ticket_event.event_title}}</b> арга хэмжээний  <b>{{ticket.ticket_countof}}</b> урилга ирсэн байна.</h2>
+                    </div>
+                        <div class="button-bar">
+                            <button class="button button-balanced" ng-click="Accept()">Зөвшөөрөх</button>
+                              <button class="button button-assertive" ng-click="Eject()">Татгалзах</button>
+                         </div>
+                 </div>
+              </div>
 
-<div class="list card">
-  <div class="item item-avatar">
-    <img src="http://52.69.108.195:1337/{{ticket.ticket_event.event_profile}}">
-    <h2>{{ticket.ticket_event.event_title}}</h2>
-    <p>Эхлэх өдөр: {{ticket.ticket_event.event_start_date}}</p>
-    <h2 style="color:red">Танд {{ticket.ticket_countof}} урилга байна.</h2>
-  </div>
-
-  <div class="item item-body">
-    <img class="full-image" style="height:100%" src="http://52.69.108.195:1337/{{ticket.ticket_event.event_cover}}">
-    <p>
-     	{{ticket.ticket_event.event_description}}
-    </p>
-  </div>
-  <div class="item item-light">
-    <h2>Хаана болох:</h2>	   
-    <h3 class="item">{{ticket.ticket_event.event_location}}</h3>
-    <h2>Үнэ:</h2>
-     <h2 class="item" ng-if="ticket.ticket_event.event_ticket_type == 'Paid'" ng-repeat="ticketPrice in ticket.ticket_event.event_ticket.paid">{{ticketPrice.price}}</h2>
-	 <h3 class="item"  ng-if="ticket.ticket_event.event_ticket_type == 'Free' ">Үнэгүй</h3>
-   </div>
-	   
       </ion-item>
     </ion-list>
     <ion-content>

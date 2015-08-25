@@ -1,0 +1,26 @@
+{
+  "name": "tabbedSlideBox",
+  "homepage": "https://github.com/wickY26/ionic",
+  "authors": [
+    "wickY26 <poyrazthewicked@gmail.com>"
+  ],
+  "main": [
+    "tabbedSlideBox/tabSlideBox.js",
+    "tabbedSlideBox/tabSlideBox.css"
+  ],
+  "keywords": [
+    "ionic",
+    "ionicSlideTab"
+  ],
+  "license": "MIT",
+  "_release": "1696ea84b6",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1696ea84b60ebe804dacafa220c27d0dbac1a962"
+  },
+  "_source": "git://github.com/wickY26/ionic.git",
+  "_target": "*",
+  "_originalSource": "tabbed-slide-box",
+  "_direct": true
+}

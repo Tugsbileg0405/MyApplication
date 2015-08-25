@@ -2,7 +2,7 @@
 	<ion-content>
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
    </ion-refresher>
-    <ion-list can-swipe="listCanSwipe">
+    <ion-list>
       <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" href="#/app/playlists/{{list.event_info.id}}">
       <div class="list" >
           <div class="item item-body">
@@ -14,8 +14,7 @@
       </div>
    <ion-option-button class="button-assertive" ng-click="deleteSavedEvent(list.event_info.id)">
       Delete
-    </ion-option-button>
-      </ion-item>
+      </ion-option-button>
     </ion-list>
     </ion-content>
 </ion-view>

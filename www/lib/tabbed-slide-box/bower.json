@@ -1,0 +1,14 @@
+{
+  "name": "tabbedSlideBox",
+  "version": "0.0.2",
+  "homepage": "https://github.com/wickY26/ionic",
+  "authors": [
+    "wickY26 <poyrazthewicked@gmail.com>"
+  ],
+  "main": ["tabbedSlideBox/tabSlideBox.js", "tabbedSlideBox/tabSlideBox.css"],
+  "keywords": [
+    "ionic",
+    "ionicSlideTab"
+  ],
+  "license": "MIT"
+}

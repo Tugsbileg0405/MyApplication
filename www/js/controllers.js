@@ -4,6 +4,8 @@ angular.module('starter.controllers', [])
 
 
 .controller('AppCtrl', function($scope,$state, $ionicModal, $timeout,$ionicLoading,$localStorage,$cordovaNetwork,$ionicHistory,$http,$window) {
+  
+
   $ionicLoading.show({
     content: 'Loading',
     animation: 'fade-in',
@@ -37,7 +39,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('PlaylistsCtrl', function($scope,ionicMaterialInk,ionicMaterialMotion,$ionicSlideBoxDelegate,Todo,$timeout,$http,$stateParams,$ionicLoading,$localStorage,$location) {
+.controller('PlaylistsCtrl', function($scope,$ionicSlideBoxDelegate,$timeout,$http,$stateParams,$ionicLoading,$localStorage) {
   
 
 
@@ -70,7 +72,8 @@ angular.module('starter.controllers', [])
 
   $http.get('http://52.69.108.195:1337/category').success(function (response){
       $scope.categories = response;
-    });
+    })
+
 
 })
 
@@ -94,7 +97,10 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage) {
+.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage,$ionicModal,$ionicSlideBoxDelegate) {
+
+
+ 
 
  
  $scope.doRefresh = function() {
@@ -115,6 +121,54 @@ angular.module('starter.controllers', [])
         $scope.tickets = response;
         console.log($scope.tickets);
       })
+
+       $ionicModal.fromTemplateUrl('templates/urilgaDetail.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hide', function() {
+      // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+      // Execute action
+    });
+    $scope.$on('modal.shown', function() {
+      console.log('Modal is shown!');
+    });
+       $scope.next = function() {
+      $ionicSlideBoxDelegate.next();
+    };
+  
+    $scope.previous = function() {
+      $ionicSlideBoxDelegate.previous();
+    };
+
+    $scope.slideChanged = function(index) {
+      $scope.slideIndex = index;
+      console.log($scope.slideIndex);
+    };
+    
+    $scope.show = function(data){
+      $ionicSlideBoxDelegate.slide(data);
+      $scope.openModal();
+    }
       ;
 })
 
@@ -185,8 +239,7 @@ angular.module('starter.controllers', [])
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
   }
-
-      var person_id = $localStorage.userdata.user.person.id;
+    var person_id = $localStorage.userdata.user.person.id;
     $scope.deleteSavedEvent = function(data){
           var event_id = data;
           console.log(event_id);

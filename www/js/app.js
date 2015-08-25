@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook'])
+angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox'])
 .run(function($ionicPlatform,$ionicPopup,$rootScope) {
     (function(){
      (function(d, s, id){
