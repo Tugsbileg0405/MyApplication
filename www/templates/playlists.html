@@ -30,13 +30,12 @@
       <ion-item ng-repeat="list in lists | orderBy:'createdAt':true|filter:search" href="#/app/playlists/{{list.id}}">
       <div class="list" >
           <div class="item item-body">
-          <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%" class="full-image">
+          <img ng-src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%" class="full-image">
             <p >{{list.event_start_date | date:'medium'}}</p>
             <h2 >{{list.event_title}}</h2>
             <p class="address">{{list.event_location}}</p>
           </div>
 </div>
       </ion-item>
-
     </ion-list>
 </ion-view>

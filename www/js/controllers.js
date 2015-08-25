@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
     $scope.lists = response;
   })
 
-
+  $scope.baseURL = "http://52.69.108.195:1337/";
   $http.get('http://52.69.108.195:1337/category').success(function (response){
       $scope.categories = response;
     })
@@ -172,7 +172,7 @@ angular.module('starter.controllers', [])
       ;
 })
 
-.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading){
+.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading,$window){
 
 
 
@@ -189,6 +189,10 @@ angular.module('starter.controllers', [])
           refresh();
     });
   }
+  $scope.reload = function() {
+    $state.reload();
+  }
+
   function refresh() {
     $facebook.api("/me").then( 
       function(response) {
