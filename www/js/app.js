@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox'])
-.run(function($ionicPlatform,$ionicPopup,$rootScope) {
+angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
+.run(function($ionicPlatform,$rootScope,$ionicPopup,$rootScope,$rootScope,$location,$localStorage,$state,$window) {
     (function(){
      (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -17,24 +17,33 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
    }())
 
   $ionicPlatform.ready(function() {
-
+     
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-      cordova.plugins.Keyboard.show();
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.style(1);
     }
+
+    $ionicPlatform.registerBackButtonAction(function(){
+      if($state.current.name == 'app.playlists'){
+        navigator.app.exitApp();
+      }
+      else {
+        navigator.app.backHistory();
+      }
+    },100)
+
       if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
-                    $ionicPopup.confirm({
-                        title: "Internet Disconnected",
-                        content: "The internet is disconnected on your device."
+                    $ionicPopup.alert({
+                        title: "Интернет холболт",
+                        content: "Та интернетэд холбогдож байж ашиглана уу"
                     })
                     .then(function(result) {
-                        if(!result) {
+                        if(result) {
                             ionic.Platform.exitApp();
                         }
                     });
@@ -89,7 +98,8 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
       url: '/profile',
       views: {
         'menuContent': {
-          templateUrl: 'templates/login/profile.html'
+          templateUrl: 'templates/login/profile.html',
+          controller:'ProfileCtrl'
         }
       }
     })
@@ -134,5 +144,6 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
   })
 ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/main');
+  $urlRouterProvider
+  .otherwise('/main');
 });

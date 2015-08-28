@@ -5,7 +5,7 @@
  <ion-slide-box pager-click="slideChanged(index)" show-pager="false">
 <ion-slide ng-repeat="ticket in tickets">
 <div class="list card" style="border:5px inset #8383e6" id="urilgaDetail">
-	 <ion-scroll zooming="true" direction="xy">
+	 <ion-scroll zooming="true" direction="y">
   <div class="item item-avatar">
     <img src="http://52.69.108.195:1337/{{ticket.ticket_event.event_profile}}">
     <h2>{{ticket.ticket_event.event_title}}</h2>
@@ -14,7 +14,7 @@
   </div>
 
   <div class="item item-body">
-  	<img src="img/logo.png" style="position:absolute;right:5%;top:5%">
+  	<img src="img/logo.png" style="position:absolute;right:0%;top:5%">
     <img class="full-image" style="height:100%" src="http://52.69.108.195:1337/{{ticket.ticket_event.event_cover}}">
     <p>
      	{{ticket.ticket_event.event_description}}

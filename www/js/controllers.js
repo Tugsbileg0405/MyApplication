@@ -23,14 +23,19 @@ angular.module('starter.controllers', [])
       $http.get('http://52.69.108.195:1337/ticket?ticket_user='+user_id).success(function (response){
         $scope.tickets = response;
         console.log($scope.tickets);
-      });
+      })
+
+  $scope.myGoBack = function() {
+    $ionicHistory.goBack();
+  }
 
   $scope.userdata = $localStorage.userdata;
 
 
+
   $scope.logout = function(){
-    $http.get("http://52.69.108.195:1337/logout").success(function (response){
-        console.log(response.status);
+    $http.get('http://52.69.108.195:1337/logout').success(function (response){
+        console.log(response);
               localStorage.clear();
               $state.go('main',{},{reload:true});
     })
@@ -53,17 +58,20 @@ angular.module('starter.controllers', [])
 
   $timeout(function() {
     $ionicLoading.hide();
-  }, 1000);
+  }, 1500);
 
  $scope.doRefresh = function() {
       $timeout (function(){
       $http.get("http://52.69.108.195:1337/event").success(function (response) {
-       $scope.lists = response;
+       $scope.lists.concat(response);
     })
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
   },
   
+    $scope.slideChanged = function(index) {
+      $scope.slideIndex = index;
+    }
 
   $http.get("http://52.69.108.195:1337/event").success(function (response) {
     $scope.lists = response;
@@ -77,7 +85,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('CategoryItemCtrl', function($scope,Todo,$timeout,$http,$stateParams) {
+.controller('ProfileCtrl',function($scope,$localStorage,$window,$state){
+      $scope.userdata = $localStorage.userdata;
+      $scope.goBack = function(){
+      $window.history.back();
+  };
+})
+
+.controller('CategoryItemCtrl', function($scope,Todo,$timeout,$http,$stateParams,$window) {
   
 
  $scope.doRefresh = function() {
@@ -90,6 +105,10 @@ angular.module('starter.controllers', [])
       },1000);
   },
 
+      $scope.goBack = function(){
+      $window.history.back();
+  }
+
   $http.get('http://52.69.108.195:1337/category/'+$stateParams.category_Id).success(function (response){
     $scope.items = response;
     console.log($scope.items);
@@ -97,9 +116,12 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage,$ionicModal,$ionicSlideBoxDelegate) {
+.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage,$ionicModal,$ionicSlideBoxDelegate,$window) {
 
-
+ 
+      $scope.goBack = function(){
+      $window.history.back();
+  }
  
 
  
@@ -172,7 +194,7 @@ angular.module('starter.controllers', [])
       ;
 })
 
-.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading,$window){
+.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading,$window,$timeout){
 
 
 
@@ -192,6 +214,24 @@ angular.module('starter.controllers', [])
   $scope.reload = function() {
     $state.reload();
   }
+  $scope.email = {checked:$localStorage.checked};
+
+  $scope.emailSave = function(email) {
+    if(email.checked == true) {
+        $localStorage.checked = true;
+        if($localStorage.userdata !== undefined ){
+        $scope.emails = $localStorage.userdata.user.email;
+         }
+         else {
+          console.log('LocalStorage Null');
+         }
+    }
+    else {
+      $localStorage.checked= false;
+      $scope.emails = null;
+    }
+  }
+
 
   function refresh() {
     $facebook.api("/me").then( 
@@ -205,8 +245,18 @@ angular.module('starter.controllers', [])
       });
   }
 
-  $scope.login = function(data) {
+  $scope.autoLogin = function() {
+    if($localStorage.userdata !== undefined ){
+      $state.go('app.playlists',{},{reload:true});
+    }
+    else{
+      $state.go('main',{},{reload:true});
+    }
+  }
 
+
+  $scope.login = function(data) {
+    console.log(data);
     if(!data || !data.email || !data.pass ){
       var alert = $ionicPopup.alert({
       title:'Алдаа',
@@ -215,10 +265,20 @@ angular.module('starter.controllers', [])
     }
     else {
     $http.post("http://52.69.108.195:1337/login",{email:data.email,password:data.pass}).success(function (response) {
-        if (response.status == true){                  
-              $ionicLoading.hide();          
-             $localStorage.userdata = response;
-              $state.go('app.playlists',{},{reload:true});
+        console.log(response);
+        if (response.status == true){      
+                  $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                      });   
+                      $timeout(function(){
+                             $ionicLoading.hide();   
+                            $localStorage.userdata = response;
+                            $state.go('app.playlists',{},{reload:true});
+                      },1000)         
         }
         else {
          var alert = $ionicPopup.alert({
@@ -231,17 +291,31 @@ angular.module('starter.controllers', [])
 };
 })
 
-.controller('SavedItemCtrl',function($timeout,$scope,$state,$ionicPopup,$localStorage,$http,$stateParams){
+.controller('SavedItemCtrl',function($timeout,$scope,$state,$ionicPopup,$ionicLoading,$localStorage,$http,$stateParams,$window){
    
+    $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+
+  $timeout(function() {
+    $ionicLoading.hide();
+  }, 1500);
+    
      $scope.doRefresh = function() {
       $timeout (function(){
      console.log(person_id);
       $http.get("http://52.69.108.195:1337/eventlike?liked_by="+person_id).success(function (response){
-        $scope.likedEvent = response;
-        console.log($scope.likedEvent);
+            $scope.likedEvent = response;               
       })
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
+  }
+    $scope.goBack = function(){
+      $window.history.back();
   }
     var person_id = $localStorage.userdata.user.person.id;
     $scope.deleteSavedEvent = function(data){
@@ -254,11 +328,13 @@ angular.module('starter.controllers', [])
               var id = deleteItem[i].id;
             }
              $http.delete("http://52.69.108.195:1337/eventlike/"+id).success(function (response){
+              if(response.state == 'OK'){
                var alert = $ionicPopup.alert({
                   title:'Мэдээлэл',
                   template:'Амжилттай устлаа!'
                   })
               $scope.doRefresh();
+            }
           })
         });
     }
@@ -275,7 +351,12 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('RegCtrl',function($scope,$state,$cordovaCamera,Todo,$ionicPopup,$http){
+.controller('RegCtrl',function($scope,$state,$cordovaCamera,Todo,$ionicPopup,$http,$window){
+  
+  $scope.goBack = function(){
+      $window.history.back();
+  }
+
    $scope.Register = function(data) {
     console.log(data);
     if (!data || !data.uname || !data.pass || !data.email || !data.phone || !data.fname || !data.register_id) {
@@ -301,9 +382,13 @@ angular.module('starter.controllers', [])
  }
 })
 
-.controller('ForgotPasswordCtrl',function($scope,$state){})
+.controller('ForgotPasswordCtrl',function($scope,$state,$window){
+    $scope.goBack = function(){
+      $window.history.back();
+  };
+})
 
-.controller('PlaylistCtrl', function($scope,$cordovaSocialSharing, $stateParams,Todo,$timeout,$ionicLoading,$http,$localStorage,$ionicPopup,$ionicModal,$window) {
+.controller('PlaylistCtrl', function($scope,$cordovaSocialSharing,$stateParams,Todo,$timeout,$ionicLoading,$http,$localStorage,$ionicPopup,$ionicModal,$window) {
 $ionicLoading.show({
     content: 'Loading',
     animation: 'fade-in',
@@ -313,14 +398,19 @@ $ionicLoading.show({
   }); 
   $timeout(function() {
     $ionicLoading.hide();
-  }, 1000);
+  }, 1500);
 
   $http.get("http://52.69.108.195:1337/event/"+$stateParams.playlistId).success(function (response) {
     $scope.list = response;
+  $http.get("http://52.69.108.195:1337/agenda?agenda_event="+$scope.list.id).success(function (response){
+    $scope.agendas = response;
+    console.log($scope.agendas);
+  });
   })
 
+
   $scope.shareAnywhere = function() {
-    $cordovaSocialSharing,share("dada","dada",null,"https://urilga.mn"); 
+    $cordovaSocialSharing.share($scope.list.event_title, null, null, 'http://52.69.108.195:9000/#/event_details/'+$scope.list.id);
      }
 
 
@@ -361,7 +451,9 @@ $ionicLoading.show({
       $scope.imageSrc = 'http://52.69.108.195:1337/'+$scope.list.event_cover;
       $scope.openModal();
     }
-  
+      $scope.goBack = function(){
+      $window.history.back();
+  }
 
 
   $scope.saveEvent = function(){
@@ -379,4 +471,5 @@ $ionicLoading.show({
   };
 
 
-});
+})
+

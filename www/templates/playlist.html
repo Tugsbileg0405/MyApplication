@@ -1,30 +1,74 @@
 <ion-view view-title="{{list.event_title}}">
-  <ion-content>
- <div class="list card">
 
+  <ion-content>
+  <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button>
+ <div class="list card" style="margin-top:5%">
   <div class="item item-body">
-    <h2>{{list.event_title}}</h2>
-    <p>{{list.createdAt}}</p>
+    <h2 id="title" >{{list.event_title}}</h2>
+    <p id="Date">{{list.createdAt|date:'medium'}}</p>
     <img class="full-image" style="height:100%" ng-click="showImage()" src="http://52.69.108.195:1337/{{list.event_cover}}" >
     <p>
     	{{list.event_description}}
     </p>
     <br>
     <div class="list">
-  <div class="item item-divider item-dark">
-    <h2 style="color:white">Хэзээ болох?</h2>
+  <div class="item item-divider item-stable">
+    <h2 >Хэзээ болох:</h2>
   </div>
   <div class="item item-text-wrap">
-    {{list.event_start_date}}
+    {{list.event_start_date}} - {{list.event_end_date}}
   </div>
-  <div class="item item-divider item-dark">
-    <h2 style="color:white">Хаана болох?</h2>
+  <div class="item item-divider item-stable">
+    <h2 >Хаана болох:</h2>
   </div>
    <div class="item item-text-wrap">
     {{list.event_location}}
   </div>
+    <div class="item item-divider item-stable">
+    <h2 >Зохион байгуулагч:</h2>
+  </div>
+   <div class="item item-text-wrap">
+    {{list.event_owner.organization_fullname}}
+  </div>
+      <div class="item item-divider item-stable">
+    <h2 >Тасалбарын үнэ:</h2>
+  </div>
+   <div class="item item-text-wrap">
+    {{list.event_ticket_price}}
+  </div>
+        <div class="item item-divider item-stable">
+    <h2 >Хөтөлбөр:</h2>
+  </div>
+   <div ng-repeat="agenda in agendas" >
+      <br>
+      <div class="sched-container-dates" ng-if="list.is_time_agenda" >
+      <b>{{agenda.agenda_location}}</b>, "{{agenda.agenda_day|date:'MM/dd/yyyy'}}"" 
+      </div>
+      <div class="ng-scope"    ng-repeat="agenda_time in agenda.agenda_times | orderBy: agenda_time.time_duration">
+          <h3 ng-if="list.is_time_agenda"   class="ng-binding ng-scope" id="agenda_time"> {{agenda_time.time_duration}} min</h3>
+            <div class="sched-container" >
+                <div class="sched-container-inner">
+                    <span class="event {{agenda_time.time_class}}" >
+                      <span class="ev_save">
+                          &nbsp;
+                      </span>
+                      <a class="name ng-binding">
+                           {{agenda_time.time_title}} -
+                          <b class="ng-binding" >
+                              {{agenda_time.time_speaker}}
+                          </b>
+                      </a>
+                      <br>
+                      <a class="name ng-binding ng-scope" >
+                              {{agenda_time.time_description}}
+                      </a>
+                    </span>
+            </div>
+      </div>
+  </div>
+</div>
   <br>
-  <div class="item tabs tabs-dark tabs-icon-left">
+  <div class="item tabs tabs-stable tabs-icon-left">
     <a class="tab-item" ng-click="saveEvent()">
     <i class="icon ion-ios-cloud-download-outline"></i> 
       Хадгалах
@@ -33,11 +77,15 @@
         <i class="icon ion-ios-star-outline"></i>
       Үнэлгээ
     </a>
-    <a class="tab-item" href="#">
-         <i class="icon ion-ios-redo-outline" ng-click="shareAnywhere()"></i>
-      Хуваалцах
+    <a class="tab-item" href="#"  ng-click="shareAnywhere()">
+         <i class="icon ion-ios-redo-outline"></i>
+         Хуваалцах
     </a>
   </div>
+  <br>
+        <button class="button button-full button-balanced">
+          Тасалбар Худалдаж авах
+      </button>
 </div>
   </div>
 </div>

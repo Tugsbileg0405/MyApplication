@@ -6,12 +6,12 @@
      		 		 		<br>
     		<div class="row">
     				<div class="col"></div>
-    				<div class="col col-50" style="text-align:center"><img src="img/logo.png"></div>
+    				<div class="col col-50" style="text-align:center"><img src="img/logo.png" style="width:50%;height:50%"></div>
 					<div class="col"></div>
     		</div>
     		  <div class="row">
     				<div class="col"></div>
-    				<div class="col col-50" style="text-align:center"><h1 style="font-family:Arial;font">Urilga.mn</h1></div>
+    				<div class="col col-50" style="text-align:center">Urilga.mn</div>
 					<div class="col"></div>
     		</div>
     		<br>
@@ -21,14 +21,21 @@
   					<div class="list">
 			  				<label class="item item-input item-floating-label" id="lgnname">
 			 			   			<span class="input-label" >И-мэйл хаяг:</span>
-			 			   				<input type="email" name="email" ng-model="todo.email" placeholder="И-мэйл хаяг" required>
+			 			   				<input type="email"  name="email" ng-model="emails"  placeholder="И-мэйл хаяг" required>
 			  			   </label>
-			 				 <label class="item item-input item-floating-label" >
+			 				 <label class="item item-input item-floating-label">
 			    			
 			    					<span class="input-label">Нууц үг:</span>
-			    					<input type="password" ng-model="todo.pass" name="password" placeholder="Нууц үг" required>
+			    					<input type="password" ng-model="pass" name="password" placeholder="Нууц үг" required>
 			  				</label>
-			  				<button class="button button-full button-dark" ng-click="login(todo)" type="submit" id="lgnbtn">
+
+        <ion-checkbox ng-model="email.checked"
+                      ng-change="emailSave(email)"
+                      ng-init="emailSave(email)"
+                      >
+          И-мэйл сануулах 
+        </ion-checkbox>
+			  				<button class="button button-full button-dark" ng-click="login({email:emails,pass:pass})" type="submit" id="lgnbtn">
 			  						Нэвтрэх
 						   </button>
 					</div>	

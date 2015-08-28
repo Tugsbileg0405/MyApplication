@@ -1,16 +1,24 @@
-<ion-view view-title="{{items.name}}">
-</div>
+<ion-view>
   <ion-content>
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
+  <div class="row">
+      <div class="col ">  <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:right"><h3>{{items.name}}</h3></div>
+  </div>
   	<ion-list>
  		 <ion-item ng-repeat="list in items.events" href="#/app/playlists/{{list.id}}">
-		   <div class="list" >
-          <div class="item item-body">
+		   <div class="list card" style="margin:-2%;padding:0px;width:114%;height:100%" >
           <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%" class="full-image">
-            <p >{{list.event_start_date | date:'medium'}}</p>
-            <h2 >{{list.event_title}}</h2>
-            <p class="address">{{list.event_location}}</p>
+              <div class="item item-text-wrap">
+            <p id="Date">{{list.event_start_date | date:'medium'}}</p>
+            <h3 id="title">{{list.event_title}}</h3>
+            <p id="address">{{list.event_location}}</p>
+          </div>
+               <div class="item item-divider">
+              <p  id="title">
+                #{{items.name}}
+              </p>
           </div>
 		</div>
   		</ion-item>
