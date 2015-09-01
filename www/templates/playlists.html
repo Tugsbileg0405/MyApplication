@@ -49,13 +49,12 @@
              <div class="item item-text-wrap">
             <p id="Date">{{list.event_start_date | date:'medium'}}</p>
             <h3  id="title">{{list.event_title}}</h3>
-            <p id="address">{{list.event_location}}</p>
+            <p id="address"><i class="icon ion-ios-location-outline"></i> {{list.event_location}}</p>
           </div>
-
            <div class="item item-divider">
-              <p ng-repeat="category in list.event_type" id="title">
-                #{{category.name}}
-              </p>
+              <h5 ng-repeat="category in list.event_type" style="font-size:15px;float:left">
+                #{{category.name}}&nbsp
+              </h5>
           </div>
       </div>
       </ion-item>

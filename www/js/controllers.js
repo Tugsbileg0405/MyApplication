@@ -37,7 +37,7 @@ angular.module('starter.controllers', [])
     $http.get('http://52.69.108.195:1337/logout').success(function (response){
         console.log(response);
               localStorage.clear();
-              $state.go('main',{},{reload:true});
+              $state.go('homeLogin',{},{reload:true});
     })
   };
 })
@@ -116,14 +116,25 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage,$ionicModal,$ionicSlideBoxDelegate,$window) {
+.controller('InvitationCtrl', function($scope,$timeout,$http,$stateParams,$localStorage,$ionicModal,$cordovaLocalNotification,$ionicSlideBoxDelegate,$window) {
 
  
       $scope.goBack = function(){
       $window.history.back();
   }
  
-
+    $scope.add = function() {
+        var alarmtime = new Date();
+        alarmtime.setMinutes(alarmtime.getMinutes()+1);
+        $cordovaLocalNotification.add({
+          id:"12345",
+          data:alarmtime,
+          message:'xaxa',
+          title:'xaxa'
+        }).then(function(){
+          console.log('set');
+        })
+  }
  
  $scope.doRefresh = function() {
       $timeout (function(){
@@ -194,7 +205,7 @@ angular.module('starter.controllers', [])
       ;
 })
 
-.controller('MainCtrl',function($scope,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading,$window,$timeout){
+.controller('MainCtrl',function($scope,$cordovaToast,$state,Todo,$ionicPopup,$localStorage,$http,$facebook,$ionicLoading,$window,$timeout){
 
 
 
@@ -219,7 +230,7 @@ angular.module('starter.controllers', [])
   $scope.emailSave = function(email) {
     if(email.checked == true) {
         $localStorage.checked = true;
-        if($localStorage.userdata !== undefined ){
+        if($localStorage.userdata !== undefined  ){
         $scope.emails = $localStorage.userdata.user.email;
          }
          else {
@@ -258,10 +269,7 @@ angular.module('starter.controllers', [])
   $scope.login = function(data) {
     console.log(data);
     if(!data || !data.email || !data.pass ){
-      var alert = $ionicPopup.alert({
-      title:'Алдаа',
-      template:'Бүх талбарыг бөглөнө үү!'
-    })
+        $cordovaToast.show('Бүх талбарыг бөглөнө үү','short','bottom');
     }
     else {
     $http.post("http://52.69.108.195:1337/login",{email:data.email,password:data.pass}).success(function (response) {
@@ -314,12 +322,22 @@ angular.module('starter.controllers', [])
        $scope.$broadcast('scroll.refreshComplete');
       },1000);
   }
+  
+  $scope.doRefresh();
+
+
     $scope.goBack = function(){
       $window.history.back();
   }
     var person_id = $localStorage.userdata.user.person.id;
     $scope.deleteSavedEvent = function(data){
-          var event_id = data;
+             var confirmPopup = $ionicPopup.confirm({
+     title: 'Хадгалагдсан арга хэмжээ',
+     template: 'Устгахдаа итгэлтэй байна уу?'
+   });
+   confirmPopup.then(function(res) {
+     if(res) {
+                 var event_id = data;
           console.log(event_id);
         $http.get("http://52.69.108.195:1337/eventlike?event_info="+event_id+"&liked_by="+person_id).success(function (response) {
             var deleteItem = response;
@@ -329,14 +347,15 @@ angular.module('starter.controllers', [])
             }
              $http.delete("http://52.69.108.195:1337/eventlike/"+id).success(function (response){
               if(response.state == 'OK'){
-               var alert = $ionicPopup.alert({
-                  title:'Мэдээлэл',
-                  template:'Амжилттай устлаа!'
-                  })
               $scope.doRefresh();
             }
           })
         });
+     } else {
+       console.log('You are not sure');
+     }
+   });
+
     }
 
 
@@ -351,7 +370,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('RegCtrl',function($scope,$state,$cordovaCamera,Todo,$ionicPopup,$http,$window){
+.controller('RegCtrl',function($scope,$state,$cordovaCamera,$cordovaToast,Todo,$ionicPopup,$http,$window){
   
   $scope.goBack = function(){
       $window.history.back();
@@ -360,14 +379,9 @@ angular.module('starter.controllers', [])
    $scope.Register = function(data) {
     console.log(data);
     if (!data || !data.uname || !data.pass || !data.email || !data.phone || !data.fname || !data.register_id) {
-      var alert = $ionicPopup.alert({
-      title:'Алдаа',
-      template:'Бүх талбарыг бөглөнө үү!'
-    })
+            $cordovaToast.show('Бүх талбарыг бөглөнө үү','short','bottom');
     }
     else {
-
-      
       $http.post("http://52.69.108.195:1337/person", {person_firstname:data.fname,person_lastname:data.uname,person_register_id:data.register_id,person_email:data.email,person_cell_number:data.phone}).success(function (response) {
               var person_id = response.id;
         $http.post("http://52.69.108.195:1337/user",{email:data.email,person:person_id,password:data.pass}).success(function(){
@@ -375,7 +389,9 @@ angular.module('starter.controllers', [])
       title:'Бүртгүүлэлт',
       template:'Амжилттай бүртгүүллээ!'
     })
-      $state.go('main',{},{reload:true});
+      alert.then(function (res){
+              $state.go('main',{},{reload:true});
+      })
         })
         })
    }  
@@ -383,6 +399,15 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ForgotPasswordCtrl',function($scope,$state,$window){
+    $scope.goBack = function(){
+      $window.history.back();
+  };
+})
+
+.controller('HomeCtrl',function($scope,$state,$window){
+  $scope.slideHasChanged = function(index) {
+      $scope.slideIndex = index;
+    }
     $scope.goBack = function(){
       $window.history.back();
   };
@@ -406,12 +431,11 @@ $ionicLoading.show({
     $scope.agendas = response;
     console.log($scope.agendas);
   });
-  })
-
+  });
 
   $scope.shareAnywhere = function() {
     $cordovaSocialSharing.share($scope.list.event_title, null, null, 'http://52.69.108.195:9000/#/event_details/'+$scope.list.id);
-     }
+     };
 
 
     $ionicModal.fromTemplateUrl('templates/image-modal.html', {
@@ -453,23 +477,66 @@ $ionicLoading.show({
     }
       $scope.goBack = function(){
       $window.history.back();
-  }
+  };
 
 
-  $scope.saveEvent = function(){
+
+
+    var person_id = $localStorage.userdata.user.person.id;
+
+    
+    $scope.checkLike = function(){
+         var event_id = $scope.list.id;
+      console.log(event_id);
+      $http.get("http://52.69.108.195:1337/eventlike?event_info="+event_id+"&liked_by="+person_id).success(function (response) {
+              if(response.length > 0) {
+                $scope.liker_function = 1;
+                         console.log($scope.liker_function);
+              }        
+              else {
+                $scope.liker_function = 0;
+                         console.log($scope.liker_function);
+              }
+      });
+    };
+
+
+
+    $scope.unlikeEvent = function(){
+          var event_id = $scope.list.id;
+          console.log(event_id);
+        $http.get("http://52.69.108.195:1337/eventlike?event_info="+event_id+"&liked_by="+person_id).success(function (response) {
+            var deleteItem = response;
+            console.log(deleteItem);
+            for( i in deleteItem) {
+              var id = deleteItem[i].id;
+            }
+             $http.delete("http://52.69.108.195:1337/eventlike/"+id).success(function (response){
+              if(response.state == 'OK'){
+                  console.log('deleted');
+                  $scope.heart_icon="fa-bookmark-o";
+                  $scope.liker_function = 0;
+                  console.log($scope.liker_function);
+            }
+          })
+        });
+     } ;
+
+  $scope.likeEvent = function(){
     var person_id = $localStorage.userdata.user.person.id;
      console.log(person_id);
      console.log($scope.list.id);
      $http.post("http://52.69.108.195:1337/eventlike",{event_info:$scope.list.id,liked_by:person_id}).success(function (response){
-       console.log(response);
-        var alert = $ionicPopup.alert({
-            title:'Мэдээлэл',
-            template:'Амжилттай хадгалагдлаа!'
-          })
-     })
-    
-  };
+        console.log('success');
+        $scope.heart_icon = "fa-bookmark";
+        $scope.liker_function=1;
+         console.log($scope.liker_function);
+     });
+  } ;
 
+  $timeout(function(){
+    $scope.checkLike();
+  },1000);
 
-})
+});
 

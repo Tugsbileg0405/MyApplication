@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','starter.services','ui.router','ngCordova','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
+angular.module('starter', ['ionic','starter.controllers','starter.services','ngCordova','ui.router','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
 .run(function($ionicPlatform,$rootScope,$ionicPopup,$rootScope,$rootScope,$location,$localStorage,$state,$window) {
     (function(){
      (function(d, s, id){
@@ -69,7 +69,12 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
       controller:'RegCtrl'
     })
 
- 
+    .state('homeLogin',{
+      url: '/homeLogin',
+      templateUrl:'templates/HomeLogin.html',
+      controller:'HomeCtrl'
+    })
+
 
       .state('forgotpassword',{
       url: '/forgotpassword',
@@ -145,5 +150,5 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ui.
 ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider
-  .otherwise('/main');
+  .otherwise('/homeLogin');
 });

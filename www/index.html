@@ -11,18 +11,21 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="lib/ngstorage/ngStorage.min.js"></script>
- <link href='https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic' rel='stylesheet' type='text/css'>
+ <link href="https://fonts.googleapis.com/css?family=RobotoDraft%3A400%2C500%2C700%2C400italic" rel="stylesheet" type="text/css">
     <!-- Angular Material Javascript now available via Google CDN; version 0.10 used here -->
     <link rel="stylesheet" type="text/css" href="lib/angular-material/angular-material.min.css">
     <link rel="stylesheet" type="text/css" href="lib/ionic-material/dist/ionic.material.min.css">
     <link rel="stylesheet" type="text/css" href="lib/tabbed-slide-box/tabbedSlideBox/tabSlideBox.css">
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+<script src="lib/ionic-service-core/ionic-core.js"></script>
+<script src="lib/ionic-service-push/ionic-push.js"></script>
      <script src="lib/firebase/firebase.js"></script>
       <script src="lib/angularfire/dist/angularfire.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
@@ -42,7 +45,7 @@
     <script src="js/services.js"></script>
     <script src="cordova.js"></script>
   </head>
-  <body ng-app="starter" >
+  <body ng-app="starter">
     <ion-nav-view animation="slide-left-right"></ion-nav-view>
   </body>
 </html>
