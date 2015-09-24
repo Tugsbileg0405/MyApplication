@@ -1,0 +1,27 @@
+  <ion-list>
+  <ion-item ng-repeat="list in lists | orderBy:'createdAt':true|filter:search | limitTo:numberOfItemsToDisplay" href="#/app/playlists/{{list.id}}">
+      <div class="list card" style="margin:-2%;padding:0px;width:114%;height:100%">
+         
+          <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%;width:i100%" class="full-image">
+             <div class="item tem-text-wrap">
+            <p>{{list.event_start_date | date:'medium'}}</p>
+            <h3  >{{list.event_title}}</h3>
+            <p ><i class="icon ion-ios-location-outline"></i> {{list.event_location}}</p>
+          </div>
+           <div class="item item-divider">
+              <h5 ng-repeat="category in list.event_type" style="font-size:12px;float:left;padding-top:5px">
+                #{{category.name}} &nbsp
+              </h5>
+          </div>
+           <div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(21,245,55,0.8)" ng-if="list.event_ticket_type == 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
+           <div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(162, 30, 33,0.8)" ng-if="list.event_ticket_type != 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
+      </div>
+      <div ng-if="lists.length == 0">
+          <p>No event</p>
+      </div>
+      </ion-item>
+    </ion-list>

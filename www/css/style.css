@@ -1,4 +1,30 @@
 /* Empty. Add your own CSS if you like */
+@font-face {
+    font-family: 'fontawesome';
+    src:url('../fonts/fontawesome-webfont.eot');
+    src:url('../fonts/fontawesome-webfont.eot') format('embedded-opentype'),
+        url('../fonts/fontawesome-webfont.woff') format('woff'),
+        url('../fonts/fontawesome-webfont.ttf') format('truetype'),
+        url('../fonts/fontawesome-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.fa-bookmark-o:before {
+    font-family: "fontawesome";
+    content: "\f097";
+}
+.fa-bookmark:before {
+    font-family: "fontawesome";
+    content: "\f02e";
+}
+.fa-bars:before {
+    font-family: "fontawesome";
+    content: "\f0c9";
+}
+.fa-search:before {
+    font-family: "fontawesome";
+    content: "\f002";
+}
 .content:  {
 	color: orange;
 }
@@ -83,12 +109,11 @@ img {
 }
 #Category {
     text-align: center;
-    margin: -1%;
+    margin: 0;
     padding: 40px;
     font-size: 16px;
     font-weight: bold;
     border:0px;
-    border-radius: 10px;
 }
 .transparent {
   background: transparent !important;
@@ -112,10 +137,24 @@ img {
 }
 .slider {
   height: 100%;
+  padding-bottom: 0;
 }
-
+.slider-pager {
+  top:90%;
+}
+.slider-pager-page.active
+{
+color:#a21e21;
+}
+.slider-slide {
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+}
 #urilgaDetail {
-  margin-top: 20%;
+  margin-top: 5%;
 }
 /* Fix modal backdrop for smaller devices */
 @media (max-width: 679px) {
@@ -164,7 +203,18 @@ a:link {
   text-align: right;
   width: 55px;
   zoom: 1;
-  font-size: 22px;
+  font-size: 18px;
+}
+
+#agenda_duration {
+  clear: left;
+  color: #999;
+  float: left;
+  margin: 16px 0 0;
+  text-align: right;
+  width: 55px;
+  zoom: 1;
+  font-size: 16px;
 }
 
 .sched-container {
@@ -307,3 +357,116 @@ ul.dropdown-menu a {
   }
 }
 
+#scrollToTop{
+  height: 40px;
+  width: 60px;
+ 
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  border-radius: 10px 0 0 0;
+  
+  z-index: 1000;
+  display:none;
+  background:rgba(232, 98, 86,0.9) url('../img/arrow.svg') no-repeat center 50%;
+}
+#fab {
+    height: 40px;
+  width: 60px;
+ 
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  border-radius: 10px 0 0 0;
+  
+  z-index: 1000;
+  display:none;
+}
+.line-center{
+    margin:0;padding:0 10px;
+    background:#fff;
+    display:inline-block;
+}
+h2{
+
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+h2:after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    border-top:solid 1px #D0D0D0;
+    z-index:-1;
+}
+#org_name {
+     position: absolute;
+    left: 0;
+    top: 0;
+    right: 15px;
+    background: rgba(0,0,0,0.5);
+    padding: 15px 25px;
+    margin: 0;
+    color: #fff;
+    text-align: center;
+}
+#org_type {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    background-color: #000;
+    color: #fff;
+    padding: 5px 15px;
+}
+
+
+#deed {
+position:absolute;
+color:#00458A;
+ bottom:240px;
+ text-align:center;
+ padding:5px;
+ left:40px;
+}
+
+#dood {
+  position:absolute;
+  top:360px;
+  color:#666;
+  padding:5px;
+}
+hr {
+ height: 1px;
+color: #C0C0C0;
+background-color: #C0C0C0;
+border: none;
+}
+#buyTicket{
+  font-weight: bold;
+}
+#list {
+  font-size: 15px;
+}
+::-webkit-input-placeholder {
+ font-size: 17px;
+ color: #d0cdfa;
+}
+:-moz-placeholder { /* older Firefox*/
+ font-size:17px;
+ color: #d0cdfa;
+}
+::-moz-placeholder { /* Firefox 19+ */ 
+ font-size: 17px;
+ color: #d0cdfa; 
+} 
+:-ms-input-placeholder { 
+ font-size: 17px; 
+ color: #d0cdfa;
+}
+
+[role="tabpanel"] {
+    transition: none;
+}

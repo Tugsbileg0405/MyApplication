@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','starter.services','ngCordova','ui.router','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
-.run(function($ionicPlatform,$rootScope,$ionicPopup,$rootScope,$rootScope,$location,$localStorage,$state,$window) {
+angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starter.services','ngCordova','ui.router','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
+.run(function($ionicPlatform,$rootScope,$localStorage,$ionicPopup,$timeout,$location,$localStorage,$state,$window) {
     (function(){
      (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -16,8 +16,9 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
    }(document, 'script', 'facebook-jssdk'));
    }())
 
+   
   $ionicPlatform.ready(function() {
-     
+
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -36,6 +37,7 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
       }
     },100)
 
+
       if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
                     $ionicPopup.alert({
@@ -53,9 +55,23 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
 })
 
 
-.config(function($stateProvider, $urlRouterProvider,$facebookProvider) {
+.config(function($stateProvider,$mdThemingProvider ,$urlRouterProvider,$facebookProvider,$mdGestureProvider) {
+
+ var neonRedMap = $mdThemingProvider.extendPalette('red', {
+    '900': 'a21e21'
+  });
+
+  $mdThemingProvider.definePalette('neonRed', neonRedMap);
+
+  $mdThemingProvider.theme('default')
+    .primaryPalette('grey',{
+      'default' : 'A700'
+    });
+
+         $mdGestureProvider.skipClickHijack();
   $facebookProvider.setAppId('437722666411868');
   $facebookProvider.setPermissions("email,public_profile,user_posts,publish_actions,user_photos");
+  
   $stateProvider
  .state('main',{
       url:'/main',
@@ -74,7 +90,6 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
       templateUrl:'templates/HomeLogin.html',
       controller:'HomeCtrl'
     })
-
 
       .state('forgotpassword',{
       url: '/forgotpassword',
@@ -98,6 +113,67 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
       }
     }
   })
+  .state('app.myorg', {
+    url: '/myorg',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/myorg.html',
+        controller : 'myOrgCtrl'
+      }
+    }
+  })
+
+  .state('app.org', {
+    url: '/myorg/:myOrgId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/org.html',
+        controller : 'OrgCtrl'
+      }
+    }
+  })
+
+    .state('app.myevent', {
+    url: '/myevent',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/myevent.html',
+        controller : 'myEventCtrl'
+      }
+    }
+  })
+
+    .state('app.myticket',{
+      url: '/myticket',
+       views: {
+      'menuContent': {
+      templateUrl:'templates/ticket.html',
+      controller:'TicketCtrl'
+        }
+      }
+    })
+
+
+        .state('app.todayEvent',{
+      url: '/todayEvent',
+       views: {
+      'menuContent': {
+      templateUrl:'templates/today.html',
+      controller:'TodayCtrl'
+        }
+      }
+    })
+    
+
+      .state('app.ticketImg',{
+      url: '/myticket/:eventId/detail',
+       views: {
+      'menuContent': {
+      templateUrl:'templates/ticketImg.html',
+      controller:'ticketImgCtrl'
+        }
+      }
+    })
 
   .state('app.profile', {
       url: '/profile',
@@ -137,7 +213,15 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
       }
     }
   })
-
+  .state('app.buyticket', {
+    url: '/playlists/:playlistId/buyticket',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/buyticket.html',
+        controller: 'buyTicketCtrl'
+      }
+    }
+  })
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
@@ -147,8 +231,17 @@ angular.module('starter', ['ionic','starter.controllers','starter.services','ngC
       }
     }
   })
+  .state('app.eventTicketNumber', {
+    url: '/playlists/:playlistId/ticketNumber',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/eventTicketNumber.html',
+        controller: 'ticketNumberCtrl'
+      }
+    }
+  })
 ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider
-  .otherwise('/homeLogin');
+  .otherwise('homeLogin');
 });

@@ -2,9 +2,9 @@
 
 
  <div class="modal image-modal transparent" ng-click="closeModal()" >
- <ion-slide-box pager-click="slideChanged(index)" show-pager="false">
+ <ion-slide-box pager-click="slideChanged($index)" show-pager="false">
 <ion-slide ng-repeat="ticket in tickets">
-<div class="list card" style="border:5px inset #8383e6" id="urilgaDetail">
+<div class="list card" style="border:12px groove #3b3b3b" id="urilgaDetail">
 	 <ion-scroll zooming="true" direction="y">
   <div class="item item-avatar">
     <img src="http://52.69.108.195:1337/{{ticket.ticket_event.event_profile}}">

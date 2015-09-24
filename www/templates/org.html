@@ -1,0 +1,36 @@
+<ion-view view-title="{{list.event_title}}"  >
+
+  <ion-content >
+  <div class="row" >
+    <div class="col col-50"  >
+        <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%" ng-click="goBack()">Буцах</button>
+    </div>
+    <div class="col col-50" style="padding-top:4%">
+        <p>Байгууллагын мэдээлэл</p>
+    </div>
+    </div>
+  </div>
+  <div class="list">
+  <label class="item item-input">
+    <span class="input-label">   Байгууллагын нэр:</span>
+    <input type="text" value="{{org.organization_fullname}}">
+  </label>
+  <label class="item item-input">
+    <span class="input-label"> Registration ID:</span>
+    <input type="text" value=" {{org.organization_register_id}}">
+  </label>
+   <label class="item item-input">
+    <span class="input-label"> Байгууллагын и-мэйл:</span>
+    <input type="text" value="   {{org.organization_email}} ">
+  </label>
+   <label class="item item-input">
+    <span class="input-label"> Байгууллагын вебсайт:</span>
+    <input type="text" value=" {{org.organization_website}}">
+  </label>
+   <label class="item item-input">
+    <span class="input-label"> Байгууллагын утасны дугаар:</span>
+    <input type="text" value=" {{org.organization_work_number}}">
+  </label>
+</div>
+  </ion-content>
+</ion-view>

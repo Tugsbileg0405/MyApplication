@@ -1,74 +1,72 @@
 <ion-view view-title="{{list.event_title}}"  >
 
-  <ion-content >
-  <div class="row">
-    <div class="col " >
-        <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button>
+  <ion-content  >
+  <div class="row" >
+    <div class="col col-50"  >
+        <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%" ng-click="goBack()">Буцах</button>
     </div>
-    <div class="col">
-      <div class="row">
-    <div class="item tabs" style="border:0px">
-          <a class="tab-item" ng-click="shareAnywhere()">
-         <i class="icon ion-android-share-alt"></i>
-    </a>
-    <a class="tab-item "  ng-click="unlikeEvent()" ng-if="liker_function == 1">
-    <i class="icon ion-ios-heart"></i> 
-    </a>
-       <a class="tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0">
-    <i class="icon ion-ios-heart-outline"></i> 
-    </a>
+    <div class="col col-50" >
+    <div class="item tabs" style="border:0px !important">
+       <a class="tab-item"  href="#/app/playlists/{{list.id}}/ticketNumber" ng-if="check == 1" style="color:#a21e21"><b>{{checkTicket.length}} ticket</b></a>  
+     <a class="tab-item " ng-click="shareAnywhere()"><i class="icon ion-share" style="color:#a21e21"></i></a>
+       <a class="tab-item "  ng-click="unlikeEvent()" ng-if="liker_function == 1">   <i class="icon fa-bookmark"  style="font-size:23px;color:#a21e21"></i></a>
+       <a class=" tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0">   <i class="icon fa-bookmark-o assertive" style="font-size:23px;color:#a21e21"></i></a>
+     </div>
 
-  </div>
-      </div>
     </div>
   </div>
-  <img class="full-image" style="height:100%;width:100%" ng-click="showImage()" src="http://52.69.108.195:1337/{{list.event_cover}}" >
- <div class="list" >
+  <img class="full-image ink" style="height:100%;width:100%" ng-click="showImage()" src="http://52.69.108.195:1337/{{list.event_cover}}" >
+ <div class="list">
   <div class="item item-body">
-        <h5 ng-repeat="category in list.event_type" style="font-size:15px;float:left">
+        <h5 ng-repeat="category in list.event_type" style="font-size:12px;float:left;margin-top:0;color:#a21e21">
                 #{{category.name}}&nbsp
               </h5><br><br>
-    <h2 style="font-size:20px;font-weight:bold">{{list.event_title}}</h2>
+    <h3 style="font-size:20px;font-weight:bold;margin-top:0">{{list.event_title}}</h3>
     <p>
     	{{list.event_description}}
       <a ng-click="changeLength(wine)" class="color3"><strong>More</strong></a>
     </p>
     <br>
     <div class="list">
-  <div class="item item-icon-left item-stable">
-    <i class="icon ion-calendar"></i>Хэзээ болох:
+  <div class="item item-text-wrap" >
+    <i class="icon ion-calendar" style="font-size:20px;color:#a21e21"></i> &nbsp <span id="list" >{{list.event_start_date | date:'MM/dd/yyyy'}} - {{list.event_end_date | date:'MM/dd/yyyy'}}</span>
   </div>
-  <div class="item item-text-wrap">
-    {{list.event_start_date}} - {{list.event_end_date}}
-  </div>
-  <div class="item item-icon-left  item-stable">
-   <i class="icon ion-ios-location-outline"></i> Хаана болох:
-  </div>
+  <hr>
    <div class="item item-text-wrap">
-    {{list.event_location}}
+     <i class="icon ion-ios-location-outline assertive" style="font-size:20px;color:#a21e21"></i>  &nbsp <span id="list">{{list.event_location}}</span>
   </div>
-    <div class="item item-icon-left  item-stable">
-    <i class="icon ion-ios-briefcase-outline"></i>Зохион байгуулагч:
+  <hr>
+   <div class="item item-text-wrap" ng-if="list.event_owner !== undefined">
+     <i class="icon ion-ios-briefcase-outline assertive" style="font-size:20px;color:#a21e21"></i>  &nbsp  <span id="list" >{{list.event_owner.organization_fullname}}</span>
   </div>
-   <div class="item item-text-wrap">
-    {{list.event_owner.organization_fullname}}
+  <hr ng-if="list.event_owner !== undefined">
+     <div class="item item-text-wrap" ng-if="list.event_owner === undefined">
+     <i class="icon ion-ios-briefcase-outline assertive" style="font-size:20px;color:#a21e21"></i>  &nbsp  <span id="list" >{{list.event_created_by.person_lastname}}</span>
   </div>
-      <div class="item item-icon-left  item-stable">
-    <i class="icon ion-cash"></i>Тасалбарын үнэ:
+  <hr ng-if="list.event_owner === undefined">
+   <div class="item item-text-wrap" ng-if="list.event_ticket_price != 0">
+     <i class="icon ion-cash assertive" style="font-size:20px;color:#a21e21"></i>  &nbsp  <span id="list" >{{list.event_ticket_price}}</span>
   </div>
-   <div class="item item-text-wrap">
-    {{list.event_ticket_price}}
+    <div class="item item-text-wrap" ng-if="list.event_ticket_price == 0" >
+     <i class="icon ion-cash assertive" style="font-size:20px;color:#a21e21"></i>  &nbsp  <span id="list">Free</span>
   </div>
-        <div class="item item-icon-left  item-stable">
-    <i class="icon ion-ios-book-outline"></i>Хөтөлбөр:
+  <hr>
+  <a href="#/app/playlists/{{list.id}}/ticketNumber">
+   <div class="item item-text-wrap " ng-if="check == 1">
+      <i class="icon ion-cash assertive" style="font-size:20px;color:#a21e21"></i> &nbsp  <span id="list">Танд {{checkTicket.length}} ширхэг тасалбар байна.</span>  <i class="icon ion-chevron-right" style="font-size:22px;margin-left:10px"></i>
   </div>
+  </a>
+    <hr ng-if="check == 1">
+    <div class="item item-text-wrap" style="background-color:#f8f8f8" ng-if="list.is_time_agenda == true">
+    <i class="icon ion-ios-book-outline assertive" style="font-size:20px;color:#a21e21"></i> &nbsp  <span  style="font-weight:bold" id="list">Хөтөлбөр:</span>
+    </div>
    <div ng-repeat="agenda in agendas" >
       <br>
-      <div class="sched-container-dates" ng-if="list.is_time_agenda" >
+      <div class="sched-container-dates" ng-if="list.is_time_agenda" style="background-color:#f8f8f8">
       <b>{{agenda.agenda_location}}</b>, "{{agenda.agenda_day|date:'MM/dd/yyyy'}}"" 
       </div>
       <div class="ng-scope"    ng-repeat="agenda_time in agenda.agenda_times | orderBy: agenda_time.time_duration">
-          <h3 ng-if="list.is_time_agenda"   class="ng-binding ng-scope" id="agenda_time"> {{agenda_time.time_duration}} min</h3>
+          <h5 ng-if="list.is_time_agenda"   class="ng-binding ng-scope" id="agenda_time"> {{agenda_time.time_duration}} min</h5>
             <div class="sched-container" >
                 <div class="sched-container-inner">
                     <span class="event {{agenda_time.time_class}}" >
@@ -93,23 +91,25 @@
   <br>
 
   <div class="item tabs tabs-stable tabs-icon-left" >
-    <a class="tab-item"  ng-click="unlikeEvent()" ng-if="liker_function == 1">
-    <i class="icon ion-ios-heart"></i> 
+       <a class="tab-item" ng-click="shareAnywhere()" style="font-size:15px;color:#a21e21">
+         <i class="icon ion-share"></i>
+         Хуваалцах
+    </a>
+    <a class="tab-item"  ng-click="unlikeEvent()" ng-if="liker_function == 1" style="font-size:15px;color:#a21e21">
+    <i class="icon fa-bookmark"></i> 
       Хадгалагдсан
     </a>
-       <a class="tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0">
-    <i class="icon ion-ios-heart-outline"></i> 
+       <a class="tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0" style="font-size:15px;color:#a21e21">
+    <i class="icon fa-bookmark-o" ></i> 
       Хадгалах
-    </a>
-    <a class="tab-item" ng-click="shareAnywhere()">
-         <i class="icon ion-android-share-alt"></i>
-         Хуваалцах
     </a>
   </div>
   <br>
-        <button class="button button-full button-assertive">
+    <a href="#/app/playlists/{{list.id}}/buyticket">
+        <button class="button button-full" style="background-color:#a21e21;color:white" >
           Тасалбар Худалдаж авах
       </button>
+      </a>
 </div>
   </div>
 </div>

@@ -2,7 +2,7 @@
   <ion-content >
   <ion-refresher pulling-text="Loading..." on-refresh="doRefresh()">
   </ion-refresher>
-    <ion-list can-swipe="true" class="animate-ripple">
+    <ion-list can-swipe="true">
       <ion-item ng-repeat="list in lists | orderBy:'createdAt':true" href="#/app/playlists/{{list.objectId}}" >
       <div class="list card" >
   <div class="item item-body">

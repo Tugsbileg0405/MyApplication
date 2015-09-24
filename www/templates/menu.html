@@ -8,18 +8,27 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-          <ion-item menu-close href="#/app/playlists" class="item item-icon-right" cl>
-          <i class="icon ion-ios-arrow-forward"></i> Арга хэмжээ
+          <ion-item menu-close href="#/app/playlists" class="item item-icon-right ink" cl>
+          <i class="icon ion-ios-arrow-forward  "></i> Нүүр хуудас
+        </ion-item><hr>
+          <ion-item menu-close href="#/app/invitation" class="item item-icon-right ink">
+         Урилга    <span class="badge badge" style="background-color:#a21e21;color:white">{{tickets.length}}</span>
         </ion-item>
-           <ion-item menu-close href="#/app/saved" class="item item-icon-right">
-          <i class="icon ion-ios-arrow-forward"></i>Хадгалагдсан арга хэмжээ
+            <ion-item menu-close href="#/app/myticket" class="item item-icon-right  ink">
+        Тасалбар   <span class="badge badge" style="background-color:#a21e21;color:white">{{tickets.length}}</span>
         </ion-item>
-        <ion-item menu-close href="#/app/invitation" class="item item-icon-right">
-         Урилга    <span class="badge badge-assertive">{{tickets.length}}</span>
+           <ion-item menu-close href="#/app/saved" class="item item-icon-right  ink">
+      Хадгалагдсан арга хэмжээ  <span class="badge badge" style="background-color:#a21e21;color:white">{{likedEvent.length}}</span>
+        </ion-item><hr>
+         <ion-item menu-close href="#/app/myevent" class="item item-icon-right  ink">
+          <i class="icon ion-ios-arrow-forward "></i>Миний арга хэмжээ
         </ion-item>
-      <ion-item menu-close href="#/app/profile" class="item item-icon-right">
-          <i class="icon ion-ios-arrow-forward"></i>Хувийн мэдээлэл
+        <ion-item menu-close href="#/app/myorg" class="item item-icon-right  ink">
+          <i class="icon ion-ios-arrow-forward "></i>Миний байгууллага
         </ion-item>
+      <ion-item menu-close href="#/app/profile" class="item item-icon-right  ink">
+          <i class="icon ion-ios-arrow-forward "></i>Хувийн мэдээлэл
+        </ion-item><hr>
           <ion-item menu-close ng-click="logout()">
           Гарах
         </ion-item>

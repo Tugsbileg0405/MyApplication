@@ -1,0 +1,22 @@
+<ion-view view-title="Миний тасалбар" >
+  <ion-content >
+    <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
+    </ion-refresher>
+    <div class="row">
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink"  style="padding-left:5%" ng-click="goBack()">Буцах</button>
+      </div>
+      <div class="col" style="text-align:center"><h4 style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны тасалбар: {{TicketOfEvent.length}}  </h4></div>
+      </div>
+      <ion-list >
+           <div class="list" ng-repeat="ticket in TicketOfEvent | orderBy:'ticket_event.event_start_date'">
+    <a class="item item-thumbnail-left" href="#/app/myticket/{{ticket.id}}/detail" style="padding-bottom:25px">
+      <img src="http://52.69.108.195:1337/{{ticket.ticket_event.event_cover}}">
+      <h3 style="color:#a21e21;font-size:16px">{{ticket.ticket_event.event_title}}</h3>
+    <p style="color:#a21e21"><i class="icon ion-ios-location-outline"></i> {{ticket.ticket_event.event_location}}</p>
+    <p style="color:#a21e21"><i class="icon ion-ios-calendar-outline"></i> {{ticket.ticket_event.event_start_date| date:'medium'}}</p>
+    </a>
+     <hr>
+  </div>
+      </ion-list>  
+    </ion-content>
+</ion-view>

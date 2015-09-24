@@ -3,24 +3,16 @@
   
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
     </ion-refresher>
-    <div class="row">
-      <div class="col"><button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button></div>
-      <div class="col"><p style="font-weight:bold;font-size:18px;text-align:right">Миний урилга</p></div>
+    <div class="row" >
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;padding-bottom:0" ng-click="goBack()">Буцах</button></div>
+      <div class="col" ><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны урилга:{{tickets.length}}</p></div>
     </div>
-    <ion-list >
-        <ion-item ng-repeat="ticket in tickets">
-              <div class="list" style="border: 12px groove #3b3b3b;border-radius: 30px 30px 30px 30px" ng-click="show($index)">
-                  <div class="row">
-                        <div class="col " style="text-align:center;height:90%"><img src="img/urilga.jpg"  style="width:100%;height:100%"></div>
-                  </div>
-                  <div class="card card-light">
-                    <div class="item item-text-wrap">
-                    <h2 style="text-align:center">Танд <b>{{ticket.ticket_event.event_title}}</b> арга хэмжээний  <b>{{ticket.ticket_countof}}</b> урилга ирсэн байна.</h2>
-                    </div>
-                 </div>
-              </div>
-
-      </ion-item>
-    </ion-list>
+      <ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
+  <ion-slide ng-repeat="ticket in tickets" >
+      <a href="#/app/playlists/{{ticket.ticket_event.id}}">
+                <img src="img/urilga_black.png"  style="width:100%;height:100%">
+      </a>
+  </ion-slide>
+</ion-slide-box>
     </ion-content>
 </ion-view>

@@ -1,0 +1,11 @@
+ 
+ $scope.getScrollPosition = function() {
+  $scope.moveData = $ionicScrollDelegate.getScrollPosition().top;
+ if($scope.moveData>500){
+     $('#header').fadeOut();
+   }
+   else {
+      $('#header').fadeIn();
+   }
+   $scope.$apply();
+  };

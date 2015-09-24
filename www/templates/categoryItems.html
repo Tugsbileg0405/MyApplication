@@ -1,27 +1,32 @@
 <ion-view>
-  <ion-content>
+  <ion-content >
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
   <div class="row">
-      <div class="col ">  <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button></div>
-      <div class="col" style="text-align:right"><h3>{{items.name}}</h3></div>
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center"><p style="font-size:16px;margin-top:5%;background-color:#a21e21;color:white;padding:5px;border-radius:5px">{{items.name}}</p></div>
   </div>
-  	<ion-list>
+  	<ion-list ng-if="isItem == true">
  		 <ion-item ng-repeat="list in items.events" href="#/app/playlists/{{list.id}}">
-		   <div class="list card" style="margin:-2%;padding:0px;width:114%;height:100%" >
+		   <div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%" >
           <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%" class="full-image">
               <div class="item item-text-wrap">
             <p id="Date">{{list.event_start_date | date:'medium'}}</p>
             <h3 id="title">{{list.event_title}}</h3>
-            <p id="address">{{list.event_location}}</p>
+            <p id="address"><i class="icon ion-ios-location-outline"></i> {{list.event_location}}</p>
           </div>
                <div class="item item-divider">
-              <p  id="title">
+              <p  id="title" style="font-size:12px;float:left;padding-top:5px">
                 #{{items.name}}
               </p>
           </div>
-		</div>
+		    </div>
   		</ion-item>
 </ion-list>
+<div class="card" ng-if="isItem == false">
+  <div class="item item-text-wrap">
+   {{message}}
+  </div>
+</div>
   </ion-content>
 </ion-view>

@@ -1,0 +1,21 @@
+<ion-view>
+  <ion-content >
+    <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
+  </ion-refresher>
+  <div class="row">
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:right;padding-top:4%"><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px">Миний байгууллага</p></div>
+  </div>
+  	<ion-list>
+ 		 <ion-item ng-repeat="myorg in myOrgs">
+     <a  href="#/app/myorg/{{myorg.id}}">
+		   <div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%">
+          <img src="http://52.69.108.195:1337/{{myorg.organization_profile_img}}"  style="width:100%;height:200px">
+            <p id="org_type">{{myorg.organization_membership_type.name}}</p>
+            <h3 id="org_name">{{myorg.organization_fullname}}</h3>
+		    </div>
+        </a>
+  		</ion-item>
+</ion-list>
+  </ion-content>
+</ion-view>

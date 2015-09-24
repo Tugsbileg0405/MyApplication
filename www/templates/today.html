@@ -1,0 +1,100 @@
+<ion-view view-title="Нүүр хуудас" >
+  <ion-header class="bar bar-light bar-header"  id="header" style="    background: rgba(255,255,255,0.5)" >
+          <div class="col" style="color:black">  <button class="button button-icon icon-left button-clear button-dark fa-bars" menu-toggle="left" style="padding-left:20%;color:black"></button></div>
+      <div class="col col-75" ng-click="scrollTop()"><h5 style="color:#283A44;font-size:18px;font-weight:bold">ХААНА ЮУ БОЛЖ БАЙНА ...</h5>
+      </div>
+  </ion-header>
+  <ion-content  id="myBody" on-scroll="getScrollPosition()" on-swipe-up="showHeader()" on-swipe-down="hideHeader()">
+    <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
+  </ion-refresher>
+   <ion-slide-box on-slide-changed="slideChanged($index)" style="height:100%" auto-play="true" does-continue="true" show-pager="false">
+  <ion-slide>
+    <div ><img src="img/slider1.jpg" style="height:300px;width:100%"></div>
+  </ion-slide>
+  <ion-slide>
+    <div ><img src="img/slider2.jpg" style="height:300px;width:100%"></div>
+  </ion-slide>
+  <ion-slide>
+    <div ><img src="img/slider3.jpg" style="height:300px;width:100%"></div>
+  </ion-slide>
+</ion-slide-box>
+ <div class="item" style="border:none;padding-bottom:0;font-weight:bold;font-size:18px;padding-left:5px;color::#283A44 ">
+  Category
+  </div>
+  <div class="list">
+   <div class="row" style="padding:0">
+   <div class="col col-50" style="padding-right:0.5"><a href="#/app/category/5594e7aeef8ed1a30b4e65b8"><p class="item item-dark " id="Category" style="background:url('img/category/music2.jpg');background-size: cover" >Music</p></a></div>
+    <div class="col col-50"  style="padding-left:0"><a href="#/app/category/5594e7baef8ed1a30b4e65b9"><p class="item item-dark " id="Category" style="background:url('img/category/food2.jpg') ;background-size: cover">Food & Drink</p></a></div>
+  </div>
+  <div class="row" style="padding:0">
+    <div class="col col-50"  style="padding-right:0.5"><a href="#/app/category/5594e7c1ef8ed1a30b4e65ba"><p class="item  item-dark " id="Category" style="background:url('img/category/classes1.jpg');background-size: cover">Classes</p></a></div>
+    <div class="col col-50"  style="padding-left:0"><a href="#app/category/5594e7ceef8ed1a30b4e65bb"><p class="item item-dark " id="Category" style="background:url('img/category/art2.jpg');background-size: cover">Arts</p></a></div>
+
+  </div>
+  <div class="row" style="padding:0">
+    <div class="col col-50"  style="padding-right:0.5"><a href="#app/category/5594e7daef8ed1a30b4e65bc"><p class="item  item-dark " id="Category" style="background:url('img/category/party2.jpg');background-size: cover">Parties</p></a></div>
+    <div class="col col-50"  style="padding-left:0"><a href="#app/category/5594e7e5ef8ed1a30b4e65bd"><p class="item  item-dark" id="Category" style="background:url('img/category/sport2.jpeg');background-size: cover">Sport & Wellness</p></a></div>
+
+  </div>
+  <div class="row" style="padding:0">
+          <div class="col"  style="padding-left:0.5;padding-right:0.5"><a href="#app/category/5594e7ecef8ed1a30b4e65be"><p class="item item-icon-left item-dark " id="Category" style="background:url('img/category/networking1.jpg');background-size: cover">Networking</p></a></div>
+  </div>
+    <div class="list list-inset" style="border:1px solid #00cc52;margin:2%">
+  <label class="item item-input">
+    <i class="icon fa-search "></i>
+    <input type="text" placeholder=" Хайх..." ng-model="search">
+  </label>
+</div>
+  <div class="item" style="border:none;padding-bottom:0;font-weight:bold;font-size:18px;padding-left:10px;color::#283A44 ">
+    Popular Events
+  </div>
+  <div class="item" id="tab_bar">
+ <ion-tabs class="tabs-striped">
+
+  <ion-tab title="Today" href="#/app/profile">
+    <ion-nav-view name="home-tab"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="Tomorrow">
+    <p>xaxa</p>
+  </ion-tab>
+
+  <ion-tab title="Settings" >
+    <p>xaxa</p>
+  </ion-tab>
+
+</ion-tabs>
+  </div>
+    <ion-list>
+      <ion-item ng-repeat="list in lists | orderBy:'createdAt':true|filter:search | limitTo:numberOfItemsToDisplay" href="#/app/playlists/{{list.id}}">
+      <div class="list card" style="margin:-2%;padding:0px;width:114%;height:100%">
+         
+          <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%;width:100%" class="full-image">
+             <div class="item item-text-wrap">
+            <p>{{list.event_start_date | date:'medium'}}</p>
+            <h3  >{{list.event_title}}</h3>
+            <p ><i class="icon ion-ios-location-outline"></i> {{list.event_location}}</p>
+          </div>
+           <div class="item item-divider">
+              <h5 ng-repeat="category in list.event_type" style="font-size:12px;float:left;padding-top:5px">
+                #{{category.name}} &nbsp
+              </h5>
+          </div>
+           <div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(21,245,55,0.8)" ng-if="list.event_ticket_type == 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
+           <div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(162, 30, 33,0.8)" ng-if="list.event_ticket_type != 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
+      </div>
+      <div ng-show="lists.length == 0">
+          <p>No event</p>
+      </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+    <ion-infinite-scroll
+    on-infinite="loadMore()"
+    distance="1%">
+  </ion-infinite-scroll>
+</ion-view>

@@ -3,8 +3,8 @@
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
    </ion-refresher>
    <div class="row">
-      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()">Буцах</button></div>
-      <div class="col"><p style="font-size:15px;font-weight:bold">Хадгалагдсан арга хэмжээ<p></div>
+      <div class="col col-33" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%" ng-click="goBack()">Буцах</button></div>
+      <div class="col col-67"><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Хадгалагдсан: {{likedEvent.length}}<p></div>
    </div>
     <ion-list>
       <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" href="#/app/playlists/{{list.event_info.id}}">
@@ -13,12 +13,13 @@
          <div class="item item-text-wrap">
            <p id="Date">{{list.event_info.event_start_date | date:'medium'}}</p>
             <h3 id="title" >{{list.event_info.event_title}}</h3>
-            <p id="address">{{list.event_info.event_location}}</p>
+            <p id="address"><i class="icon ion-ios-location-outline"></i> {{list.event_info.event_location}}</p>
           </div>
       </div>
    <ion-option-button class="button-assertive" ng-click="deleteSavedEvent(list.event_info.id)">
       Delete
       </ion-option-button>
     </ion-list>
+    </div>
     </ion-content>
 </ion-view>
