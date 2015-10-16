@@ -1,0 +1,36 @@
+<ion-view view-title="Хадгалагдсан арга хэмжээ">
+	<ion-content>
+    <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
+   </ion-refresher>
+   <div class="row">
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col "><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Нэгдсэн: {{joinedEvent.length}}<p></div>
+   </div>
+    <ion-list>
+      <ion-item ng-repeat="list in joinedEvent | orderBy:'createdAt':true|filter:search" href="#/app/playlists/{{list.event_info.id}}">
+         <div class="list card"  style="margin:-2%;padding:0px;width:114%;height:100%">
+          <img src="http://52.69.108.195:1337/{{list.event_info.event_cover}}"  style="height:100%" class="full-image">
+         <div class="item item-text-wrap">
+            <h3 style="font-size:15px;font-weight:bold">{{list.event_info.event_title}}</h3>
+           <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i> {{list.event_info.event_start_date | date:'yyyy-MM-dd , hh:mma'}}</p>
+            <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i>&nbsp {{list.event_info.event_location}}</p>
+          </div>
+           <div style="color:white;position:absolute;right:0;bottom:20px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(21,245,55,0.8)" ng-if="list.event_info.event_ticket_type == 'Free'">
+           <p style="color:white">{{list.event_info.event_ticket_type}}</p>
+           </div>
+           <div style="color:white;position:absolute;right:0;bottom:20px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(64,153,255,0.8)" ng-if="list.event_info.event_ticket_type != 'Free'">
+           <p style="color:white">{{list.event_info.event_ticket_type}}</p>
+           </div>
+      </div>
+   <ion-option-button class="button-assertive" ng-click="deletejoinedEvent(list.event_info.id)">
+      Delete
+      </ion-option-button>
+    </ion-list>
+          <div class="card" ng-if="joinedEvent.length == 0">
+           <div class="item item-text-wrap">
+            Хараахан мэдээлэл ороогүй байна.
+           </div>
+        </div>
+    </div>
+    </ion-content>
+</ion-view>

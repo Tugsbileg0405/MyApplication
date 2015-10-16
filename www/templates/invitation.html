@@ -1,18 +1,28 @@
-<ion-view view-title="Миний урилга" >
+<ion-view  view-title="Миний урилга" >
   <ion-content >
-  
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
     </ion-refresher>
     <div class="row" >
-      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;padding-bottom:0" ng-click="goBack()">Буцах</button></div>
-      <div class="col" ><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны урилга:{{tickets.length}}</p></div>
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;padding-bottom:0;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" ><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны урилга:{{tickets.length}}</p></div>
     </div>
       <ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
-  <ion-slide ng-repeat="ticket in tickets" >
-      <a href="#/app/playlists/{{ticket.ticket_event.id}}">
+  <ion-slide ng-repeat="ticket in tickets |  orderBy:'ticket_event.event_start_date'">
+        <a ng-click="openModal()">
                 <img src="img/urilga_black.png"  style="width:100%;height:100%">
-      </a>
+        </a>
+        <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+        <div class="button-bar" style="position:absolute;top:40%" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" id="reject" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" id="accept" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+</div>
+  <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteTicket(ticket)" >Устгах</span>
   </ion-slide>
 </ion-slide-box>
+   <div class="card" ng-if="tickets.length == 0">
+           <div class="item item-text-wrap" style="text-align:center">
+            Хараахан мэдээлэл ороогүй байна.
+           </div>
+        </div>
     </ion-content>
 </ion-view>

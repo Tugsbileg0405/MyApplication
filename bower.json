@@ -11,6 +11,7 @@
     "angularfire": "~1.1.2",
     "AngularJS-Toaster": "angularjs-toaster#~0.4.15",
     "ion-image-lazy-load": "*",
+    "material-design-lite": "~1.0.5",
     "ng-load": "~1.0.2"
   }
 }

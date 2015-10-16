@@ -1,0 +1,40 @@
+<form name="myForm">
+<div class="list" style="background-color:#f8f8f8;height:50px;text-align:center">
+  <span style="float:left;margin-left:30px;margin-top:15px;margin-right:0px;font-size:16px">Бусад хүнд</span> 
+  <ion-toggle toggle-class="toggle" ng-model="isChecked.checked" ng-change="check(ticket)" style="width:1%;float:left">
+  </ion-toggle>
+  <span style="float:left;font-size:16px;margin-top:15px">Өөртөө</span>
+</div>
+  <span >
+     <div class="list"  style="margin-top:-10px;margin-left:auto;margin-right:auto;width:330px">
+<label class="item item-input" >
+    <span class="input-label">Нэр:</span>
+    <input type="text" ng-model="ticket.ticket_fullname" style="padding-left:10px;background-color:#f8f8f8;border-bottom:1px solid #00cc52"  placeholder="Нэр">
+  </label>
+  <label class="item item-input">
+    <span class="input-label">Утас:</span>
+    <input type="text" ng-model="ticket.ticket_phonenumber" style="padding-left:10px;background-color:#f8f8f8;border-bottom:1px solid #00cc52" placeholder="Утас">
+  </label>
+    <label class="item item-input">
+    <span class="input-label">И-мэйл:</span>
+    <input type="email" ng-model="ticket.ticket_email" style="padding-left:10px;background-color:#f8f8f8;border-bottom:1px solid #00cc52"  placeholder="И-мэйл">
+  </label>
+  </div>
+  </span>
+<br>
+<div class="list" style="width:330px;margin-left:auto;margin-right:auto">
+       <select ng-model="ticket.ticket_type" style="padding:5px;width:100%;background-color:#f8f8f8;font-size:16px;border:1px solid #00cc52" required>
+  <option  ng-value="free_ticket | json"  ng-repeat="free_ticket in event_info.event_ticket.free">{{free_ticket.type}}-{{free_ticket.description}}</option>
+  <option  ng-value="paid_ticket | json" ng-repeat="paid_ticket in event_info.event_ticket.paid" selected><p>{{paid_ticket.type}}-{{paid_ticket.description}}</p></option>
+  <option  ng-value="urilga_ticket | json" ng-repeat="urilga_ticket in event_info.event_ticket.urilga"><p>{{urilga_ticket.type}}-{{urilga_ticket.description}}</p></option>
+</select>
+</div>
+<div class="list" style="width:330px;margin-left:auto;margin-right:auto;padding-left:auto;padding-right:auto">
+   <span style="background-color:#24DC97;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;font-weight:bold;font-size:20px;margin-left:100px" ng-click="sub()"><</span>
+  <span style="font-size:22px;margin:10px"> {{ticket_counter}} </span>
+    <span style="background-color:#24DC97;border-radius:5px;color:white;padding:5px;padding-left:15px;padding-right:15px;font-weight:bold;font-size:20px;margin-right:a" ng-click="add()">></span> 
+</div>
+<button  type="submit" ng-click="buyTicket(ticket)" class="button button-full" style="background-color:#24DC97;color:white">
+  Худалдан авах
+</button>
+</form>

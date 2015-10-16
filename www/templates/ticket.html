@@ -1,22 +1,31 @@
 <ion-view view-title="Миний тасалбар" >
-  <ion-content >
+  <ion-content lazy-scroll >
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
     </ion-refresher>
     <div class="row">
-      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink"  style="padding-left:5%" ng-click="goBack()">Буцах</button>
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink"  style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button>
       </div>
-      <div class="col" style="text-align:center"><h4 style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны тасалбар: {{tickets.length}}  </h4></div>
+      <div class="col" style="text-align:center"><h4 style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны тасалбар: {{tickets.length}}  </h4></div>
       </div>
-      <ion-list >
-           <div class="list" ng-repeat="ticket in tickets | orderBy:'ticket_event.event_start_date'" style="margin-bottom:0">
-    <a class="item item-thumbnail-left" href="#/app/myticket/{{ticket.id}}/detail" style="padding-bottom:25px">
-      <img src="http://52.69.108.195:1337/{{ticket.ticket_event.event_cover}}">
+          <hr>
+        <div class="list" ng-repeat="ticket in tickets | orderBy:'ticket_event.event_start_date'" style="margin:0">
+                <a  class="item item-thumbnail-left" href="#/app/myticket/{{ticket.id}}/detail">
+                   <img image-lazy-src="http://52.69.108.195:1337/{{ticket.ticket_event.event_cover}}" image-lazy-loader="android">
       <h3 style="font-size:16px;font-weight:bold">{{ticket.ticket_event.event_title}}</h3>
-    <p><i class="icon ion-ios-location-outline"></i> {{ticket.ticket_event.event_location}}</p>
-    <p ><i class="icon ion-ios-calendar-outline"></i> {{ticket.ticket_event.event_start_date| date:'medium'}}</p>
+    <p><i class="icon ion-ios-location-outline" id="icon"></i>  &nbsp{{ticket.ticket_event.event_location}}</p>
+    <p ><i class="icon ion-ios-calendar-outline" id="icon"></i> &nbsp{{ticket.ticket_event.event_start_date| date:'EEEE, MMMM d, y , hh:mma'}}</p>
+    <p><i class="fa fa-ticket" id="icon"></i> {{ticket.ticket_countof}} ширхэг</p>
     </a>
-     <hr>
-  </div>
-      </ion-list>  
+  <div class="button-bar" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" style="opacity:0.8" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" style="opacity:0.8" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+</div>
+<hr>
+</div>
+        <div class="card" ng-if="tickets.length == 0">
+           <div class="item item-text-wrap" style="text-align:center">
+            Хараахан мэдээлэл ороогүй байна.
+           </div>
+        </div>
     </ion-content>
 </ion-view>

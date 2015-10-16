@@ -3,28 +3,34 @@
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
   <div class="row">
-      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%" ng-click="goBack()">Буцах</button></div>
-      <div class="col" style="text-align:center"><p style="font-size:16px;margin-top:5%;background-color:#a21e21;color:white;padding:5px;border-radius:5px">{{items.name}}</p></div>
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center"><p style="font-size:16px;margin-top:5%;background-color:#FF5700;color:white;padding:5px;border-radius:5px">{{items.name}}</p></div>
   </div>
   	<ion-list ng-if="isItem == true">
- 		 <ion-item ng-repeat="list in items.events" href="#/app/playlists/{{list.id}}">
+ 		 <ion-item ng-repeat="list in items.events | orderBy:'item.createdAt'" href="#/app/playlists/{{list.id}}">
 		   <div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%" >
-          <img src="http://52.69.108.195:1337/{{list.event_cover}}"  style="height:100%" class="full-image">
-              <div class="item item-text-wrap">
-            <p id="Date">{{list.event_start_date | date:'medium'}}</p>
-            <h3 id="title">{{list.event_title}}</h3>
-            <p id="address"><i class="icon ion-ios-location-outline"></i> {{list.event_location}}</p>
+          <img src="{{backSite}}/{{list.event_cover}}"  style="height:100%" class="full-image">
+              <div class="item tem-text-wrap">
+                <h3 style="font-weight:bold;font-size:16px">{{list.event_title}}</h3>
+            <p id="desc"> <i class="icon ion-ios-time-outline" id="icon"></i>  {{list.event_start_date | date:'yyyy-MM-dd , hh:mma'}}</p>
+            <p id="desc" ><i class="icon ion-ios-location-outline" id="icon"></i>&nbsp {{list.event_location}}</p>
           </div>
                <div class="item item-divider">
-              <p  id="title" style="font-size:12px;float:left;padding-top:5px">
+              <p  id="title" style="font-size:13px;float:left;padding-top:5px;text-transform:lowercase">
                 #{{items.name}}
               </p>
           </div>
+               <div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(0,204,82,0.8)" ng-if="list.event_ticket_type == 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
+           <div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(64,153,255,0.8)" ng-if="list.event_ticket_type != 'Free'">
+           <p style="color:white">{{list.event_ticket_type}}</p>
+           </div>
 		    </div>
   		</ion-item>
 </ion-list>
 <div class="card" ng-if="isItem == false">
-  <div class="item item-text-wrap">
+  <div class="item item-text-wrap" style="text-align:center">
    {{message}}
   </div>
 </div>

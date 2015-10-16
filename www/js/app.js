@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starter.services','ngCordova','ui.router','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
-.run(function($ionicPlatform,$rootScope,$localStorage,$ionicPopup,$timeout,$location,$localStorage,$state,$window) {
+angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starter.auth','ngCordova','ui.router','ngMaterial','ionic-material','ngStorage','ngFacebook','tabSlideBox','ngRoute'])
+.run(function($ionicPlatform,$ionicLoading,$rootScope,AuthService,$localStorage,$http,$ionicPopup,$timeout,$location,$localStorage,$state,$window) {
     (function(){
      (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -16,9 +16,18 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
    }(document, 'script', 'facebook-jssdk'));
    }())
 
-   
-  $ionicPlatform.ready(function() {
+     $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
+      if(toState.name.indexOf('app') !== -1 ) {
 
+        if(!AuthService.getAuthStatus()) {
+              event.preventDefault();
+              $state.go('homeLogin',{},{reload:true});
+        }
+        
+      }
+    })
+
+    $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -27,7 +36,6 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
       // org.apache.cordova.statusbar required
       StatusBar.style(1);
     }
-
     $ionicPlatform.registerBackButtonAction(function(){
       if($state.current.name == 'app.playlists'){
         navigator.app.exitApp();
@@ -36,12 +44,12 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
         navigator.app.backHistory();
       }
     },100)
-
-
+   
       if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
+                    $ionicLoading.hide();
                     $ionicPopup.alert({
-                        title: "Интернет холболт",
+                        okType: 'button-assertive',
                         content: "Та интернетэд холбогдож байж ашиглана уу"
                     })
                     .then(function(result) {
@@ -57,11 +65,11 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
 
 .config(function($stateProvider,$mdThemingProvider ,$urlRouterProvider,$facebookProvider,$mdGestureProvider) {
 
- var neonRedMap = $mdThemingProvider.extendPalette('red', {
-    '900': 'a21e21'
+ var neonRedMap = $mdThemingProvider.extendPalette('orange', {
+    '900': 'FF5700'
   });
 
-  $mdThemingProvider.definePalette('neonRed', neonRedMap);
+  $mdThemingProvider.definePalette('orange', neonRedMap);
 
   $mdThemingProvider.theme('default')
     .primaryPalette('grey',{
@@ -110,6 +118,15 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
       'menuContent': {
         templateUrl: 'templates/saved.html',
         controller : 'SavedItemCtrl'
+      }
+    }
+  })
+    .state('app.joined', {
+    url: '/joined',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/joined.html',
+        controller : 'JoinedItemCtrl'
       }
     }
   })
@@ -171,6 +188,16 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
       'menuContent': {
       templateUrl:'templates/ticketImg.html',
       controller:'ticketImgCtrl'
+        }
+      }
+    })
+
+          .state('app.buyticketImg',{
+      url: '/ticket/:eventId/detail',
+       views: {
+      'menuContent': {
+      templateUrl:'templates/buyticketImg.html',
+      controller:'buyticketImgCtrl'
         }
       }
     })
@@ -243,5 +270,5 @@ angular.module('starter', ['ionic','starter.controllers','ionicLazyLoad','starte
 ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider
-  .otherwise('homeLogin');
+  .otherwise('/app/playlists');
 });

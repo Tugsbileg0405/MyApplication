@@ -30,8 +30,7 @@
     "org.apache.cordova.inappbrowser"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "ios"
   ],
   "main": "gulpfile.js",
   "scripts": {

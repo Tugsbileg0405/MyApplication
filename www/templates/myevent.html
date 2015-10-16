@@ -1,27 +1,39 @@
-<ion-view>
+<ion-view >
   <ion-content >
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
   <div class="row">
-      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%" ng-click="goBack()">Буцах</button></div>
-      <div class="col" style="text-align:right;padding-top:4%"><p style="font-size:16px;background-color:#a21e21;color:white;padding:5px;border-radius:5px">Миний арга хэмжээ</p></div>
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center;padding-top:4%"><p id="topheader">Миний арга хэмжээ</p></div>
   </div>
   	<ion-list>
  		 <ion-item ng-repeat="myevent in myEvents" href="#/app/playlists/{{myevent.id}}">
 		   <div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%" >
           <img src="http://52.69.108.195:1337/{{myevent.event_cover}}"  style="height:100%" class="full-image">
-              <div class="item item-text-wrap">
-            <p id="Date">{{myevent.event_start_date | date:'medium'}}</p>
-            <h3 id="title">{{myevent.event_title}}</h3>
-            <p id="address"><i class="icon ion-ios-location-outline"></i> {{myevent.event_location}}</p>
+              <div class="item">
+                 <h3 style="font-size:15px;font-weight:bold">{{myevent.event_title}}</h3>
+            <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i> {{myevent.event_start_date | date:'EEEE, MMMM d, y , hh:mma'}}</p>
+            <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i>&nbsp {{myevent.event_location}}</p>
           </div>
              <div class="item item-divider">
-              <h5 ng-repeat="category in myevent.event_type" style="font-size:12px;float:left;padding-top:5px">
-                #{{category.name}}&nbsp
+              <h5 ng-repeat="category in myevent.event_type" style="font-size:13px;float:left;padding-top:5px;text-transform:lowercase">
+                #{{category.name}} &nbsp
               </h5>
           </div>
+               <div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(21,245,55,0.8)" ng-if="myevent.event_ticket_type == 'Free'">
+           <p style="color:white">{{myevent.event_ticket_type}}</p>
+           </div>
+           <div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(64,153,255,0.8)" ng-if="myevent.event_ticket_type != 'Free'">
+           <p style="color:white">{{myevent.event_ticket_type}}</p>
+           </div>
 		    </div>
   		</ion-item>
 </ion-list>
+  <div class="card" ng-if="myEvents.length == 0">
+           <div class="item item-text-wrap" style="text-align:center">
+            Хараахан мэдээлэл ороогүй байна.
+           </div>
+        </div>
+    </div>
   </ion-content>
 </ion-view>
