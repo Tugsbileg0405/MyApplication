@@ -5,7 +5,7 @@
 
     function RequestsService($http, $q, $ionicLoading){
 
-        var base_url = 'http://52.69.108.195:1337';
+        var base_url = 'http://urilga.mn:1337';
 
         function register(device_token){
 

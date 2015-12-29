@@ -2,11 +2,13 @@
   "name": "HelloIonic",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.1",
+    "ionic": "driftyco/ionic-bower#1.1.1",
     "ionic-service-core": "~0.1.10",
-    "ionic-service-push": "~0.1.13"
+    "ionic-service-push": "~0.1.13",
+    "ionic-platform-web-client": "~0.2.1"
   },
   "dependencies": {
+    "angular-qr": "latest",
     "angular-flash-alert": "~1.1.1",
     "angularfire": "~1.1.2",
     "AngularJS-Toaster": "angularjs-toaster#~0.4.15",

@@ -1,0 +1,33 @@
+<ion-view >
+<ion-header-bar id="searchHeader">
+<button class="button button-clear"  ng-click="myGoBack()"   style="color:black"><i class="icon ion-ios-arrow-back"></i></button>
+<form  style="width:100%" ng-submit="searchTitle(search)">
+ <label class="item item-input" id="search">
+    <i class="icon ion-ios-search-strong"></i>
+    <input type="text" placeholder="Хайх утгаа оруулна уу"  ng-model="search">
+</label>
+</form>
+<button class="button  button-clear"  ng-click="clear()" ng-show="search.length" id="clearButton" style="color:black;margin-right:10px"><i class="icon ion-ios-close-outline"></i></button>
+</ion-header-bar>
+<ion-content lazy-scroll>
+<div class="list" id="searchList" ng-show="counter == 1" ng-repeat="item in items">
+  <a class="item item-thumbnail-left" ui-sref="app.single({playlistId:item.id})">
+    <img ng-cache image-lazy-src="{{backsite}}/{{item.event_cover}}">
+    <h3 style="font-weight:bold;font-size:18px">{{item.event_title}}</h3>
+    <p><i style="font-size:20px" class="icon ion-ios-location-outline"></i>&nbsp{{item.event_location}}</p>
+    <p><i style="font-size:20px" class="icon ion-ios-calendar-outline"></i> {{item.event_start_date |date:'EEEE, MMMM d, y '}}</p>
+</a>
+</div>
+
+<div class="list" ng-show="counter == 0" style="margin-top:80px;text-align:center">
+ <i style="font-size:75px;color:#aaa;margin:0" class="icon ion-ios-search-strong"></i>
+ <h3 style="margin:0;color:#aaa;padding-bottom:10px">Хайлт</h3>
+ <p style="color:#aaa;font-size:18px">Арга хэмжээний нэрийг оруулна уу</p>
+</div>
+<div class="list" ng-show="counter == 2" style="margin-top:80px;text-align:center">
+ <i style="color:#aaa;font-size:75px;margin:0" class="icon ion-ios-search-strong"></i>
+ <h3 style="color:#aaa;margin:0;padding-bottom:10px">Хайлт</h3>
+ <p style="color:#aaa;font-size:18px">{{message}}</p>
+</div>
+</ion-content>
+</ion-view>

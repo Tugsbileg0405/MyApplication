@@ -1,31 +1,55 @@
 <ion-view cache-view="false">
-  <ion-content lazy-scroll>
-  <div class="row">
-      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
-      <div class="col " style="padding-top:4%;text-align:center" ><p  id="topheader" style="background-color:#FF5700">Худалдан авалт</p></div>
-  </div>
+<ion-nav-bar align-title="right">
+   <ion-nav-buttons side="left" >
+      <button class="button-clear  " ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+       <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-family:'m3';font-size:20px">
+       Худалдан авалт
+    </ion-nav-title>
+</ion-nav-bar>
+  <ion-content lazy-scroll style="margin-top:15px">
 <div class="list" >
     <a class="item item-thumbnail-left" style="height:100px">
-      <img image-lazy-src="http://52.69.108.195:1337/{{event_info.event_profile}}"  image-lazy-loader="android">
-      <h3 style="font-size:17px;font-weight:bold">{{event_info.event_title}}</h3>
-      <p id="desc" style="font-size:16px"> <i class="icon ion-ios-time-outline" id="icon"></i>  {{event_info.event_start_date | date:'yyyy-MM-dd , hh:mma'}}</p>
-      <p id="desc" style="font-size:16px"><i class="icon ion-ios-location-outline" id="icon"></i>  {{event_info.event_location}}</p>
+      <img ng-cache ng-src="{{backsite}}/{{event_info.event_cover}}"  >
+      <h3 style="font-family:'m3';font-size:18px;font-weight:bold">{{event_info.event_title}}</h3>
+      <div class="row" style="padding:0 0 5px 0">
+          <div class="col col-10" style="padding:0">
+             <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p>
+          </div>
+          <div class="col col-90" style="padding:0">
+             <p id="desc">{{event_info.event_start_date | date:'yyyy-MM-dd'}}</p>
+          </div>
+      </div>
+          <div class="row" style="padding:0 0 5px 0">
+          <div class="col col-10" style="padding:0">
+             <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p>
+          </div>
+          <div class="col col-90" style="padding:0">
+             <p id="desc">{{event_info.event_location}}</p>
+          </div>
+      </div>
     </a>
 </div>
 <form name="myForm">
-<div class="list" style="height:50px;padding-left:30px;background-color:#f8f8f8">
-<span style="float:left;font-size:16px;margin-top:10px">Бусад хүнд</span>
-
-<label class="toggle" style="margin-left:100px;margin-top:2px">
+<div class="list" style="height:50px;background-color:#f8f8f8">
+<div class="row" id="mine">
+  <div class="col" style="font-family:'m3';padding-left:0;text-align:left"><p style="font-size:18px">Бусад хүнд</p></div>
+  <div class="col" style="text-align:center">
+      <label class="toggle" >
        <input type="checkbox" ng-model="isChecked.checked" ng-change="check(ticket)" >
        <div class="track" >
          <div class="handle"></div>
        </div>
      </label>
-<span  style="font-size:16px;margin-top:10px;float:left;margin-left:100px">Өөртөө</span>
+     </div>
+  <div class="col" ><p style="font-family:'m3';font-size:18px">Өөртөө</p></div>
 </div>
-<div class="list" ng-show="ticket_counter == 1" id="buyticketfrm">
-<label class="item item-input" >
+
+</div>
+<div class="list"   id="buyticketfrm">
+<label class="item item-input" ng-show="ticket_counter == 1" >
   <span class="input-label"  id="buyticketLabel">Нэр:</span>
   <input type="text" ng-model="ticket.ticket_fullname" placeholder="Нэр" id="ticketinput" > 
 </label>
@@ -39,11 +63,11 @@
     </label> 
 </div>
 <div class="list" id="selectTicket">
- <select  ng-model="ticket.event_ticket_type" id="select" required >
+ <select  ng-model="ticket.event_ticket_type" id="select" required>
   <option value="" >Тасалбарын төрөлөө сонгоно уу</option>
-  <option  ng-value="free_ticket | json"  ng-repeat="free_ticket in event_info.event_ticket.free" >Free-{{free_ticket.description}}</option>
-  <option  ng-value="paid_ticket | json" ng-repeat="paid_ticket in event_info.event_ticket.paid"><p>Paid-{{paid_ticket.description}}</p></option>
-  <option  ng-value="urilga_ticket | json" ng-repeat="urilga_ticket in event_info.event_ticket.urilga"><p>Urilga-{{urilga_ticket.description}}</p></option>
+  <option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
+  <option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.remaining}})</p></option>
+   <option ng-show="myevent == true" value="{{urilga_ticket | json}}" ng-repeat="urilga_ticket in event_ticket.urilga"><p>Урилга-{{urilga_ticket.description}} ({{urilga_ticket.remaining}})</p></option>
 </select>
 </div>
 <div class="list" style="width:330px;margin-bottom:0px;margin-left:auto;margin-right:auto;padding-left:auto;padding-right:auto">
@@ -51,12 +75,14 @@
   <span style="font-size:22px;margin:10px"> {{ticket_counter}} </span>
     <span style="background-color:#FF5700;border-radius:5px;color:white;padding:5px;padding-left:15px;padding-right:15px;font-weight:bold;font-size:20px;margin-right:a" ng-click="add()">></span> 
 </div>
-<div class="list" style="font-size:18px;text-align:center;margin-top:0;margin-bottom:0">
+<div class="list" style="font-family:'m3';font-size:20px;text-align:center;margin-top:0;margin-bottom:0">
   <span >ширхэг</span>
 </div>
-      <button ng-disabled="myForm.$invalid" type="submit" ng-click="buyTicket(ticket)" class="button button-full" style="background-color:#FF5700;color:white">
+<div class="item" style="border:none;padding-top:0">
+   <button ng-disabled="myForm.$invalid" type="submit" ng-click="buyTicket(ticket)" class="button button-full disabledBtn" style="font-family:'m3';font-size:17px;background-color:#FF5700;color:white">
   Худалдан авах
 </button>
+</div>
 </form>
   </ion-content>
 </ion-view>

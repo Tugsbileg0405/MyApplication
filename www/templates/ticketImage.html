@@ -1,0 +1,77 @@
+
+<ion-view >
+<ion-nav-bar align-title="right">
+<ion-nav-buttons side="left" >
+<button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+  <i class="icon ion-chevron-left" style="font-size:20px"> Буцах</i> 
+</button>
+</ion-nav-buttons>
+<ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
+Тасалбар
+</ion-nav-title>
+</ion-nav-bar>
+<ion-content>
+
+<ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
+<ion-slide ng-repeat="ticket in tickets" >
+<div class="list" ng-if="ticket.ticket_type == 'Free'" id="ticketImg" >
+  <div class="item item-body" style="height:100%" >
+    <p  id="ticketName" >{{ticket.ticket_event.event_title}}</p>
+    <div id="ticketMain">
+      <div class="row" style="padding:0">
+        <div class="col col-20" ><i class="icon ion-ios-location-outline" style="font-size:30px;background-color:#3498DB;color:white;padding-left:13px;padding-top:5px;padding-bottom:5px;padding-right:14px"  ></i></div>
+        <div class="col col-80" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_location}}</p></div>
+      </div>
+      <div class="row" style="padding:0;margin-top:10px">
+        <div class="col col-20" ><i class="icon ion-ios-clock-outline"  style="font-size:30px;padding-top:5px;padding-bottom:5px;background-color:#3498DB;color:white;padding-left:10px;padding-right:10px" ></i></div>
+        <div class="col col-80"  ng-if="ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} {{ticket.ticket_event.event_start_time |  date:'hh:MM a'}}</p>
+        </div>
+        <div class="col col-80"  ng-if="!ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} 09:00 AM</p>
+        </div>
+      </div>
+      <div ng-click="openModal(ticket)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+   </div>
+   <span id="ticketType">{{ticket.ticket_type}}</span>
+   <div class="button-bar" style="position:absolute;left:1px;top:40%" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" id="reject1" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" id="accept1" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+   </div>
+   <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteConfirm(ticket)" >Устгах</span>
+   <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
+ </div>
+</div>
+
+<div class="list" ng-if="ticket.ticket_type == 'Paid'" id="ticketImg1" >
+  <div class="item item-body" style="height:100%" >
+    <p  id="ticketName1" >{{ticket.ticket_event.event_title}}</p>
+    <div id="ticketMain1">
+      <div class="row" style="padding:0">
+        <div class="col col-20" ><i class="icon ion-ios-location-outline" style="font-size:30px;background-color:#c0392b;color:white;padding-left:13px;padding-top:5px;padding-bottom:5px;padding-right:14px"  ></i></div>
+        <div class="col col-80" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_location}}</p></div>
+      </div>
+      <div class="row" style="padding:0;margin-top:10px">
+        <div class="col col-20" ><i class="icon ion-ios-clock-outline"  style="font-size:30px;padding-top:5px;padding-bottom:5px;background-color:#c0392b;color:white;padding-left:10px;padding-right:10px" ></i></div>
+        <div class="col col-80"  ng-if="ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} {{ticket.ticket_event.event_start_time |  date:'hh:MM a'}}</p>
+        </div>
+        <div class="col col-80"  ng-if="!ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} 09:00 AM</p>
+        </div>
+      </div>
+      <div ng-click="openModal(ticket)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+   </div>
+   <span id="ticketType">{{ticket.ticket_type}}</span>
+   <div class="button-bar" style="position:absolute;left:1px;top:40%" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" id="reject1" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" id="accept1" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+   </div>
+   <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteConfirm(ticket)" >Устгах</span>
+   <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
+ </div>
+ </div
+</ion-slide>
+</ion-slide-box>
+</ion-content>
+</ion-view>

@@ -1,0 +1,6 @@
+    <div class="list list-inset" style="border:1px solid #c0c0c0;margin:1.2%">
+  <label class="item item-input" style="width:85%;float:left">
+    <i class="icon fa-search" style="font-size:18px"></i>
+    <input type="text" placeholder="Хайх..." ng-model="search" style="padding-left:20px;font-size:17px" >
+  </label>
+ </div>

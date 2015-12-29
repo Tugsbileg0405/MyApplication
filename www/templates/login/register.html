@@ -1,19 +1,28 @@
-<ion-view view-title="Бүртгүүлэх">
+<ion-view >
+<ion-nav-bar align-title="right" class="bar custom-color">
+     <ion-nav-buttons side="left" >
+      <button class="button-clear  " ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+        <i class="icon ion-chevron-left" style="font-size:20px"> Буцах</i> 
+      </button>
+    </ion-nav-buttons>
+      <ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px">
+       Бүртгүүлэх
+    </ion-nav-title>
+    </ion-nav-bar>
   <ion-content>
   <ion-item>
-   <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="goBack()" style="padding-left:5%;font-weight:bold">Буцах</button>
       <div class="row">
           <div class="col"></div>
-          <div class="col col-50" style="text-align:center" >
-                    <img src="img/people.png" style="width:100%;height:100%">
+          <div class="col col-50" ng-click="show($event)" style="text-align:center;border:100%" >
+                    <img ng-src="{{pictureURL}}" style="width:100px;height:100px;border-radius:50%">
           </div>
           <div class="col"></div>
       </div>
       <div class="list">
-        <form >
-             <label class="item item-input item-floating-label" id="lgnname">
+        <form name="myForm" id="register">
+         <label class="item item-input item-floating-label">
               <span class="input-label">Хэрэглэгчийн овог:</span>
-              <input type="text" name="firstname" placeholder="Хэрэглэгчийн овог" ng-model="reg.fname" required>
+              <input type="text" name="lastname" placeholder="Хэрэглэгчийн овог" ng-model="reg.fname" required>
              </span>
           </label>
           <label class="item item-input item-floating-label">
@@ -21,25 +30,30 @@
               <input type="text" name="lastname" placeholder="Хэрэглэгчийн нэр" ng-model="reg.uname" required>
              </span>
           </label>
-          <label class="item item-input item-floating-label" >
-              <span class="input-label">Регистрийн дугаар:</span>
-              <input type="text" name="register_id" placeholder="Регистрийн дугаар:" ng-model="reg.register_id" required>
-             </span>
-          </label>
-          <label class="item item-input item-floating-label">
-              <span class="input-label">Нууц үг:</span>
-              <input type="text" placeholder="Нууц үг" ng-model="reg.pass">
-          </label>
-          <label class="item item-input item-floating-label">
-              <span class="input-label">И-мэйл:</span>
-              <input type="email" name="email" placeholder="И-мэйл" ng-model="reg.email" required>
-          </label>
-          <label class="item item-input item-floating-label" >
+              <label class="item item-input item-floating-label" >
             <span class="input-label">Утасны дугаар:</span>
               <input type="text" placeholder="Утасны дугаар" ng-model="reg.phone">
           </label>
+            <label class="item item-input item-floating-label">
+              <span class="input-label">И-мэйл:</span>
+              <input type="email" name="email" placeholder="И-мэйл" ng-model="reg.email" required>
+          </label>
+          <label class="item item-input item-floating-label">
+              <span class="input-label">Нууц үг:</span>
+              <input type="password" placeholder="Нууц үг" name="password" ng-minlength="6" ng-model="reg.pass">
+          </label>
+              <label class="item item-input item-floating-label"  >
+              <span class="input-label">Нууц үг давтах:</span>
+              <input type="password"  placeholder="Нууц үг давтах:" ng-model="reg.newpass_verify" name="confirm_password"  data-nx-equal-ex="reg.pass" required>
+          </label>
+           <span class="error" style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px"  ng-show="myForm.password.$error.minlength">
+             * Хэт богино байна.
+          </span>
+                <span style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px" ng-show="myForm.confirm_password.$error.nxEqualEx">
+             * Нууц үг тохирохгүй байна.</span>
           <br>
-            <button  style="background-color:#FF5700;color:white;border-radius:5px;width:100%;padding-top:10px;padding-bottom:10px;border:1px solid #FF5700" ng-click="Register(reg)" type="submit" >
+          <br>
+            <button  ng-disabled="myForm.$invalid" style="background-color:#FF5700;color:white;border-radius:5px;width:100%;padding-top:10px;padding-bottom:10px;border:1px solid #FF5700" ng-click="Register(reg)" type="submit" >
                     Бүртгүүлэх
             </button>
             </form>

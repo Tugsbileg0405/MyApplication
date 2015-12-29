@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
-        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-       
-      <link href="css/style.css" rel="stylesheet">
-      
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    --><link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
-       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+<!-- 	<meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self'  'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">  -->
+	<title></title>
+	<link href="lib/ionic/css/ionic.css" rel="stylesheet">
 
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="lib/ngstorage/ngStorage.min.js"></script>
- <link href="https://fonts.googleapis.com/css?family=RobotoDraft%3A400%2C500%2C700%2C400italic" rel="stylesheet" type="text/css">
-    <!-- Angular Material Javascript now available via Google CDN; version 0.10 used here -->
-    <link rel="stylesheet" type="text/css" href="lib/angular-material/angular-material.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/ionic-material/dist/ionic.material.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/tabbed-slide-box/tabbedSlideBox/tabSlideBox.css">
-    <!-- ionic/angularjs js -->
-    <link rel="stylesheet" type="text/css" href="lib/AngularJS-Toaster/toaster.min.css">
-    <script src="lib/AngularJS-Toaster/toaster.min.js"></script>
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-<script src="lib/ionic-service-core/ionic-core.js"></script>
-<script src="lib/ionic-service-push/ionic-push.js"></script>
-     <script src="lib/firebase/firebase.js"></script>
-      <script src="lib/angularfire/dist/angularfire.min.js"></script>
-      <script src="lib/ion-image-lazy-load/ionic-image-lazy-load.js"></script>
-    <!-- cordova script (this will be a 404 during development) -->
-   <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-   <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-   <script src="lib/angular-route/angular-route.min.js"></script>
-    <script src="lib/angular-flash-alert/dist/angular-flash.min.js"></script>
-    <script src="lib/angular-material/angular-material.min.js"></script>
-    <script src="lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="lib/ng-facebook/ngFacebook.js"></script>
-   <script src="lib/ionic-material/dist/ionic.material.min.js"></script>
-    <script src="lib/tabbed-slide-box/tabbedSlideBox/tabSlideBox.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- your app's js -->
+	<link href="css/style.css" rel="stylesheet">
 
-    <script src="js/ui-router.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/Authservice.js"></script>
-    <script src="cordova.js"></script>
-    <script src="js/RequestsService.js"></script>
-  </head>
-  <body ng-app="starter">
-    <ion-nav-view animation="slide-left-right"></ion-nav-view>
-  </body>
+	<script src="lib/ngstorage/ngStorage.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=RobotoDraft%3A400%2C500%2C700%2C400italic" rel="stylesheet" type="text/css">
+	<!-- Angular Material Javascript now available via Google CDN; version 0.10 used here -->
+
+	<link rel="stylesheet" type="text/css" href="lib/angular-material/angular-material.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/ionic-material/dist/ionic.material.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/tabbed-slide-box/tabbedSlideBox/tabSlideBox.css">
+	<!-- ionic/angularjs js -->
+	<link rel="stylesheet" type="text/css" href="lib/AngularJS-Toaster/toaster.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/oxb-fonts/font.css">
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/qrcode/lib/qrcode.min.js"></script>
+	<script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+	<script src="lib/angular-qr/angular-qr.min.js"></script>
+	<script src="lib/angular-animate/angular-animate.min.js"></script>
+	<script src="lib/angular-aria/angular-aria.min.js"></script>
+	<script src="lib/AngularJS-Toaster/toaster.min.js"></script>
+	<script src="lib/ionic/js/ionic.bundle.js"></script>
+	<script src="lib/ngstorage/ngStorage.min.js"></script>
+	<script src="lib/ionic-service-core/ionic-core.js"></script>
+	<script src="lib/ionic-service-push/ionic-push.js"></script>
+	<script src="lib/firebase/firebase.js"></script>
+	<script src="lib/angularfire/dist/angularfire.min.js"></script>
+	<script src="lib/ion-image-lazy-load/ionic-image-lazy-load.js"></script>
+	<script src="lib/angular-resource/angular-resource.min.js"></script>
+	<!-- cordova script (this will be a 404 during development) -->
+	<script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+	<script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="lib/angular-route/angular-route.min.js"></script>
+	<script src="lib/angular-flash-alert/dist/angular-flash.min.js"></script>
+	<script src="lib/angular-material/angular-material.min.js"></script>
+	<script src="lib/angular-cookies/angular-cookies.min.js"></script>
+	<script src="lib/ionic-material/dist/ionic.material.min.js"></script>
+	<script src="lib/tabbed-slide-box/tabbedSlideBox/tabSlideBox.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
+	<!-- your app's js -->
+	<script src="lib/angular-filter/dist/angular-filter.min.js"></script>
+	<script src="lib/angular-translate/angular-translate.min.js"></script>
+	<script src="js/ionic.contrib.drawer.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/ionic.contrib.drawer.css">
+	<script src="js/me-lazyload.js"></script>
+	<script type="text/javascript" src="js/nativegesture.js"></script>
+	<script src="js/ui-router.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/imgcache.js"></script>
+	<script src="js/Authservice.js"></script>
+	<script src="cordova.js"></script>
+	<script src="js/RequestsService.js"></script>
+</head>
+<body ng-app="starter">
+	<ion-nav-view></ion-nav-view>
+</body>
 </html>

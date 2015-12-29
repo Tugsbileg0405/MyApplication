@@ -1,0 +1,94 @@
+<div class="row" >
+    <div class="col "  >
+        <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button>
+    </div>
+    <div class="col ">
+    <div class="item tabs" id="headerInfo" >
+     <a class="tab-item " ng-click="shareAnywhere()" ><i class="icon fa-share-square-o" style="color:#FF5700;font-size:22px"></i></a>
+       <a class="tab-item "  ng-click="unlikeEvent()" ng-if="liker_function == 1">   <i class="icon fa-bookmark"  style="font-size:22px;color:#FF5700"></i></a>
+       <a class=" tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0">   <i class="icon fa-bookmark-o assertive" style="font-size:22px;color:#FF5700"></i></a>
+     </div>
+
+    </div>
+  </div>
+/buyticket/
+    <div class="row">
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col " style="padding-top:4%;text-align:center" ><p  id="topheader" style="background-color:#FF5700">Худалдан авалт</p></div>
+  </div>
+
+  /buyticket/
+
+/buyticket check/
+  <span style="float:left;font-size:16px;margin-top:10px">Бусад хүнд</span>
+
+<label class="toggle" style="margin-left:80px;margin-top:2px">
+       <input type="checkbox" ng-model="isChecked.checked" ng-change="check(ticket)" >
+       <div class="track" >
+         <div class="handle"></div>
+       </div>
+     </label>
+<span  style="font-size:16px;margin-top:10px;float:left;margin-left:100px">Өөртөө</span>
+
+/buyticket chech/
+
+/Category/
+ <div class="row">
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center"><p style="font-size:16px;margin-top:5%;background-color:#FF5700;color:white;padding:5px;border-radius:5px">{{items.name}}</p></div>
+  </div>
+  //
+  /invitation/
+  <div class="row" >
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;padding-bottom:0;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" ><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны урилга:{{tickets.length}}</p></div>
+    </div>
+    //
+
+    /ticket/
+     <div class="row">
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink"  style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button>
+      </div>
+      <div class="col" style="text-align:center"><h4 style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны тасалбар: {{tickets.length}}  </h4></div>
+      </div>
+      //
+
+      /saved/
+       <div class="row">
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col "><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Хадгалагдсан: {{likedEvent.length}}<p></div>
+   </div>
+   //
+   /myevent/
+   <div class="row">
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center;padding-top:4%"><p id="topheader">Миний арга хэмжээ</p></div>
+  </div>
+  /
+  /myorg/
+  <div class="row">
+      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+      <div class="col" style="text-align:center;padding-top:4%"><p  id="topheader">Миний байгууллага</p></div>
+  </div>
+  /
+  /profile/
+  <div class="row">
+        <div class="col "><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+        <div class="col "><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;margin-top:5%;text-align:center">Хувийн мэдээлэл</p></div>
+    </div>
+    /
+    /ticketImg/
+    <div class="row">
+        <div class="col "><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
+        <div class="col"><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;margin-top:4%;text-align:center">Тасалбар</p></div>
+    </div>
+    /
+    /eventticketnumber/
+     <div class="row">
+      <div class="col" ><button class="button icon-left ion-chevron-left button-clear button-dark ink"  style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button>
+      </div>
+      <div class="col" style="text-align:center"><h4 style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;text-align:center;margin-top:5%">Таны тасалбар: {{TicketOfEvent.length}}  </h4></div>
+      </div>
+      <ion-list >
+      <hr>
+      /

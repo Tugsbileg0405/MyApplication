@@ -1,19 +1,158 @@
 
-<ion-view view-title="Хэрэглэгчийн мэдээлэл">
-    <ion-content>
-    <div class="row">
-        <div class="col "><button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:5%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
-        <div class="col"><p style="font-size:16px;background-color:#FF5700;color:white;padding:5px;border-radius:5px;margin-top:4%;text-align:center">Тасалбар</p></div>
-    </div>	
-    <ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
-     <ion-slide ng-repeat="i in countof" >
-             <a ng-click="openModal()">
-             <img src="img/ticket.png"  ng-if="ticket.ticket_type != 'Urilga'"style="width:100%;height:100%">
-             <img src="img/urilga_black.png" ng-if="ticket.ticket_type == 'Urilga'" style="width:100%;height:100%">
-             </a>
-             <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteTicket(ticket)" >Устгах</span>
-             <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
-      </ion-slide>
+<ion-view>
+<ion-nav-bar align-title="right">
+<ion-nav-buttons side="left" >
+<button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+  <i class="icon ion-chevron-left" style="font-size:20px"> Буцах</i> 
+</button>
+</ion-nav-buttons>
+<ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
+Тасалбар
+</ion-nav-title>
+</ion-nav-bar>
+<ion-content>
+<ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
+<ion-slide ng-repeat="ticket in tickets" >
+<div class="list" ng-if="ticket.ticket_type == 'Free'" id="ticketImg" >
+  <div class="item item-body" style="height:100%" >
+    <p  id="ticketName" >{{ticket.ticket_event.event_title}}</p>
+    <div id="ticketMain">
+      <div class="row" style="padding:0">
+        <div class="col col-20" ><i class="icon ion-ios-location-outline" style="font-size:30px;background-color:#3498DB;color:white;padding-left:13px;padding-top:5px;padding-bottom:5px;padding-right:14px"  ></i></div>
+        <div class="col col-80" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_location}}</p></div>
+      </div>
+      <div class="row" style="padding:0;margin-top:10px">
+        <div class="col col-20" ><i class="icon ion-ios-clock-outline"  style="font-size:30px;padding-top:5px;padding-bottom:5px;background-color:#3498DB;color:white;padding-left:10px;padding-right:10px" ></i></div>
+        <div class="col col-80"  ng-if="ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} {{ticket.ticket_event.event_start_time |  date:'hh:MM a'}}</p>
+        </div>
+        <div class="col col-80"  ng-if="!ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} 09:00 AM</p>
+        </div>
+      </div>
+      <div ng-click="openModal(ticket)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+   </div>
+   <span id="ticketType">{{ticket.ticket_type}}</span>
+   <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteConfirm(ticket)" >Устгах</span>
+   <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
+ </div>
+</div>
+
+<div class="list" ng-if="ticket.ticket_type == 'Paid'" id="ticketImg1" >
+  <div class="item item-body" style="height:100%" >
+    <p  id="ticketName1" >{{ticket.ticket_event.event_title}}</p>
+    <div id="ticketMain1">
+      <div class="row" style="padding:0">
+        <div class="col col-20" ><i class="icon ion-ios-location-outline" style="font-size:30px;background-color:#c0392b;color:white;padding-left:13px;padding-top:5px;padding-bottom:5px;padding-right:14px"  ></i></div>
+        <div class="col col-80" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_location}}</p></div>
+      </div>
+      <div class="row" style="padding:0;margin-top:10px">
+        <div class="col col-20" ><i class="icon ion-ios-clock-outline"  style="font-size:30px;padding-top:5px;padding-bottom:5px;background-color:#c0392b;color:white;padding-left:10px;padding-right:10px" ></i></div>
+        <div class="col col-80"  ng-if="ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} {{ticket.ticket_event.event_start_time |  date:'hh:MM a'}}</p>
+        </div>
+        <div class="col col-80"  ng-if="!ticket.ticket_event.event_start_time" style="padding:0"><p id="ticketInfo1">{{ticket.ticket_event.event_start_date |  date:'yyyy/MM/d'}} 09:00 AM</p>
+        </div>
+      </div>
+      <div ng-click="openModal(ticket)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+   </div>
+   <span id="ticketType">{{ticket.ticket_type}}</span>
+   <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteConfirm(ticket)" >Устгах</span>
+   <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
+ </div>
+</div>
+
+<div class="list" ng-if="ticket.ticket_urilga_type == 'elite'" id="ticketUrilga3" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'hh:MM'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+   <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span>
+ </div>
+</div>
+<div class="list" ng-if="ticket.ticket_urilga_type == 'basic'" id="ticketUrilga2" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'hh:MM'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+   <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span>
+ </div>
+</div>
+<div class="list" id="ticketUrilga1" ng-if="ticket.ticket_urilga_type == 'luxury'" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'hh:MM'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>    <div class="row"> 
+    <div class="col col-10"></div>
+    <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+     <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+   </div>
+   <div class="col col-10"></div>
+ </div>
+ <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+ <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span>
+</div>
+</div>
+<div class="list" ng-if="ticket.ticket_urilga_type == undefined" id="ticketUrilga2" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'hh:MM'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+   <div class="button-bar" style="position:absolute;left:2px;top:40%" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" id="reject1" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" id="accept1" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+   </div>
+   <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span>
+ </div>
+</div>
+
+<div class="list" id="ticketUrilga" ng-if="ticket.ticket_urilga_type == 'classic'" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'hh:MM'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+   <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span>
+ </div>
+</div>
+</ion-slide>
 </ion-slide-box>
-    </ion-content>
+</ion-content>
 </ion-view>

@@ -1,83 +1,28 @@
 
 angular.module('starter.services',[])
 
-
-
-
-.factory('Todo',['$http','PARSE_CREDENTIALS',function($http,PARSE_CREDENTIALS){
+.factory('myData',function($http){
     return {
-        getAll:function(){
-            return $http.get('https://api.parse.com/1/classes/content',{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                }
-            });
+        login:function(data){
+            return $http.post('http://urilga.mn:1337/login',{email:data.email,password:data.pass,____token:'dXJpbGdhbW5BY2Nlc3M'});
         },
-        get:function(category_id){
-            return $http.get('https://api.parse.com/1/classes/content/'+category_id,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                }
-            });
+        loginPhone:function(data){
+            return $http.post('http://urilga.mn:1337/loginviaphone',{phonenumber:data.email,password:data.pass,____token:'dXJpbGdhbW5BY2Nlc3M'});
         },
-        getAllCat:function(){
-            return $http.get('https://api.parse.com/1/classes/category',{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                }
-            });
+        pushtoken:function(data){
+            return $http.post('http://urilga.mn:1337/pushtoken',data);
         },
-        create:function(data){
-            return $http.post('https://api.parse.com/1/classes/Todo',data,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                    'Content-Type':'application/json'
-                }
-            });
+        personInfo:function(data){
+            return $http.get('http://urilga.mn:1337/person?person_email='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=');
         },
-        edit:function(id,data){
-            return $http.put('https://api.parse.com/1/classes/Todo/'+id,data,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                    'Content-Type':'application/json'
-                }
-            });
+        person:function(data){
+            return $http.get('http://urilga.mn:1337/person/'+data+'?____token=dXJpbGdhbW5BY2Nlc3M=');
         },
-        delete:function(id){
-            return $http.delete('https://api.parse.com/1/classes/Todo/'+id,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                    'Content-Type':'application/json'
-                }
-            });
+        getpushtoken:function(data){
+            return $http.get('http://urilga.mn:1337/pushtoken?token='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=');
         },
-           register:function(data){
-            return $http.post('https://api.parse.com/1/classes/login/',data,{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                    'Content-Type':'application/json'
-                }
-            });
-        },
-            login:function(){
-            return $http.get('https://api.parse.com/1/classes/login/',{
-                headers:{
-                    'X-Parse-Application-Id': PARSE_CREDENTIALS.APP_ID,
-                    'X-Parse-REST-API-Key':PARSE_CREDENTIALS.REST_API_KEY,
-                    'Content-Type':'application/json'
-                }
-            });
+        fbLogin: function(data){
+            return $http.post('http://www.urilga.mn:1337/loginviafacebook',data);
         }
-
     }
-}]).value('PARSE_CREDENTIALS',{
-    APP_ID: '94wyyb4AQWvIKkIneC9hZsTQId57Ghn8CLAuXyGE',
-    REST_API_KEY:'HBkRKTZlv5uYI1E3pRilmDLCzO6MOXF4RnMBWcQg'
 });

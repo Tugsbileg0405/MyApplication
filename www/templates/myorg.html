@@ -1,23 +1,29 @@
 <ion-view >
-  <ion-content lazy-scroll>
+<ion-nav-bar align-title="right">
+<ion-nav-buttons side="left" >
+      <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+      <i class="icon ion-chevron-left" style="font-family:'Arial';font-size:20px"> Буцах</i> 
+      </button>
+    </ion-nav-buttons>
+     <ion-nav-title style="font-family:'Arial';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
+       Миний байгууллага
+    </ion-nav-title>
+</ion-nav-bar>
+  <ion-content lazy-scroll overflow-scroll='true' >
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
-  <div class="row">
-      <div class="col " id="back">  <button class="button icon-left ion-chevron-left button-clear button-dark ink" style="padding-left:2%;font-weight:bold" ng-click="goBack()">Буцах</button></div>
-      <div class="col" style="text-align:center;padding-top:4%"><p  id="topheader">Миний байгууллага</p></div>
-  </div>
-<hr>
+
      <div class="list" ng-repeat="myorg in myOrgs" style="margin-bottom:0">
     <a class="item item-thumbnail-left" href="#/app/myorg/{{myorg.id}}" style="height:100px">
-      <img image-lazy-src="http://52.69.108.195:1337/{{myorg.organization_profile_img}}" style="width:150px;height:150px" image-lazy-loader="android">
+      <img ng-cache ng-src="{{backsite}}/{{myorg.organization_profile_img}}" style="width:150px;height:150px" >
       <h3 id="org_name"><i class="icon ion-ios-briefcase-outline"></i> {{myorg.organization_fullname}}</h3>
       <p id="org_type">{{myorg.organization_membership_type.name}}</p>
     </a>
     <hr>
 </div>
  <div class="card" ng-if="myOrgs.length == 0">
-           <div class="item item-text-wrap" style="text-align:center">
-            Хараахан мэдээлэл ороогүй байна.
+           <div class="item item-text-wrap" style="font-family:'Arial';text-align:center">
+            Мэдээлэл ороогүй байна.
            </div>
         </div>
     </div>

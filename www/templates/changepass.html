@@ -1,0 +1,42 @@
+<ion-view >
+<ion-nav-bar align-title="right">
+<ion-nav-buttons side="left" >
+      <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+      <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
+      </button>
+    </ion-nav-buttons>
+     <ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px" >
+       Нууц үг солих
+    </ion-nav-title>
+</ion-nav-bar>
+  <ion-content>
+  <ion-item>
+      <div class="list">
+        <form name="myForm" id="forgot">
+          <label class="item item-input item-floating-label" >
+              <span class="input-label">И-мэйл:</span>
+              <input type="text"  name="email" placeholder="И-мэйл" ng-model="userEmail" disabled>
+          </label>
+            <label class="item item-input item-floating-label"  >
+              <span class="input-label">Шинэ нууц үг:</span>
+              <input type="password" name="password" ng-minlength="6"  placeholder="Шинэ нууц үг:" ng-model="reg.newpass" required>
+          </label>
+            <label class="item item-input item-floating-label"  >
+              <span class="input-label">Нууц үг давтах:</span>
+              <input type="password"  placeholder="Нууц үг давтах:" ng-model="reg.newpass_verify" name="confirm_password" data-nx-equal-ex="reg.newpass" required>
+          </label>
+               <span class="error" style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px"  ng-show="myForm.password.$error.minlength">
+             * Хэт богино байна.
+          </span>
+                <span style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px" ng-show="myForm.confirm_password.$error.nxEqualEx">
+             * Нууц үг тохирохгүй байна.</span>
+          <br>
+          <br>
+            <button ng-disabled="myForm.$invalid" style="background-color:#FF5700;color:white;border-radius:5px;padding-top:10px;padding-bottom:10px;width:100%;border:1px solid #FF5700 " ng-click="changepass(reg)" type="submit" >
+                    Нууц үг өөрчлөх
+            </button>
+            </form>
+      </div>
+    </ion-item>
+  </ion-content>
+</ion-view>
