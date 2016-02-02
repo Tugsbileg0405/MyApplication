@@ -33,11 +33,26 @@
       "id": "com.telerik.plugins.nativepagetransitions"
     },
     "cordova-plugin-wkwebview",
-    "phonegap-plugin-push"
+    "phonegap-plugin-push",
+    {
+      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-wkwebview",
+      "id": "com.telerik.plugins.wkwebview"
+    },
+    "org.apache.cordova.console",
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer",
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin",
+      "id": "com.phonegap.plugins.PushPlugin"
+    }
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    {
+      "platform": "ios",
+      "version": "3.9.2",
+      "locator": "ios@3.9.2"
+    }
   ],
   "main": "gulpfile.js",
   "scripts": {

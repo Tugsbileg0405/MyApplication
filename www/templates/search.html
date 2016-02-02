@@ -9,10 +9,11 @@
 </form>
 <button class="button  button-clear"  ng-click="clear()" ng-show="search.length" id="clearButton" style="color:black;margin-right:10px"><i class="icon ion-ios-close-outline"></i></button>
 </ion-header-bar>
-<ion-content lazy-scroll>
-<div class="list" id="searchList" ng-show="counter == 1" ng-repeat="item in items">
-  <a class="item item-thumbnail-left" ui-sref="app.single({playlistId:item.id})">
-    <img ng-cache image-lazy-src="{{backsite}}/{{item.event_cover}}">
+<ion-content >
+<div class="list" collection-repeat="item in items" ng-show="counter == 1" 
+>
+  <a class="item  item-thumbnail-left" ui-sref="app.single({playlistId:item.id})">
+    <img ng-cache ng-src="{{backsite}}/{{item.event_cover}}">
     <h3 style="font-weight:bold;font-size:18px">{{item.event_title}}</h3>
     <p><i style="font-size:20px" class="icon ion-ios-location-outline"></i>&nbsp{{item.event_location}}</p>
     <p><i style="font-size:20px" class="icon ion-ios-calendar-outline"></i> {{item.event_start_date |date:'EEEE, MMMM d, y '}}</p>

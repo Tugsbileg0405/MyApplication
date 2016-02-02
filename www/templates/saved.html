@@ -9,14 +9,14 @@
         Хадгалагдсан: {{likedEvent.length}}
     </ion-nav-title>
 </ion-nav-bar>
-	<ion-content lazy-scroll >
+	<ion-content overflow-scroll='true'>
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
    </ion-refresher>
   
     <ion-list>
-      <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" href="#/app/playlists/{{list.event_info.id}}">
+      <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" style="width:105%;margin-left:-2%" href="#/app/playlists/{{list.event_info.id}}">
          <div class="list card"  style="margin:-2%;padding:0px;width:114%;height:100%">
-          <img ng-cache ng-src="{{backsite}}/{{list.event_info.event_cover}}"  style="height:200px" class="full-image">
+          <img ng-cache ng-src="{{backsite}}/{{list.event_info.event_cover}}"  id="homeImg" class="full-image">
          <div class="item tem-text-wrap" >
             <h3 style="font-family:'m3';font-size:18px;font-weight:bold">{{list.event_info.event_title}}</h3>
                <div class="row" style="padding:0 0 5px 0">

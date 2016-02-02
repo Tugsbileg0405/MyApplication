@@ -1,0 +1,71 @@
+<ion-item style="width:105%;margin-left:-2%" ng-repeat="list in event_type.freeEvent |orderBy:sortType:sortReverse | filter:eventType" href="#/app/playlists/{{list.id}}" ng-show="counter == 1">
+<div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%" >
+  <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+  <div class="item tem-text-wrap">
+    <h3 style="font-weight:bold;font-size:18px;font-family:'m3'">{{list.event_title}}</h3>
+    <div class="row" style="padding:0 0 5px 0">
+      <div class="col col-10"  style="padding:0">
+       <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+     </div>
+     <div class="col col-90" style="padding:0">
+      <p id="desc">{{list.event_start_date | date:'EEEE, MMMM d, y ' }}</p>
+    </div>
+  </div> 
+  <div class="row" style="padding:0 0 5px 0">
+    <div class="col col-10"  style="padding:0">
+     <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+   </div>
+   <div class="col col-90"style="padding:0" >
+    <p id="desc">{{list.event_location}}</p>
+  </div>
+</div> 
+</div>
+<div class="item item-divider">
+  <p  id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:5px;text-transform:lowercase">
+    #{{items.name | translate}}
+  </p>
+</div>
+<div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(0,204,82,0.8)" ng-if="list.event_ticket_type == 'Free'">
+ <p style="color:white">Үнэгүй</p>
+</div>
+<div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(64,153,255,0.8)" ng-if="list.event_ticket_type != 'Free'">
+ <p style="color:white">Төлбөртэй</p>
+</div>
+</div>
+</ion-item>
+<ion-item style="width:105%;margin-left:-2%" ng-repeat="list in event_type.paidEvent |orderBy:sortType:sortReverse | filter:eventType" href="#/app/playlists/{{list.id}}" ng-show="counter == 2">
+<div class="list card ink" style="margin:-2%;padding:0px;width:114%;height:100%" >
+  <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+  <div class="item tem-text-wrap">
+    <h3 style="font-weight:bold;font-size:18px;font-family:'m3';">{{list.event_title}}</h3>
+    <div class="row" style="padding:0 0 5px 0">
+      <div class="col col-10"  style="padding:0">
+       <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+     </div>
+     <div class="col col-90" style="padding:0">
+      <p id="desc">{{list.event_start_date | date:'EEEE, MMMM d, y ' }}</p>
+    </div>
+  </div> 
+  <div class="row" style="padding:0 0 5px 0">
+    <div class="col col-10"  style="padding:0">
+     <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+   </div>
+   <div class="col col-90"style="padding:0" >
+    <p id="desc">{{list.event_location}}</p>
+  </div>
+</div> 
+</div>
+<div class="item item-divider">
+  <p  id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:5px;text-transform:lowercase">
+    #{{items.name | translate}}
+  </p>
+</div>
+<div style="background-color:#a21e21;color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color: rgba(0,204,82,0.8)" ng-if="list.event_ticket_type == 'Free'">
+ <p style="color:white">Үнэгүй</p>
+</div>
+<div style="color:white;position:absolute;right:0;bottom:10px;padding:5px;padding-left:20px;padding-right:20px;background-color:rgba(64,153,255,0.8)" ng-if="list.event_ticket_type != 'Free'">
+ <p style="color:white">Төлбөртэй</p>
+</div>
+</div>
+</ion-item>
+</ion-list>

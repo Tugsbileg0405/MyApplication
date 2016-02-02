@@ -1,7 +1,7 @@
 <ion-view >
 <ion-nav-bar  align-title="left">
 <ion-nav-buttons side="left">
-<button class="button-clear " ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black" goNative>
+<button class="button-clear "  ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black" >
 	<i class="icon ion-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
 </button>
 </ion-nav-buttons>
@@ -15,7 +15,7 @@
 </ion-nav-bar>
 <ion-content   overflow-scroll='true'  lazy-scroll  on-swipe-up="showHeader()" on-swipe-down="hideHeader()">
 
-<img class="full-image ink" style="height:200px;width:100%" ng-click="showImage()" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
+<img class="full-image ink" id="homeImg" ng-click="showImage()" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
 <div class="list" >
 	<div class="item item-body">
 		<h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;margin-top:0;margin-bottom:0;text-transform:lowercase">
@@ -150,7 +150,7 @@
 		</div>
 		<br>
 		<div ng-show="loader.loading == false" style="text-align:center;font-size:18px;color:#FF5700">
-			<ion-spinner style="color:#FF5700" icon="lines"></ion-spinner>
+			<ion-spinner style="color:#FF5700" icon="ios-small"></ion-spinner>
 		</div>
 		<div  ng-show="loader.loading == true"  id="sched-content-inner" ng-repeat="agenda in agendas" >
 			<div class="sched-container-header">                                 
@@ -163,75 +163,90 @@
 					<b>{{agenda.agenda_location}}</b>, - {{agenda.agenda_event_name}}
 				</div>     
 			</div>
-			<div ng-init="agenda_times(agenda.id)" style="margin-top: 25px;" class="agenda_list">
-				<div ng-repeat="time in agenda_times | orderBy:'createdAt'">
-					<h3 ng-if="time.time_duration_type == 1">{{time.time_duration | date: 'MM-dd'}}</h3>
-					<h3 ng-if="time.time_duration_type == 2" class="text-center"><b>{{time.time_duration}} min</b><br>{{time.time_start_time | date:'HH:mm'}}-{{time.time_end_time | date:'HH:mm'}}</h3>
-					<div class="sched-container">
-						<div class="img-circle circle"><span></span></div>
+			<div style="margin-top: 25px" class="agenda_list">
+				<div ng-repeat="time in agenda.agenda_times | orderBy:'createdAt'">
+					<h3 class="text-center" ><b>{{time.time_duration}} min</b><br>{{time.time_start_time | date:'HH:mm'}}-{{time.time_end_time | date:'HH:mm'}}</h3>
+					<div class="sched-container" >
+						<div class="img-circle circle" ><span></span></div>
 						<div class="sched-container-inner">
 							<div class="event {{time.time_class}}">
 								<h3 class="title">{{time.time_title}}</h3>
-								<a class="name" ng-if="time.time_class == ' '">{{time.time_description}}</a>
+								<a class="name" ng-if="time.time_class == ' '" style=" white-space: pre-line">{{time.time_description}}</a>
 								<div class="col-md-6 speaker_profile" ng-if="time.time_speaker">
-									<div class="col-xs-3 speaker_image" >
-										<img ng-cache ng-src="{{backsite}}/images/{{time.time_speaker.speaker_profile_img}}" alt="" class="img-circle" >
-									</div>
-									<div class="col-xs-9 speaker_info" >
-										<h5 class="speaker_name">{{time.time_speaker.speaker_fullname}}</h5>
-									</div>
-									<div class="col-xs-9 speaker_info" >
-										<span class="speaker_position" ng-if="time.time_speaker.speaker_position" style="text-transform: capitalize;">{{time.time_speaker.speaker_position}}</span>
-									</div>
+									<a class="item item-thumbnail-left item-text-wrap" style="height:100px">
+										<img style="margin-left:10px" ng-cache ng-src="{{backsite}}/images/{{time.time_speaker.speaker_profile_img}}" >
+									</a>
+									<div class="item item-text-wrap" style="padding-left:20px;padding-top:0;padding-bottom:0">
+										<span>{{time.time_speaker.speaker_fullname}}</span>
+										<span ng-if="time.time_speaker.speaker_organization" style="color:#6F6F6F">, {{time.time_speaker.speaker_organization}}</span>
+										<span ng-if="time.time_speaker.speaker_position" style="color:#6F6F6F">, {{time.time_speaker.speaker_position}}</span>
+									</h4>
 								</div>
-								<div class="col-md-6 speaker_profile" ng-if="!time.time_speaker">
-									<div class="col-xs-3 speaker_image">
-										<img ng-src="img/default-user.png" alt="" class="img-circle">
-									</div>
-									<div class="col-xs-9 speaker_info">
-										<h5 class="speaker_name">Speaker name</h5>
-										<p style="color:#FF5700;margin-left:105px">Speaker</p>
+								<div class="list" style="text-align:center;padding:0" >
+									<div class="row" style="padding:0;margin:0">
+										<div class="col" >
+											<a href="" title="like" ng-click="voteSlot(time.id,'like',time)" ng-if="time.status != 'like'" style="font-size:17px;" class="likeclick"><i class="fa fa-thumbs-o-up"></i></a>
+											<a href="" title="remove like" title="like" ng-click="voteSlot(time.id,'null',time)" ng-if="time.status == 'like'" style="font-size:17px;" class="likeclick"><i class="fa fa-thumbs-up"></i></a>
+										</div>
+										<div class="col" >
+											<a href="" title="dislike" ng-click="voteSlot(time.id,'dislike',time)" ng-if="time.status != 'dislike'" style="font-size:17px;" class="likeclick"><i class="fa fa-thumbs-o-down"></i></a>
+											<a href="" title="remove dislike" ng-click="voteSlot(time.id,'null',time)" ng-if="time.status == 'dislike'" style="font-size:17px;" class="likeclick"><i class="fa fa-thumbs-down"></i></a>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="event" ng-if="time.time_class  != ' '">
-								<a class="name">
-									<div class="row" >
-										<div ng-bind-html="time.time_description"></div>  
-									</div>
-								</a>
-							</div>  
 						</div>
+						<div class="event" ng-if="time.time_class  != ' '">
+							<a class="name">
+								<div class="row" >
+									<div ng-if="time.time_description">
+										<p  class="agenda_p">
+											{{time.time_description}}
+										</p>
+									</div> 
+								</div>
+							</a>
+						</div>  
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 
 
-		<p style="text-align:center;font-size:17px;font-family:'m3';color:#444;margin-top:0;margin-bottom:10px">{{message}}</p>
+	</div>
 
-		<div class="item tabs tabs-stable tabs-icon-left" id="mybuttons">
-			<a class="tab-item" ng-click="shareAnywhere()" style="font-family:'Arial';font-size:14px;color:#FD2E76">
-				<i class="icon ion-share"></i>
-				Хуваалцах
-			</a>
-			<a class="tab-item"  ng-click="unlikeEvent()" ng-if="liker_function == 1" style="font-family:'Arial';font-size:15px;color:#45B5DF;">
-				<i class="fa fa-bookmark" ></i> 
-				Хадгалагдсан
-			</a>
-			<a class="tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0" style="font-family:'Arial';font-size:15px;color:#45B5DF;">
-				<i class="fa fa-bookmark-o"></i> 
-				Хадгалах
-			</a>
-		</div>
-		<a href="#/app/playlists/{{list.id}}/buyticket">
-			<button class="button button-full" style="font-family:'m3';font-size:16px;background-color:#FF5700;color:white" >
-				Тасалбар Худалдаж авах
-			</button>
+
+	<p style="text-align:center;font-size:17px;font-family:'m3';color:#444;margin-top:0;margin-bottom:10px">{{message}}</p>
+
+	<div class="item tabs tabs-stable tabs-icon-left" id="mybuttons">
+		<a class="tab-item" ng-click="shareAnywhere()" style="font-family:'Arial';font-size:14px;color:#FD2E76">
+			<i class="icon ion-share"></i>
+			Хуваалцах
+		</a>
+		<a class="tab-item"  ng-click="unlikeEvent()" ng-if="liker_function == 1" style="font-family:'Arial';font-size:15px;color:#45B5DF;">
+			<i class="fa fa-bookmark" ></i> 
+			Хадгалагдсан
+		</a>
+		<a class="tab-item"  ng-click="likeEvent()" ng-if="liker_function == 0" style="font-family:'Arial';font-size:15px;color:#45B5DF;">
+			<i class="fa fa-bookmark-o"></i> 
+			Хадгалах
 		</a>
 	</div>
+	<div class="row">
+		<div class="col">
+			<button ng-click="suggest()" class="button button-full" style="padding:0;font-family:'m3';font-size:16px;background-color:#FF5700;color:white" >
+				Санал болгох
+			</button>
+		</div>
+		<div class="col">
+			<a href="#/app/playlists/{{list.id}}/buyticket">
+				<button class="button button-full" style="padding:0;font-family:'m3';font-size:16px;background-color:#00CC52;;color:white" >
+					Тасалбар авах
+				</button>
+			</a>	
+		</div>
+	</div>
+</div>
 </div>
 </div>
 </ion-content>

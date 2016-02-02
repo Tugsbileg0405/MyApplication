@@ -6,13 +6,13 @@ angular.module('starter.auth',[])
   
   service.getAuthStatus = function() {
   	if($localStorage.userdata){
-    return true;
-	}
-	else {
-	return false;
-	}	
-  }
-  
-  return service;
-  
+      return true;
+    }
+    else {
+     return false;
+   }	
+ }
+ 
+ return service;
+ 
 });

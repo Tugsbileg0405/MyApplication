@@ -2,7 +2,7 @@
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
       <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
-      <i class="icon ion-chevron-left" style="font-family:'Arial';font-size:20px"> Буцах</i> 
+      <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
       </button>
     </ion-nav-buttons>
      <ion-nav-title style="font-family:'Arial';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
@@ -13,19 +13,25 @@
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
   </ion-refresher>
 
-     <div class="list" ng-repeat="myorg in myOrgs" style="margin-bottom:0">
+     <ion-list >
+    <ion-item ng-repeat="myorg in myOrgs | limitTo:limit" style="margin-bottom:0;padding:0">
     <a class="item item-thumbnail-left" href="#/app/myorg/{{myorg.id}}" style="height:100px">
       <img ng-cache ng-src="{{backsite}}/{{myorg.organization_profile_img}}" style="width:150px;height:150px" >
       <h3 id="org_name"><i class="icon ion-ios-briefcase-outline"></i> {{myorg.organization_fullname}}</h3>
       <p id="org_type">{{myorg.organization_membership_type.name}}</p>
     </a>
     <hr>
-</div>
+  </ion-item>
+</ion-list>
  <div class="card" ng-if="myOrgs.length == 0">
            <div class="item item-text-wrap" style="font-family:'Arial';text-align:center">
             Мэдээлэл ороогүй байна.
            </div>
         </div>
     </div>
+<ion-infinite-scroll ng-if="myOrgs.length > 5"
+  on-infinite="loadMoreData()"
+  distance="1%">
+</ion-infinite-scroll>
   </ion-content>
 </ion-view>

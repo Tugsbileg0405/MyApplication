@@ -20,11 +20,6 @@
       </div>
       <div class="list">
         <form name="myForm" id="register">
-         <label class="item item-input item-floating-label">
-              <span class="input-label">Хэрэглэгчийн овог:</span>
-              <input type="text" name="lastname" placeholder="Хэрэглэгчийн овог" ng-model="reg.fname" required>
-             </span>
-          </label>
           <label class="item item-input item-floating-label">
               <span class="input-label">Хэрэглэгчийн нэр:</span>
               <input type="text" name="lastname" placeholder="Хэрэглэгчийн нэр" ng-model="reg.uname" required>
@@ -42,15 +37,9 @@
               <span class="input-label">Нууц үг:</span>
               <input type="password" placeholder="Нууц үг" name="password" ng-minlength="6" ng-model="reg.pass">
           </label>
-              <label class="item item-input item-floating-label"  >
-              <span class="input-label">Нууц үг давтах:</span>
-              <input type="password"  placeholder="Нууц үг давтах:" ng-model="reg.newpass_verify" name="confirm_password"  data-nx-equal-ex="reg.pass" required>
-          </label>
            <span class="error" style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px"  ng-show="myForm.password.$error.minlength">
              * Хэт богино байна.
           </span>
-                <span style="padding:0 0 10px 16px;font-size:14px;color:red;margin-bottom:10px" ng-show="myForm.confirm_password.$error.nxEqualEx">
-             * Нууц үг тохирохгүй байна.</span>
           <br>
           <br>
             <button  ng-disabled="myForm.$invalid" style="background-color:#FF5700;color:white;border-radius:5px;width:100%;padding-top:10px;padding-bottom:10px;border:1px solid #FF5700" ng-click="Register(reg)" type="submit" >

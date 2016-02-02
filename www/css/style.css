@@ -13,8 +13,21 @@
   font-family: "fontawesome";
   content: "\f097";
 }
+.button.button-assertive.button-outline.active, .button.button-assertive.button-outline.activated {
+    background-color: #FF5700;
+    box-shadow: none;
+    color: #fff;
+}
+.button.button-assertive.button-outline {
+    border-color: #ef473a;
+    background: transparent;
+    color: #FF5700;
+}
 #profile span{
   font-family: 'Arial';
+}
+.guestBtn .popup-buttons .button{
+  padding: 0;
 }
 #profile input {
   font-family: 'Arial';
@@ -108,6 +121,9 @@
 #btns{
 
 }
+#categoryText {
+  border:none;padding-bottom:0;font-weight:bold;font-size:19px;padding-left:5px;color::#283A44;font-family:'Arial';
+}
 #public{
   border: 1px solid #00cc52;
   border-radius: 2px;
@@ -160,6 +176,15 @@
 #search ::-webkit-input-placeholder {
  font-size: 17px;
  padding-top: 5px;
+ color:black;
+ color: #aaa;
+}
+#suggest input {
+  padding: 0;
+}
+#suggest ::-webkit-input-placeholder {
+ font-size: 15px;
+ padding: 0px;
  color:black;
  color: #aaa;
 }
@@ -266,6 +291,29 @@ button.disabledBtn[disabled]{
   font-size: 12px;
   padding:0;
 }
+.deleteTicket {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  padding: 5px 10px 5px 10px;
+  background-color:rgba(239,71,58,0.8);
+  color: white;
+  font-size: 25px;
+}
+#ticketQR {
+  padding: 0;
+  border: none;
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+}
+#ticketQR qr img {
+  border: none;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  margin: auto;
+}
 #ticketImg {
   background-image:url(../img/ticket/blue.png);
   background-repeat: no-repeat; 
@@ -326,6 +374,9 @@ button.disabledBtn[disabled]{
   font-size: 22px;
   color: #3498DB;
   font-weight: bold;
+}
+#homeImg {
+  height:200px;width:100%;
 }
 #ticketMain {
   width: 100%;
@@ -540,6 +591,8 @@ ion-header-bar.bar-light.custom{
 }
 
 #sched-content-inner .coffee .speaker_profile ,
+#sched-content-inner .networking .speaker_profile ,
+#sched-content-inner .register .speaker_profile ,
 #sched-content-inner .opening .speaker_profile , 
 #sched-content-inner .lunch .speaker_profile,
 #sched-content-inner .review .speaker_profile,
@@ -642,7 +695,7 @@ h5.speaker_name {
 .sched-container-dates {
   font-family: 'm3';
 }
-#sched-content-inner .opening h3.title,#sched-content-inner .coffee h3.title, #sched-content-inner .lunch h3.title, #sched-content-inner .review h3.title, #sched-content-inner .qa h3.title {
+#sched-content-inner .networking h3.title,#sched-content-inner .register h3.title,#sched-content-inner .opening h3.title,#sched-content-inner .coffee h3.title, #sched-content-inner .lunch h3.title, #sched-content-inner .review h3.title, #sched-content-inner .qa h3.title {
   color: #fff !important;
   text-align: center;
   padding: 0;
@@ -754,10 +807,11 @@ hr {
   font-size: 16px;
 }
 #login input {
-  font-size: 16px;
+  font-size: 15px;
+  border-bottom: 1px solid #c6c6c6;
 }
 #login  ::-webkit-input-placeholder {
- font-size: 16px;
+ font-size: 14px;
  margin-top: 5px;
  margin-bottom: 5px; 
  color: #aaa;
@@ -831,6 +885,12 @@ a:link{
 .event.coffee {
   background-color: #6F4E37;
 }
+.event.networking{
+  background-color: #ffd66b;
+}
+.event.register {
+  background-color: #51617d;
+}
 .event.lunch {
   background-color: #9EDF7D; 
 }
@@ -841,7 +901,7 @@ a:link{
   background-color: orange; 
 }
 
-.event.lunch,.event.review,.event.qa,.event.opening,.event.coffee{
+.event.lunch,.event.networking,.event.register,.event.review,.event.qa,.event.opening,.event.coffee{
   border-radius:4px;
   margin-left: 15px;
   width: 90%;
@@ -1302,6 +1362,9 @@ a:link{
   #ticketName{
     font-size: 20px;
   }
+  div#segment.buttons{
+    font-size: 12px;
+  }
   #dood{
     margin-bottom: 0px;
     width: 310px;
@@ -1310,7 +1373,7 @@ a:link{
     font-size: 13px;
   }
   .slider-pager {
-    margin-bottom: 25px;
+    margin-bottom: 0px;
   }
   #buyticketfrm{
     width: 290px;
@@ -1325,7 +1388,9 @@ a:link{
   #ticketinput {
     font-size: 17px;
   }
-
+  #Category {
+    padding-left: 28px;
+  }
   #accept {
     margin-right:26px;
   }
@@ -1351,12 +1416,21 @@ a:link{
     width: 310px;
     margin-top: 25px;
   }
+  #homeImg {
+    height: 180px;
+  }
+  #slider img {
+    height: 240px !important;
+  }
   #slide {
     height: 548px;
     width: 320px;
   }
+  #proimg{
+    left:40px;
+  }
   #head {
-    font-size: 15px;
+    font-size: 18px;
   }
   #rightarrow{
     display: none;
@@ -1483,7 +1557,18 @@ a:link{
   #Paid {
    margin-right: 40px;
  }
- #buyticketfrm{
+ #categoryText {
+  padding-top: 60px !important;
+}
+#Category {
+  padding-top: 80px;
+  font-size: 25px;
+  height: 180px;
+}
+#homeImg{
+  height: 300px;
+}
+#buyticketfrm{
   width: 500px;
 }
 #selectTicket{
@@ -1500,7 +1585,29 @@ a:link{
   margin-right: auto;
   margin-left: auto;
 }
+#ticketImg1{
+  width: 400px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 #ticketUrilga{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+#ticketUrilga1{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+
+#ticketUrilga2{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+#ticketUrilga3{
  width: 400px;
  margin-right: auto;
  margin-left: auto;
@@ -1570,6 +1677,17 @@ a:link{
     margin-right: 5px;
     font-size: 16px;
   }
+  #categoryText {
+    padding-top: 60px !important;
+  }
+  #Category {
+    padding-top: 80px;
+    font-size: 25px;
+    height: 180px;
+  }
+  #homeImg{
+    height: 300px;
+  }
   #Paid {
    margin-right: 40px;
  }
@@ -1590,7 +1708,28 @@ a:link{
   margin-right: auto;
   margin-left: auto;
 }
+#ticketImg1{
+  width: 400px;
+  margin-right: auto;
+  margin-left: auto;
+}
 #ticketUrilga{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+#ticketUrilga1{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+
+#ticketUrilga2{
+ width: 400px;
+ margin-right: auto;
+ margin-left: auto;
+}
+#ticketUrilga3{
  width: 400px;
  margin-right: auto;
  margin-left: auto;
@@ -1923,7 +2062,9 @@ a:link{
         ion-popover-view.fit ion-content {
           position: relative !important;
         }
-
+        .platform-ios ion-popover-view.fit {
+          margin-top: 10px !important;
+        }
         .platform-android ion-popover-view.fit {
           margin-top: 10px !important;
         }
@@ -1933,4 +2074,15 @@ a:link{
         .popup-body {
           text-align: center;
           font-size: 16px;
+        }
+        #myeventTitle {
+          font-size: 16px;
+        }
+        .myeventText {
+          font-size: 16px;
+        }
+        #myEvent img {
+        }
+        #myEvent {
+          height: 95px;
         }

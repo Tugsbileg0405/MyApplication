@@ -15,13 +15,10 @@
 <p id="demo"></p>
 <form role="form" id="login">
  <div class="list">
-   <label class="item item-input item-floating-label" id="lgnname">
-     <span class="input-label" >И-мэйл хаяг эсвэл утасны дугаар:</span>
+   <label class="item item-input " id="lgnname">
      <input type="text" ng-model="emails"  placeholder="И-мэйл хаяг эсвэл утасны дугаар" required>
    </label>
-   <label class="item item-input item-floating-label">
-    
-    <span class="input-label">Нууц үг:</span>
+   <label class="item item-input ">
     <input type="password" ng-model="pass" name="password" placeholder="Нууц үг" required>
   </label>
   <br>
@@ -33,6 +30,9 @@
 <h2 style="margin-top:5px;margin-bottom:5px"><span  class="line-center" style="color:gray">эсвэл</span></h2>
 <button  ng-click="facebookLogin()" style="background-color:#3b5998;color:white;border-radius:5px;width:100%;padding-bottom:10px;padding-top:10px;border:1px solid #3b5998" > 
   <i class="icon ion-social-facebook"></i>&nbsp Login with Facebook</button>
+  <h2 style="margin-top:5px;margin-bottom:5px"><span  class="line-center" style="color:gray">эсвэл</span></h2>
+<button class="lgBtn" ui-sref="guest.home" style="color:white;background-color:#21D268;border-color:#21D268" > 
+   Зочноор нэвтрэх</button>
   <h2 style="margin-top:5px;margin-bottom:5px"><span style="color:gray;font-size:14px" class="line-center" ></span> </h2>
   <div class="row" style="padding:0">
     <div class="col" style="padding:0;padding-right:5px">

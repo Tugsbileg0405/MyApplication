@@ -1,5 +1,5 @@
 <ion-view >
-<ion-header class="bar bar-light bar-header"  id="header" style="    background: rgba(255,255,255,0.5)" >
+<ion-header class="bar bar-light bar-header"  id="header"  >
 <div class="buttons"  style="color:black;padding:0">
  <button class="button button-icon icon-left button-clear button-dark fa-bars"  style="color:black;margin-top:3px;padding-left:10px" ng-click="toggleLeftSideMenu()"></button>
 </div>
@@ -11,38 +11,38 @@
 </div>
 </ion-header>
 
-<ion-content   overflow-scroll='true'  id="myBody" on-scroll="getScrollPosition()" on-swipe-up="showHeader()" on-swipe-down="hideHeader()" lazy-scroll>
-<ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
+<ion-content  class="has-header"  overflow-scroll='true'  id="myBody" on-scroll="getScrollPosition()" on-swipe-up="showHeader()" on-swipe-down="hideHeader()" lazy-scroll>
+<ion-refresher pulling-text="Уншиж байна..."  on-refresh="doRefresh()">
 </ion-refresher>
 
 <ion-slide-box on-slide-changed="slideChanged($index)"  auto-play="true" does-continue="true" show-pager="false" id="slider">
 <ion-slide>
-<div><img  src="img/slider/01.png" height="300" width="400"></div>
+<div><img  src="img/slider/01.png" ></div>
 </ion-slide>
 <ion-slide>
-<div><img   src="img/slider/02.png" height="300" width="400"></div>
+<div><img   src="img/slider/02.png"></div>
 </ion-slide>
 <ion-slide>
-<div><img src="img/slider/03.png" height="300" width="400"></div>
+<div><img src="img/slider/03.png" ></div>
 </ion-slide>
 <ion-slide>
-<div><img src="img/slider/04.png" height="300" width="400"></div>
+<div><img src="img/slider/04.png" ></div>
 </ion-slide>
 <ion-slide>
-<div><img  src="img/slider/05.png" height="300" width="400"></div>
+<div><img  src="img/slider/05.png" ></div>
 </ion-slide>
 </ion-slide-box>
-<div class="item" style="border:none;padding-bottom:0;font-weight:bold;font-size:19px;padding-left:5px;color::#283A44;font-family:'Arial' ">
+<div class="item" id="categoryText" >
   Ангилал
 </div>
 <div class="list" >
  <div class="row" style="padding:0">
-   <div class="col col-50" style="padding-right:0.5"><a href="#/app/category/5594e7aeef8ed1a30b4e65b8"><p class="item item-dark " id="Category" style="background:url('img/category/music.jpg');background-size: cover" >Урлаг соёл</p></a></div>
+   <div class="col col-50" style="padding-right:0.5"><a href="#/app/category/5594e7aeef8ed1a30b4e65b8"><p class="item item-dark " id="Category" style="background:url('img/category/music.jpg');background-size: cover" >Дуу хөгжим</p></a></div>
    <div class="col col-50"  style="padding-left:0"><a href="#/app/category/5594e7baef8ed1a30b4e65b9"><p class="item item-dark " id="Category" style="background:url('img/category/food.jpg') ;background-size: cover">Хоол хүнс</p></a></div>
  </div>
  <div class="row" style="padding:0">
   <div class="col col-50"  style="padding-right:0.5"><a href="#/app/category/5594e7c1ef8ed1a30b4e65ba"><p class="item  item-dark " id="Category" style="color:#334653;background:url('img/category/classes.jpg');background-size: cover">Сургалт</p></a></div>
-  <div class="col col-50"  style="padding-left:0"><a href="#app/category/5594e7ceef8ed1a30b4e65bb"><p class="item item-dark " id="Category" style="background:url('img/category/art.jpg');background-size: cover">Уран зураг</p></a></div>
+  <div class="col col-50"  style="padding-left:0"><a href="#app/category/5594e7ceef8ed1a30b4e65bb"><p class="item item-dark " id="Category" style="background:url('img/category/art.jpg');background-size: cover">Урлаг, урлал</p></a></div>
 
 </div>
 <div class="row" style="padding:0">
@@ -53,51 +53,53 @@
 <div class="row" style="padding:0">
   <div class="col"  style="padding-left:0.5;padding-right:0.5"><a href="#app/category/5594e7ecef8ed1a30b4e65be"><p class="item item-icon-left item-dark " id="Category" style="background:url('img/category/networking.jpg');background-size: cover">Хурал зөвлөгөөн</p></a></div>
 </div>
+<div style="height:40px"> 
+<ti-segmented-control id="segment" on-select="buttonClicked($index)" style="width:100%;padding:5px 5px 5px 5px">
+    <ti-segmented-control-button class="button-assertive" title="'Өнөөдөр'" selected></ti-segmented-control-button>
+    <ti-segmented-control-button class="button-assertive" title="'Маргааш'" ></ti-segmented-control-button>
+    <ti-segmented-control-button class="button-assertive" title="'Топ'" ></ti-segmented-control-button>
+</ti-segmented-control>
+</div>
+ <div class="animate-switch-container"
+    ng-switch on="index"  on-swipe-right="goBack(index)" on-swipe-left="goForward(index)">
+      <div class="animate-switch" ng-switch-default>
+       <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
+       <div class="list card" id="homeList">
 
-<div>
-
-
-  <md-content class="md-padding" layout="column">
-  <md-tabs  md-swipe-content="true" md-stretch-tabs="auto" md-no-ink md-dynamic-height='true' md-no-pagination="true" md-border-bottom  >
-  <md-tab  label="Today" >
-  <md-tab-label class="my-label"><p id="mytab">Өнөөдөр</p></md-tab-label>
-  <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
-  <div class="list card" id="homeList">
-
-    <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  style="height:200px;width:100%" class="full-image">
-    <div class="item tem-text-wrap">
-     <h3 style="font-size:18px;font-family: 'm3';font-weight:bold">{{list.event_title}}</h3>
-     <div class="row" style="padding:0 0 5px 0">
-      <div class="col col-10" style="padding:0">
-       <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
-     </div>
-     <div class="col col-90" ng-if="list.event_start_time" style="padding:0">
-      <p id="desc">Өнөөдөр {{list.event_start_time | date:'hh:MM' }} цагт</p>
-    </div>
-    <div class="col col-90" ng-if="!list.event_start_time" style="padding:0">
-      <p id="desc">Өнөөдөр 09:00 цагт</p>
-    </div>
-  </div> 
-  <div class="row" style="padding:0 0 5px 0">
-    <div class="col col-10" style="padding:0">
-     <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
-   </div>
-   <div class="col col-90" style="padding:0">
-    <p id="desc">{{list.event_location}}</p>
+        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+        <div class="item tem-text-wrap">
+         <h3 style="font-size:18px;font-family: 'm3';font-weight:bold">{{list.event_title}}</h3>
+         <div class="row" style="padding:0 0 5px 0">
+          <div class="col col-10" style="padding:0">
+           <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+         </div>
+         <div class="col col-90" ng-if="list.event_start_time" style="padding:0">
+          <p id="desc">Өнөөдөр {{list.event_start_time | date:'HH:mm' }} цагт</p>
+        </div>
+        <div class="col col-90" ng-if="!list.event_start_time" style="padding:0">
+          <p id="desc">Өнөөдөр 09:00 цагт</p>
+        </div>
+      </div> 
+      <div class="row" style="padding:0 0 5px 0">
+        <div class="col col-10" style="padding:0">
+         <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+       </div>
+       <div class="col col-90" style="padding:0">
+        <p id="desc">{{list.event_location}}</p>
+      </div>
+    </div>    
   </div>
-</div>    
-</div>
-<div class="item item-divider" >
-  <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-    <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
-  </h5>
-</div>
-<div id="Free" ng-if="list.event_ticket_type == 'Free'">
- <p style="color:white">Үнэгүй</p>
-</div>
-<div id="Paid" ng-if="list.event_ticket_type != 'Free'">
- <p style="color:white">Төлбөртэй</p>
-</div>
+  <div class="item item-divider" >
+    <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+      <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
+    </h5>
+  </div>
+  <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+   <p style="color:white">Үнэгүй</p>
+ </div>
+ <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
+   <p style="color:white">Төлбөртэй</p>
+ </div>
 </div>
 </ion-item>
 <div class="card" ng-if="events.today_event.length == 0">
@@ -105,92 +107,89 @@
   Мэдээлэл ороогүй байна.
 </div>
 </div>
+      </div>
+      <div class="animate-switch" ng-switch-when="1">
+       <ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
+       <div class="list card"  id="homeList">
 
-</md-tab>
-<md-tab label="Tomorrow" >
-<md-tab-label class="my-label"><p id="mytab">Маргааш</p></md-tab-label>
-<ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
-<div class="list card"  id="homeList">
-
-  <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  style="height:200px;width:100%" class="full-image">
-  <div class="item tem-text-wrap">
-    <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
-    <div class="row" style="padding:0 0 5px 0">
-      <div class="col col-10" style="padding:0">
-       <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
-     </div>
-     <div class="col col-90" ng-if="list.event_start_time" style="padding:0" >
-      <p id="desc">Маргааш {{list.event_start_time | date:'hh:MM' }} цагт</p>
+        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+        <div class="item tem-text-wrap">
+          <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
+          <div class="row" style="padding:0 0 5px 0">
+            <div class="col col-10" style="padding:0">
+             <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+           </div>
+           <div class="col col-90" ng-if="list.event_start_time" style="padding:0" >
+            <p id="desc">Маргааш {{list.event_start_time | date:'HH:mm' }} цагт</p>
+          </div>
+          <div class="col col-90"  ng-if="!list.event_start_time" style="padding:0" >
+            <p id="desc">Маргааш 09:00 цагт</p>
+          </div>
+        </div> 
+        <div class="row" style="padding:0 0 5px 0">
+          <div class="col col-10"  style="padding:0">
+           <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+         </div>
+         <div class="col col-90" style="padding:0" >
+          <p id="desc">{{list.event_location}}</p>
+        </div>
+      </div>    
     </div>
-    <div class="col col-90"  ng-if="!list.event_start_time" style="padding:0" >
-      <p id="desc">Маргааш 09:00 цагт</p>
+    <div class="item item-divider">
+      <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+        <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
+      </h5>
     </div>
-  </div> 
-  <div class="row" style="padding:0 0 5px 0">
-    <div class="col col-10"  style="padding:0">
-     <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+    <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+     <p style="color:white">Үнэгүй</p>
    </div>
-   <div class="col col-90" style="padding:0" >
-    <p id="desc">{{list.event_location}}</p>
-  </div>
-</div>    
-</div>
-<div class="item item-divider">
-  <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-    <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
-  </h5>
-</div>
-<div id="Free" ng-if="list.event_ticket_type == 'Free'">
- <p style="color:white">Үнэгүй</p>
-</div>
-<div id="Paid" ng-if="list.event_ticket_type != 'Free'">
- <p style="color:white">Төлбөртэй</p>
-</div>
-</div>
+   <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
+     <p style="color:white">Төлбөртэй</p>
+   </div>
+ </div>
 </ion-item>
 <div class="card" ng-if="events.tomorrow_event.length == 0">
  <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
-</md-tab>
-<md-tab label="Popular">
-<md-tab-label class="my-label"><p id="mytab">Топ</p></md-tab-label>
-<ion-item ng-repeat="list in lists | orderBy:'createdAt':true| limitTo:limit" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" goNative>
-<div class="list card"  id="homeList">
+      </div>
+      <div class="animate-switch" ng-switch-when="2">
+        <ion-item ng-repeat="list in lists | orderBy:'-createdAt'| limitTo:limit" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" goNative>
+        <div class="list card"  id="homeList">
 
-  <img ng-cache ng-src=" {{backsite}}/{{list.event_cover}}"  style="height:200px;width:100%"   class="full-image">
-  <div class="item tem-text-wrap">
-   <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
-   <div class="row" style="padding:0 0 5px 0">
-    <div class="col col-10" style="padding:0">
-     <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+          <img ng-cache ng-src=" {{backsite}}/{{list.event_cover}}"  id="homeImg"   class="full-image">
+          <div class="item tem-text-wrap">
+           <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
+           <div class="row" style="padding:0 0 5px 0">
+            <div class="col col-10" style="padding:0">
+             <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
+           </div>
+           <div class="col col-90" style="padding:0">
+            <p id="desc">{{list.event_start_date | date:'EEEE, MMMM d, y ' }}</p>
+          </div>
+        </div> 
+        <div class="row" style="padding:0 0 5px 0">
+          <div class="col col-10" style="padding:0">
+           <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+         </div>
+         <div class="col col-90" style="padding:0">
+          <p id="desc">{{list.event_location}}</p>
+        </div>
+      </div>              
+    </div>
+    <div class="item item-divider">
+      <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+        <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
+      </h5>
+    </div>
+    <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+     <p style="color:white">Үнэгүй</p>
    </div>
-   <div class="col col-90" style="padding:0">
-    <p id="desc">{{list.event_start_date | date:'EEEE, MMMM d, y ' }}</p>
-  </div>
-</div> 
-<div class="row" style="padding:0 0 5px 0">
-  <div class="col col-10" style="padding:0">
-   <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+   <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
+     <p style="color:white">Төлбөртэй</p>
+   </div>
  </div>
- <div class="col col-90" style="padding:0">
-  <p id="desc">{{list.event_location}}</p>
-</div>
-</div>              
-</div>
-<div class="item item-divider">
-  <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-    <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
-  </h5>
-</div>
-<div id="Free" ng-if="list.event_ticket_type == 'Free'">
- <p style="color:white">Үнэгүй</p>
-</div>
-<div id="Paid" ng-if="list.event_ticket_type != 'Free'">
- <p style="color:white">Төлбөртэй</p>
-</div>
-</div>
 </ion-item>
 <ion-infinite-scroll
 on-infinite="loadMore()"
@@ -201,9 +200,7 @@ distance="1%">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
-</md-tab>
-</md-tabs md-dynamic-height>
-</md-content>
-</div>        
+      </div>
+  </div>   
 </ion-content>
 </ion-view>

@@ -1,0 +1,23 @@
+<ion-modal-view>
+<ion-header-bar style="bar bar-header bar-assertive">
+<h1 class="title" style="font-family:'m3';font-size:20px">Санал болгох</h1>
+<div class="buttons">
+	<button class="button button-clear" style="color:black;font-family:'m3';font-size:18px" ng-click="suggestclose()">Хаах</button>
+</div>
+</ion-header-bar>
+<ion-content>
+<div class="card">
+	<div class="item item-text-wrap" style="font-family:'m3';font-size:18px;text-align:justify;padding-bottom:0">
+		Хэрвээ та хэн нэгэнд <b>{{list.event_title}}</b> арга хэмжээг санал болгох бол доорх талбарт санал болгох хүнийхээ утасны дугаар эсвэл и-мэйл хаягыг оруулна уу.
+	</div>
+	<div class="item" id="suggest" style="padding-top:10px">
+		<label class="item item-input" style="border:1px solid #E5E5E5">
+			<input type="text" ng-model="user.info" placeholder="И-мэйл хаяг эсвэл утасны дугаар">
+		</label>
+		<button ng-click="suggestPerson(user)" class="button button-block" style="padding:0;background-color:#FF5700;color:white">Санал болгох</button>
+	</div>
+
+	
+</div>
+</ion-content>
+</ion-modal-view>
