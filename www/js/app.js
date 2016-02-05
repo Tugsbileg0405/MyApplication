@@ -14,7 +14,19 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
     }
   }
 })
+  setTimeout(function() {
+    $cordovaSplashscreen.hide();
+    console.log('haagdlaa');
+  }, 1000);
 
+document.addEventListener("deviceready", function(){
+    ImgCache.init(function(){
+        console.log('cache created successfully!');
+    }, function(){
+        console.log('check the log for errors');
+    });
+    navigator.splashscreen.hide();
+}, false);
  $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams) {
     $state.current = toState;
@@ -76,41 +88,40 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
 )
 
 $ionicPlatform.ready(function() {
- ImgCache.$init();
- if (window.cordova && window.cordova.plugins.Keyboard) {
-  cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-  cordova.plugins.Keyboard.disableScroll(true);
-}
-if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.style(1);
+ if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
     }
-    if (navigator.splashscreen) {
-     navigator.splashscreen.hide();
-   } 
-   $ionicPlatform.registerBackButtonAction(function(){
-    if($state.current.name == 'app.playlists'){
-      navigator.app.exitApp();
-    }
-    else {
-      navigator.app.backHistory();
-    }
-  },100)
-   if(window.Connection) {
-    if(navigator.connection.type == Connection.NONE) {
-      $ionicLoading.hide();
-      $ionicPopup.alert({
-        okType: 'button-assertive',
-        content: "Та интернетэд холбогдож байж ашиглана уу"
-      })
-      .then(function(result) {
-        if(result) {
-          $ionicLoading.hide();
+    if (window.StatusBar) {
+          // org.apache.cordova.statusbar required
+          StatusBar.style(1);
         }
-      });
+    if (navigator && navigator.splashscreen) {
+          navigator.splashscreen.hide();
     }
-  }
-});
+    $ionicPlatform.registerBackButtonAction(function(){
+      if($state.current.name == 'app.playlists'){
+        navigator.app.exitApp();
+      }
+      else {
+        navigator.app.backHistory();
+      }
+    },100)
+    if(window.Connection) {
+      if(navigator.connection.type == Connection.NONE) {
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+          okType: 'button-assertive',
+          content: "Та интернетэд холбогдож байж ашиглана уу"
+        })
+        .then(function(result) {
+          if(result) {
+            $ionicLoading.hide();
+          }
+        });
+      }
+    }
+  });
 
 })
 
@@ -118,6 +129,11 @@ if (window.StatusBar) {
 .config(function($stateProvider,$ionicNativeTransitionsProvider,CacheFactoryProvider,ImgCacheProvider,$rootScopeProvider,$translateProvider,$httpProvider,$ionicConfigProvider,$mdThemingProvider ,$urlRouterProvider,$mdGestureProvider) {
  ImgCacheProvider.setOption('debug', true);
  ImgCacheProvider.setOption('usePersistentCache', true);
+ ImgCacheProvider.setOptions({
+  debug: true,
+  usePersistentCache: true
+});
+ ImgCacheProvider.manualInit = true;
  angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
     // or more options at once
     $ionicNativeTransitionsProvider.setDefaultOptions({
@@ -131,11 +147,6 @@ if (window.StatusBar) {
         triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option
         backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back
       });
-    ImgCacheProvider.setOptions({
-      debug: true,
-      usePersistentCache: true
-    });
-    ImgCacheProvider.manualInit = true;
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.cache = false;
     $rootScopeProvider.digestTtl(10);
