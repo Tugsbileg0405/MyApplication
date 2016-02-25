@@ -2,14 +2,14 @@
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
       <button class="button-clear" ui-sref="app.playlists" style="width:100px;padding-left:0;background-color:white;color:black">
-      <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
+      <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>  
       </button>
     </ion-nav-buttons>
      <ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px" >
         Таны тасалбар:{{tickets.length}}
     </ion-nav-title>
 </ion-nav-bar>
-  <ion-content lazy-scroll >
+  <ion-content overflow-scroll='true' >
     <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
     </ion-refresher>
     <div class="list" ng-repeat="(key,ticket) in tickets | groupBy:'ticket_transaction_id'| orderBy: 'createdAt'" style="margin:0">

@@ -2,7 +2,7 @@
 <ion-nav-bar  align-title="left">
 <ion-nav-buttons side="left">
 <button class="button-clear "  ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black" >
-	<i class="icon ion-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+	<i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
 </button>
 </ion-nav-buttons>
 <ion-nav-buttons side="right">
@@ -14,8 +14,8 @@
 </ion-nav-buttons>
 </ion-nav-bar>
 <ion-content   overflow-scroll='true'  lazy-scroll  on-swipe-up="showHeader()" on-swipe-down="hideHeader()">
-
-<img class="full-image ink" id="homeImg" ng-click="showImage()" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
+<img class="full-image ink"  id="homeImg" ng-if="list.event_cover.length < 100" ng-click="showImage()" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
+<img class="full-image ink"  id="homeImg" ng-if="list.event_cover.length > 100" ng-click="showImage()"  ng-src="{{list.event_cover}}" >
 <div class="list" >
 	<div class="item item-body">
 		<h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;margin-top:0;margin-bottom:0;text-transform:lowercase">
@@ -68,16 +68,16 @@
 			</div>
 			<hr ng-if="list.event_start_date">
 		</div>
-		<div class="item " id="eventlist" ng-if="agendas[0].agenda_start_time">
+		<div class="item " id="eventlist" ng-if="list.event_start_time">
 			<div class="row" style="padding:0">
 				<div class="col col-10">
 					<i class="icon  ion-clock" style="font-size:20px;color:#FF5700"></i> 
 				</div>
 				<div class="col col-90">
-					<span id="list" >{{agendas[0].agenda_start_time | date:'HH:mm'}} </span>
+					<span id="list" >{{list.event_start_time | date:'HH:mm'}} </span>
 				</div>
 			</div>
-			<hr ng-if="agendas[0].agenda_start_time">
+			<hr ng-if="list.event_start_time">
 		</div>
 		<div class="item item-text-wrap" id="eventlist">
 			<div class="row"  style="padding:0">
@@ -91,12 +91,12 @@
 			<hr ng-if="list.event_location">
 		</div>
 		<div class="item item-text-wrap" id="eventlist" ng-if="list.event_owner !== undefined">
-			<div class="row" style="padding:0">
+			<div class="row" style="padding:0" ng-repeat="owner in list.event_owner">
 				<div class="col col-10">
 					<i class="icon ion-ios-briefcase-outline assertive" style="font-size:22px;color:#FF5700"></i>
 				</div>
 				<div class="col col-90">
-					<span id="list" >Зохион байгуулагч - {{list.event_owner.organization_fullname}}</span>
+					<span id="list" >Зохион байгуулагч - {{owner.organization_fullname}}</span>
 				</div>
 
 			</div>

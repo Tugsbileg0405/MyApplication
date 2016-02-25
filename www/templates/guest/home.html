@@ -11,9 +11,6 @@
 </div>
 </ion-header>
 <ion-content overflow-scroll='true' class="has-header">
-<ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
-</ion-refresher>
-
 <ion-slide-box on-slide-changed="slideChanged($index)"  auto-play="true" does-continue="true" show-pager="false" id="slider">
 <ion-slide>
 <div><img  src="img/slider/01.png" height="300" width="400"></div>
@@ -65,8 +62,8 @@
       <div class="animate-switch" ng-switch-default>
        <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="#/guest/guestdetail/{{list.id}}" style="width:105%;margin-left:-2%" >
        <div class="list card" id="homeList">
-
-        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+         <img ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img   ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
         <div class="item tem-text-wrap">
          <h3 style="font-size:18px;font-family: 'm3';font-weight:bold">{{list.event_title}}</h3>
          <div class="row" style="padding:0 0 5px 0">
@@ -112,7 +109,8 @@
        <ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="#/guest/guestdetail/{{list.id}}" style="width:105%;margin-left:-2%" >
        <div class="list card"  id="homeList">
 
-        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
+          <img ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img   ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
         <div class="item tem-text-wrap">
           <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
           <div class="row" style="padding:0 0 5px 0">
@@ -155,10 +153,11 @@
 </div>
       </div>
       <div class="animate-switch" ng-switch-when="2">
-        <ion-item ng-repeat="list in lists | orderBy:'createdAt':true| limitTo:limit" href="#/guest/guestdetail/{{list.id}}" style="width:105%;margin-left:-2%" goNative>
+        <ion-item ng-repeat="list in lists | orderBy:'-createdAt'" href="#/guest/guestdetail/{{list.id}}" style="width:105%;margin-left:-2%" goNative>
         <div class="list card"  id="homeList">
 
-          <img ng-cache ng-src=" {{backsite}}/{{list.event_cover}}"  id="homeImg"   class="full-image">
+         <img ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img   ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
           <div class="item tem-text-wrap">
            <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
            <div class="row" style="padding:0 0 5px 0">
@@ -191,16 +190,16 @@
    </div>
  </div>
 </ion-item>
-<ion-infinite-scroll
-on-infinite="loadMore()"
-distance="1%">
-</ion-infinite-scroll>
 <div class="card" ng-if="lists.length == 0">
  <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
+<ion-infinite-scroll 
+on-infinite="loadMore()"
+distance="1%">
+</ion-infinite-scroll>
       </div>
-  </div>  
+  </div>   
 </ion-content>
 </ion-view>

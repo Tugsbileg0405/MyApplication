@@ -1,0 +1,49 @@
+  <ion-modal-view>
+    <ion-header-bar>
+      <h1 class="title" style="font-family:'m3';font-size:20px">Засварлах</h1>
+      <div class="buttons">
+      	<button class="button button-clear" style="color:black;font-size:14px" ng-click="editCloseModal()">Хаах</button>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+   			<form>
+		<div class=" card " id="createEvent">
+			<div class="item item-divider" style="border:none;color:#FF5700;font-size:16px;background-color:#f8f8f8">
+				Үндсэн мэдээлэл:
+			</div>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Арга хэмжээний нэр:</span>
+				<input type="text"  placeholder="Арга хэмжээний нэр" ng-model="event.event_title">
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Байршил:</span>
+				<input type="text"  placeholder="Байршил" ng-model="event.event_location">
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Тайлбар:</span>
+			</label>
+			<label class="item item-input" >
+				<textarea ng-model="event.event_description" rows="4" style="border-bottom:1px solid #FF5700;background-color:#f8f8f8"></textarea>
+			</label>
+			<br>
+			<div class="item item-divider" style="border:none;color:#FF5700;font-size:16px;background-color:#f8f8f8">
+				Хугацааны мэдээлэл:
+			</div>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">Эхлэх өдөр:</span>
+					<input type="date" ng-model="event.event_start_date">
+				</label>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label" >Дуусах өдөр:</span>
+					<input type="date" ng-model="event.event_end_date">
+				</label>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label" >Эхлэх цаг:</span>
+					<input type="time" ng-model="event.event_start_time">
+				</label>
+			<br>
+				<button id="addEvent" ng-click="editEvent(event)">Засварлах</button>
+		</div>
+	</form>
+    </ion-content>
+  </ion-modal-view>

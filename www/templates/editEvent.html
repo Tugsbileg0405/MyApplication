@@ -1,0 +1,77 @@
+<ion-view  >
+<ion-nav-bar align-title="right">
+    <ion-nav-buttons side="left" >
+    <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+     <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+    </button> 
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+    <button class="button-clear" ui-sref="app.single({playlistId:eventId})" style="color:black;padding:6px 15px 6px 15px;height:100%;font-size:23px">
+     <i class="fa fa-eye"></i>
+    </button> 
+    <button class="button-clear" ng-click="doRefresh()" style="color:black;padding:6px 15px 6px 15px;height:100%;font-size:23px">
+      <i class="fa fa-refresh"></i>
+    </button> 
+    </ion-nav-buttons>
+</ion-nav-bar>
+	<ion-content overflow-scroll='true' class="has-header has-footer">
+   <ti-segmented-control id="segment" on-select="buttonClicked($index)" style="width:100%;padding:5px 5px 5px 5px">
+  <ti-segmented-control-button class="button-assertive" title="'Ажилчид'" selected></ti-segmented-control-button>
+  <ti-segmented-control-button class="button-assertive" title="'Оролцогчид'" ></ti-segmented-control-button>
+</ti-segmented-control>
+ <div class="animate-switch-container"
+    ng-switch on="index">
+      <div class="animate-switch" ng-switch-default >
+           <div class="list" ng-repeat="worker in workers" style="margin:0">
+             <a class="item item-thumbnail-left" style="height:100px;border-bottom:1px solid #f8f8f8" href="">
+              <img fallback-src="{{backsite}}/{{worker.person_profile_img}}" ng-if="worker.person_profile_img" src="{{worker.person_profile_img}}">
+              <img  ng-if="!worker.person_profile_img" src="img/default.png">
+              <p style="margin-top:10px">{{worker.person_firstname}} {{worker.person_lastname}}</p>
+              <p  ng-if="worker.person_cell_number">{{worker.person_cell_number}}</p>
+              <span ng-if="is_Joined == false" id="addButton" ng-click="addWorker(worker)"><i class="fa fa-share"></i> Add</span>
+              <span ng-if="is_Joined == true" id="addButton" ><i class="fa fa-share"></i> Sent</span>
+            </a>
+          </div>
+          <div class="card" ng-if="workers.length == 0">
+            <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
+              Бүртгэлтэй ажилчид байхгүй байна.
+            </div>
+          </div>
+          <div class="card" ng-if="myOrgs.length == 0">
+            <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
+              Байгууллага бүртгүүлээгүй байна.
+            </div>
+          </div>
+      </div>
+      <div class="animate-switch" ng-switch-when="1" >
+        <div class="list" ng-repeat="user in users" style="margin:0">
+         <a class="item item-thumbnail-left" style="height:100px;border-bottom:1px solid #f8f8f8" href="">
+          <img fallback-src="{{backsite}}/{{user.ticket_user.person_profile_img}}" ng-if="user.ticket_user.person_profile_img" src="{{user.ticket_user.person_profile_img}}">
+          <img  ng-if="!user.ticket_user.person_profile_img" src="img/default.png">
+          <p style="margin-top:10px">{{user.ticket_fullname}}</p>
+          <p  >Tax ID: {{user.ticket_short_id}}</p>
+          <p>Amount: {{user.ticket_countof}}</p>
+          <span id="urilgaButton" ng-if="user.ticket_type == 'Urilga'">Urilga</span>
+          <span id="paidButton" ng-if="user.ticket_type == 'Paid'">Paid</span>
+          <span id="freeButton" ng-if="user.ticket_type == 'Free'">Free</span>
+        </a>
+      </div>
+       <div class="card" ng-if="users.length == 0">
+            <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
+              Оролцогчид байхгүй байна.
+            </div>
+          </div>
+      </div>
+    </div>
+   </ion-content>
+   <div class="bar bar-footer" id="editFooter">
+        <div class="tabs tabs-light tabs-background-light" >
+          <a class="tab-item active" ng-click="editOpenModal()" style="color:#ff5700;font-size:17px;padding:0;margin-right:8px;border:1px solid;border-radius:5px;height:45px">
+           <i class="fa fa-cogs"></i> Засварлах
+          </a>
+          <a class="tab-item active" ui-sref="app.buyticket({playlistId:eventId})" style="border:1px solid;color:#00CC52;font-size:17px;padding:0;border-radius:5px;height:45px">
+           <i class="fa fa-ticket"></i> Тасалбар авах
+          </a>
+        </div>
+  </div>
+</ion-view>

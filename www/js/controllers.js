@@ -206,70 +206,83 @@ $scope.logout = function(){
 };
 })
 
-.controller('tab1Ctrl',function($scope){
-
-})
-.controller('PlaylistsCtrl', function($window,ImgCache,$rootScope,$cacheFactory,$ionicSideMenuDelegate,$scope,onlineStatus,$rootScope,$ionicPopup,$cordovaNetwork,$timeout,$http,$ionicLoading,$localStorage,$ionicScrollDelegate) {
+.controller('PlaylistsCtrl', function($window,$resource,myData,$cacheFactory,$ionicModal,ImgCache,$rootScope,$cacheFactory,$ionicSideMenuDelegate,$scope,onlineStatus,$rootScope,$ionicPopup,$cordovaNetwork,$timeout,$http,$ionicLoading,$localStorage,$ionicScrollDelegate) {
  $scope.onlineStatus = onlineStatus;
  $scope.limit = 5;
  $scope.toggleLeftSideMenu = function() {
   $ionicSideMenuDelegate.toggleLeft();
 };
-
 $scope.clear = function(){
   $scope.search = '';
 }
-$ionicLoading.show({
-  content: 'Loading',
-  animation: 'fade-in'
-});
 $scope.index = 0;
-$scope.buttonClicked = function(index){
-  $scope.index = index;
-  $scope.$apply();
-}
 $http.get("http://www.urilga.mn:1337/category?____token=dXJpbGdhbW5BY2Nlc3M=").success(function (res){
   $localStorage.categoryEvent = res;
 })
-
-$scope.doRefresh = function() {
- if ($scope.onlineStatus.onLine == true) {
-   $timeout (function(){
-    $http.get("http://www.urilga.mn:1337/event?event_isActive=true&____token=dXJpbGdhbW5BY2Nlc3M=").success(function (response) {
-      $scope.lists = response;
-      $localStorage.events = {};
-      $localStorage.events.all = [];
-      $localStorage.events.today = [];
-      $localStorage.events.tomorrow = [];
-      $localStorage.events.all = $scope.lists;
+$scope.doRefresh = function(){
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in'
+  });
+    $scope.lists = [];
+    $scope.events = {};
+    $scope.events.tomorrow_event = [];
+    $scope.events.today_event = [];
+    $http.get('http://www.urilga.mn:1337/todayevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
       $ionicLoading.hide();
-      var today = new Date();
-      var todayDate = today.toDateString();
-      var tomorrow = today.setDate(today.getDate()+1);
-      var tomorrow_date = new Date(tomorrow).toDateString();
-      $scope.events = {};
-      $scope.events.today_event = [];
-      $scope.events.tomorrow_event = [];
-      $scope.events.upcoming_event = [];
-      angular.forEach($scope.lists,function(item){
-        var event_date = new Date(item.event_start_date);
-        $scope.event_date = event_date.toDateString();
-        var event_mill = event_date.valueOf();
-        if(todayDate == $scope.event_date){
-          $scope.events.today_event.push(item);
-          $localStorage.events.today = $scope.events.today_event;
-        }
-        else if (tomorrow_date == $scope.event_date){
-          $scope.events.tomorrow_event.push(item);
-          $localStorage.events.tomorrow = $scope.events.tomorrow_event;
-        }
+      angular.forEach(response,function(event){
+        var mydata = {};
+        event.event_isLiked = false;
+        mydata.event_info = event.id;
+        mydata.liked_by = $localStorage.userdata.user.person.id;
+        $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+mydata.liked_by+'&event_info='+mydata.event_info+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+          if(res.length > 0){
+            event.event_isLiked = true;
+          }
+        })
+        $scope.events.today_event.push(event);
       })
-    }) 
-ImgCache.$init();
-$scope.$broadcast('scroll.refreshComplete');
-},1000);
+    }).finally(function(){
+     ImgCache.$init();
+     $scope.$broadcast('scroll.refreshComplete');
+   })
+    $http.get('http://www.urilga.mn:1337/tomorrowevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+      $ionicLoading.hide();
+      angular.forEach(response,function(event){
+        event.event_isLiked = false;
+        var person_id = $localStorage.userdata.user.person.id;
+        $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+event.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+          if(res.length > 0) {
+            event.event_isLiked = true;
+          }
+        })
+        $scope.events.tomorrow_event.push(event);
+      })
+    }).finally(function(){
+     ImgCache.$init();
+     $scope.$broadcast('scroll.refreshComplete');
+   })
+    $http.get('http://www.urilga.mn:1337/findevent?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+      $ionicLoading.hide();
+      angular.forEach(response,function(event){
+        event.event_isLiked = false;
+        var person_id = $localStorage.userdata.user.person.id;
+        $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+event.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+          if(res.length > 0) {
+            event.event_isLiked = true;
+          }
+        })
+        $scope.lists.push(event);
+      })
+    })
+    .finally(function(){
+     ImgCache.$init();
+     $scope.$broadcast('scroll.refreshComplete');
+   })
 }
-else if($scope.onlineStatus.onLine == false){
+$window.onload = $scope.doRefresh();
+if($scope.onlineStatus.onLine == false){
+  $ionicLoading.hide();
   var alertPopup = $ionicPopup.alert({
    okType :'button-assertive',
    template: 'Интернет холболтоо шалгана уу'
@@ -278,31 +291,83 @@ else if($scope.onlineStatus.onLine == false){
    $scope.$broadcast('scroll.refreshComplete');
  });
 }
-}
-$scope.load = function(){
-  if($localStorage.events){
-    $ionicLoading.hide();
-    $scope.events = {};
-    $scope.events.tomorrow_event = [];
-    $scope.events.today_event = [];
-    $scope.lists = $localStorage.events.all;
-    $scope.events.tomorrow_event = $localStorage.events.tomorrow;
-    $scope.events.today_event = $localStorage.events.today;
-    $scope.doRefresh();
-  }
-  else {
-    $scope.doRefresh();
-  }
-}
-
-$window.onload = $scope.load();
+var i=1; 
 $scope.loadMore = function() {
- if($localStorage.events.all.length > 5){
-  $scope.limit += 5;
-  $scope.$broadcast('scroll.infiniteScrollComplete');
-}
+  i=i+1;
+  $http.get('http://www.urilga.mn:1337/findevent?page_number='+i+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+    angular.forEach(res,function(item){
+      item.event_isLiked = false;
+      var person_id =$localStorage.userdata.user.person.id;
+      $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+item.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+        if(res.length > 0){
+          item.event_isLiked = true;
+        }
+      })
+      $scope.lists.push(item);
+    })
+    $ionicLoading.hide();
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  })
 }
 
+$scope.buttonClicked = function(index){
+  $scope.index = index;
+//   if($scope.index == 0){
+//    $http.get('http://www.urilga.mn:1337/todayevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+//     $ionicLoading.hide();
+//     $scope.today = [];
+//     angular.forEach(response,function(event){
+//       var mydata = {};
+//       event.event_isLiked = false;
+//       mydata.event_info = event.id;
+//       mydata.liked_by = $localStorage.userdata.user.person.id;
+//       $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+mydata.liked_by+'&event_info='+mydata.event_info+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+//         if(res.length > 0){
+//           event.event_isLiked = true;
+//         }
+//       })
+//       $scope.today.push(event);
+//     })
+//    var test = $scope.events.today_event.filter(function(obj){
+     
+//    });
+//    console.log(test);
+//   })
+//  }
+//  else if ($scope.index == 1){
+//   $http.get('http://www.urilga.mn:1337/tomorrowevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+//     $ionicLoading.hide();
+//     $scope.tomorrow = [];
+//     angular.forEach(response,function(event){
+//       event.event_isLiked = false;
+//       var person_id = $localStorage.userdata.user.person.id;
+//       $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+event.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+//         if(res.length > 0) {
+//           event.event_isLiked = true;
+//         }
+//       })
+//       $scope.tomorrow.push(event);
+//     })
+//   })
+// }
+// else {
+//  $http.get('http://www.urilga.mn:1337/findevent?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+//   $ionicLoading.hide();
+//   $scope.top = [];
+//   angular.forEach(response,function(event){
+//     event.event_isLiked = false;
+//     var person_id = $localStorage.userdata.user.person.id;
+//     $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+event.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+//       if(res.length > 0) {
+//         event.event_isLiked = true;
+//       }
+//     })
+//     $scope.top.push(event);
+//   })
+// })
+// }
+$scope.$apply();
+}
 $scope.slideChanged = function(index) {
   $scope.slideIndex = index;
 }
@@ -310,16 +375,120 @@ $scope.scrollTop = function() {
   $ionicScrollDelegate.scrollTop();
 };
 
+$scope.likeEvent = function(data){
+  var mydata = {};
+  mydata.event_info = data.id;
+  mydata.liked_by = $localStorage.userdata.user.person.id;
+  mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+  $http.post('http://www.urilga.mn:1337/eventlike',mydata).success(function (res){
+    console.log('amjilttai');
+  })
+  data.event_isLiked = true;
+}
+$scope.unlikeEvent = function(data){
+  var event_id = data.id;
+  var person_id = $localStorage.userdata.user.person.id;
+  $http.get("http://www.urilga.mn:1337/eventlike?event_info="+event_id+"&liked_by="+person_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response) {
+   var id = response[0].id;
+   var token = 'dXJpbGdhbW5BY2Nlc3M=';
+   $http.delete("http://www.urilga.mn:1337/eventlike/"+id+"?____token="+token).success(function (response){
+    if(response.state == 'OK'){
+      console.log('deleted');
+      $scope.liker_function = 0;
+    }
+  })
+ });
+  data.event_isLiked = false;
+}
+$ionicModal.fromTemplateUrl('templates/suggest.html', {
+  scope: $scope,
+  animation: 'slide-in-up'
+}).then(function(smodal) {
+  $scope.suggestmodal = smodal;
+});
 
-// $scope.showHeader = function(){
-//   $('#header').fadeOut();
-// };
-
-// $scope.hideHeader =function(){
-//   $('#header').fadeIn();
-// }
-
-
+$scope.suggest = function(data) {
+  $scope.list = data;
+  $scope.suggestmodal.show();
+};
+$scope.suggestclose = function() {
+  $scope.suggestmodal.hide();
+};
+$scope.suggestPerson = function(data){
+ if(!data){
+  var alertPopup = $ionicPopup.alert({
+    okType: 'button-assertive',
+    template: 'Талбарын утгыг бөглөнө үү'
+  });
+}
+else {
+  if(isNaN(data.info)){
+    var invitedata = {};
+    invitedata.email = data.info;
+    invitedata.event = $scope.list.id;
+    invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in'
+    });
+    myData.eventInviteByEmail(invitedata).success(function (res){
+      if(res){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-balanced',
+          template: 'Амжилттай илгээлээ'
+        })
+        alertPopup.then(function(res) {
+          $scope.suggestclose();
+        });
+      }
+      else {
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-assertive',
+          template: 'Амжилтгүй'
+        });
+      }
+    })
+    .error(function(err){
+      $ionicLoading.hide();
+    })
+  }
+  else {
+    var invitedata = {};
+    invitedata.phonenumber = data.info;
+    invitedata.event = $scope.list.id;
+    invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in'
+    });
+    myData.eventInviteByPhone(invitedata).success(function (res){
+      if(res){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-balanced',
+          template: 'Амжилттай илгээлээ'
+        })
+        alertPopup.then(function(res) {
+          $scope.suggestclose();
+        });
+      }
+      else {
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-assertive',
+          template: 'Амжилтгүй'
+        });
+      }
+    })
+    .error(function(err){
+      $ionicLoading.hide();
+      console.log(err);
+    })
+  }
+}
+}
 })
 
 .controller('ProfileCtrl',function($scope,$state,$ionicLoading,onlineStatus,$ionicPopup,$http,$localStorage,$window,$state,$timeout){
@@ -386,146 +555,166 @@ $scope.scrollTop = function() {
     })
 
 .controller('buyTicketCtrl',function($scope,$ionicHistory,$cordovaToast,onlineStatus,$localStorage,$stateParams,$http,$window,$state,$timeout,$ionicLoading,$ionicPopup){
-  $scope.events = $localStorage.events.all;
-  angular.forEach($scope.events, function(event){
-    if(event.id == $stateParams.playlistId){
-      $scope.event_info = event;
-      $scope.event_ticket = {};
-      $scope.event_ticket.free = [];
-      $scope.event_ticket.paid = [];
-      $scope.event_ticket.urilga = [];
-      $scope.myevent = false;
-      if($scope.event_info.event_created_by.id == $localStorage.userdata.user.person.id){
-        $scope.myevent = true
-      }
-      angular.forEach(event.event_ticket_types,function(item){
-        if(item.type == "Paid"){
-          $scope.event_ticket.paid.push(item);
-        }
-        if(item.type == "Free"){
-          $scope.event_ticket.free.push(item);
-        }
-        if(item.type == "Urilga"){
-          $scope.event_ticket.urilga.push(item);
-        }
-      });
-    }
-  })
-
-
-  var user_id = $localStorage.userdata.user.person.id;
-  $scope.ticket_counter=1;
-  $scope.add = function(){
-    $scope.ticket_counter += 1;
-  };
-  $scope.sub = function(){
-    if($scope.ticket_counter != 1){
-      $scope.ticket_counter -= 1;
-    }
-  };
-
-  $scope.ticket = {};
-  $scope.ticket.ticket_fullname = "";
-  $scope.ticket.ticket_email="";
-  $scope.ticket.ticket_phonenumber="";
-
-  $scope.suggest = function(ticket){
-    console.log('checked')
-    $scope.ticket.ticket_fullname = $localStorage.userdata.user.person.person_firstname + ' '+ $localStorage.userdata.user.person.person_lastname;
-    $scope.ticket.ticket_email =$localStorage.userdata.user.person.person_email;
-    $scope.ticket.ticket_phonenumber = $localStorage.userdata.user.person.person_cell_number;
+  // $scope.events = $localStorage.events.all;
+  // angular.forEach($scope.events, function(event){
+  //   if(event.id == $stateParams.playlistId){
+  //     $scope.event_info = event;
+  //     $scope.event_ticket = {};
+  //     $scope.event_ticket.free = [];
+  //     $scope.event_ticket.paid = [];
+  //     $scope.event_ticket.urilga = [];
+  //     $scope.myevent = false;
+  //     if($scope.event_info.event_created_by.id == $localStorage.userdata.user.person.id){
+  //       $scope.myevent = true
+  //     }
+  //     angular.forEach(event.event_ticket_types,function(item){
+  //       if(item.type == "Paid"){
+  //         $scope.event_ticket.paid.push(item);
+  //       }
+  //       if(item.type == "Free"){
+  //         $scope.event_ticket.free.push(item);
+  //       }
+  //       if(item.type == "Urilga"){
+  //         $scope.event_ticket.urilga.push(item);
+  //       }
+  //     });
+  //   }
+  // })
+$scope.myevent = false;
+$http.get('http://www.urilga.mn:1337/event/'+$stateParams.playlistId).success(function(res){
+  $scope.event_info = res;
+  $scope.event_ticket = {};
+  $scope.event_ticket.free = [];
+  $scope.event_ticket.paid = [];
+  $scope.event_ticket.urilga = [];
+  if($scope.event_info.event_created_by.id == $localStorage.userdata.user.person.id){
+   $scope.myevent = true;
+ }
+ angular.forEach(res.event_ticket_types,function(item){
+  if(item.type == "Paid"){
+    $scope.event_ticket.paid.push(item);
   }
-
-  $scope.clear = function(ticket){
-    console.log('clear');
-    ticket.ticket_fullname = "";
-    ticket.ticket_email = "";
-    ticket.ticket_phonenumber = "";
-  };
-  
-  $scope.check = function(ticket){
-    if($scope.isChecked.checked ==true){
-      $scope.suggest(ticket);
-    }
-    else {
-      $scope.clear(ticket);
-    }
+  if(item.type == "Free"){
+    $scope.event_ticket.free.push(item);
   }
-  $timeout(function(){
-    $scope.check();
-  },1000);
+  if(item.type == "Urilga"){
+    $scope.event_ticket.urilga.push(item);
+  }
+})
+}).finally(function(){
+  $ionicLoading.hide();
+})
+var user_id = $localStorage.userdata.user.person.id;
+$scope.ticket_counter=1;
+$scope.add = function(){
+  $scope.ticket_counter += 1;
+};
+$scope.sub = function(){
+  if($scope.ticket_counter != 1){
+    $scope.ticket_counter -= 1;
+  }
+};
 
-  $scope.isChecked = {checked: true};
-  $scope.onlineStatus =onlineStatus;
+$scope.ticket = {};
+$scope.ticket.ticket_fullname = "";
+$scope.ticket.ticket_email="";
+$scope.ticket.ticket_phonenumber="";
+$scope.isChecked = {checked: true};
+$scope.suggest = function(ticket){
+  console.log('checked')
+  $scope.ticket.ticket_fullname = $localStorage.userdata.user.person.person_firstname + ' '+ $localStorage.userdata.user.person.person_lastname;
+  $scope.ticket.ticket_email =$localStorage.userdata.user.person.person_email;
+  $scope.ticket.ticket_phonenumber = $localStorage.userdata.user.person.person_cell_number;
+}
+
+$scope.clear = function(ticket){
+  console.log('clear');
+  ticket.ticket_fullname = "";
+  ticket.ticket_email = "";
+  ticket.ticket_phonenumber = "";
+};
+
+$scope.check = function(ticket){
+  if($scope.isChecked.checked ==true){
+    $scope.suggest(ticket);
+  }
+  else {
+    $scope.clear(ticket);
+  }
+}
+$window.onload = $scope.check();
+
+
+$scope.onlineStatus =onlineStatus;
 
 
 
-  $scope.buyTicket = function(ticket){
-    if($scope.onlineStatus.onLine == true){
-     $ionicLoading.show({
-      content: 'Loading',
-      animation: 'fade-in'
-    });
-     $scope.mydata = ticket;
-     if($scope.ticket_counter > 1){
-       $scope.mydata.ticket_fullname = "";
-     }
-     var etype = JSON.parse(ticket.event_ticket_type);
-     if(etype.type == 'Urilga'){
-      if(etype.urilga_type == undefined){
-        $scope.mydata.ticket_urilga_type = 'basic';
-      }
-      else {
-       $scope.mydata.ticket_urilga_type = etype.urilga_type;
-     }
+$scope.buyTicket = function(ticket){
+  if($scope.onlineStatus.onLine == true){
+   $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in'
+  });
+   $scope.mydata = ticket;
+   if($scope.ticket_counter > 1){
+     $scope.mydata.ticket_fullname = "";
    }
-   $scope.mydata.ticket_type = etype.type;
-   $scope.mydata.ticket_type_model = etype.id;
-   $scope.mydata.ticket_description = etype.description;
-   $scope.mydata.ticket_price = etype.price;
-   $scope.mydata.ticket_countof = $scope.ticket_counter;
-   $scope.mydata.ticket_created_by = user_id;
-   $scope.mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
-   $http.get('http://www.urilga.mn:1337/person?person_email='+ticket.ticket_email+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-    person_info = response[0];
-    if(person_info) {
-      $scope.mydata.ticket_event = $stateParams.playlistId;
-      $scope.mydata.ticket_user_email = person_info.person_email;
-      $scope.mydata.ticket_user_name = person_info.person_lastname;
+   var etype = JSON.parse(ticket.event_ticket_type);
+   if(etype.type == 'Urilga'){
+    if(etype.urilga_type == undefined){
+      $scope.mydata.ticket_urilga_type = 'basic';
     }
     else {
-      $scope.mydata.ticket_event = $stateParams.playlistId;
-      $scope.mydata.ticket_user_email = $localStorage.userdata.user.person.person_email;
-      $scope.mydata.ticket_user_name  = $localStorage.userdata.user.person.person_lastname;
-    }
-    $http.post('http://www.urilga.mn:1337/ticket',$scope.mydata).success(function (response){
-     if(response.state){
-      $ionicLoading.hide();
-      var popup = $ionicPopup.alert({
-        template:'Тасалбар авах боломжгүй',
-        okType :'button-assertive'
-      })
-    }
-    else{
-      $scope.ticket_id = response.ticket_transaction_id;
-      $ionicLoading.hide();
-      var popup = $ionicPopup.alert({
-        template:'Худалдан авалт амжилттай боллоо.',
-        okType :'button-balanced'
-      })
-      popup.then(function() {
-        $ionicLoading.show({
-          content: 'Loading',
-          animation: 'fade-in'
-        });
+     $scope.mydata.ticket_urilga_type = etype.urilga_type;
+   }
+ }
+ $scope.mydata.ticket_type = etype.type;
+ $scope.mydata.ticket_type_model = etype.id;
+ $scope.mydata.ticket_description = etype.description;
+ $scope.mydata.ticket_price = etype.price;
+ $scope.mydata.ticket_countof = $scope.ticket_counter;
+ $scope.mydata.ticket_created_by = user_id;
+ $scope.mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+ $http.get('http://www.urilga.mn:1337/person?person_email='+ticket.ticket_email+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+  person_info = response[0];
+  if(person_info) {
+    $scope.mydata.ticket_event = $stateParams.playlistId;
+    $scope.mydata.ticket_user_email = person_info.person_email;
+    $scope.mydata.ticket_user_name = person_info.person_lastname;
+  }
+  else {
+    $scope.mydata.ticket_event = $stateParams.playlistId;
+    $scope.mydata.ticket_user_email = $localStorage.userdata.user.person.person_email;
+    $scope.mydata.ticket_user_name  = $localStorage.userdata.user.person.person_lastname;
+  }
+  $http.post('http://www.urilga.mn:1337/ticket',$scope.mydata).success(function (response){
+   if(response.state){
+    $ionicLoading.hide();
+    var popup = $ionicPopup.alert({
+      template:'Тасалбар авах боломжгүй',
+      okType :'button-assertive'
+    })
+  }
+  else{
+    $scope.ticket_id = response.ticket_transaction_id;
+    $ionicLoading.hide();
+    var popup = $ionicPopup.alert({
+      template:'Худалдан авалт амжилттай боллоо.',
+      okType :'button-balanced'
+    })
+    popup.then(function() {
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in'
+      });
             // $http.post('http://www.urilga.mn:1337/ticketmessage',{ticket:$scope.ticket_id}).success(function (res){
              $state.go('app.buyticketImg',{eventId:$scope.ticket_id});
              $ionicLoading.hide();
 
            });
-    }
-  })
-  });
+  }
+})
+});
 
 }
 else {
@@ -548,14 +737,16 @@ $scope.goBack = function(){
 .controller('myEventCtrl',function($scope,ImgCache,$localStorage,$interval,$ionicPopup,onlineStatus,$ionicLoading,$http,$window,$state,$timeout){
 
 
+
  $scope.makePrivate = function(data){
   var mydata = {};
   mydata.id = data.id;
   mydata.event_isActive = false;
   mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
   $http.put('http://www.urilga.mn:1337/event',mydata).success(function (res){
-    if(status == true){
+    if(res.status == true){
       console.log('amjilttai');
+      $scope.doRefresh();
     }
   })
 }
@@ -565,8 +756,9 @@ $scope.makePublic = function(data){
  mydata.event_isActive = true;
  mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
  $http.put('http://www.urilga.mn:1337/event',mydata).success(function (res){
-  if(status == true){
+  if(res.status == true){
     console.log('amjilttai');
+    $scope.doRefresh();
   }
 })
 }
@@ -574,28 +766,28 @@ $ionicLoading.show({
   content: 'Loading',
   animation: 'fade-in'
 });
+var user_id = $localStorage.userdata.user.person.id;
 $scope.onlineStatus = onlineStatus;
 $scope.doRefresh = function(){
   if($scope.onlineStatus.onLine == true){
-    $timeout(function(){
-     $http.get('http://www.urilga.mn:1337/event?event_created_by='+user_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-      $scope.myEvents = response;
-      $localStorage.myEvents = response;
-      $ionicLoading.hide();
-    })
-     ImgCache.$init();
-     $scope.$broadcast('scroll.refreshComplete');
-   },1000);
-  }
-  else {
-    var alertPopup = $ionicPopup.alert({
-     okType :'button-assertive',
-     template: 'Интернет холболтоо шалгана уу'
-   });
-    alertPopup.then(function(res) {
-     $scope.$broadcast('scroll.refreshComplete');
-   });
-  }
+   $http.get('http://www.urilga.mn:1337/event?event_created_by='+user_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+    $scope.myEvents = response;
+    $localStorage.myEvents = response;
+  }).finally(function(){
+   ImgCache.$init();
+   $scope.$broadcast('scroll.refreshComplete');
+   $ionicLoading.hide();
+ })
+}
+else {
+  var alertPopup = $ionicPopup.alert({
+   okType :'button-assertive',
+   template: 'Интернет холболтоо шалгана уу'
+ });
+  alertPopup.then(function(res) {
+   $scope.$broadcast('scroll.refreshComplete');
+ });
+}
 }
 $scope.onLoad = function (){
   if($localStorage.myEvents){
@@ -611,12 +803,34 @@ $window.onload = $scope.onLoad();
 $scope.limit = 5;
 $scope.loadMoreData = function() {
  if($localStorage.myEvents.length > 5){
-  $scope.limit += 5;
-  $scope.$broadcast('scroll.infiniteScrollComplete');
-}
+  // if($scope.myEvents.length > 5){ 
+    $scope.limit += 5;
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  }
 }
 
-var user_id = $localStorage.userdata.user.person.id;
+ $scope.showConfirm = function(data) {
+   var confirmPopup = $ionicPopup.confirm({
+     okType: 'button-assertive',
+     okText: 'Тийм',
+     cancelText: 'Үгүй',
+     template: 'Арга хэмжээг устгахдаа итгэлтэй байна уу?'
+   });
+   confirmPopup.then(function(res) {
+     if(res) {
+       var mydata = {};
+       mydata.id = data.id;
+       mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+       $http.delete('http://www.urilga.mn:1337/event/'+data.id+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+        if(res.state == 'OK'){
+          $scope.doRefresh();
+        }
+       })
+     } else {
+       console.log('You are not sure');
+     }
+   });
+ };
 
 
 $scope.goBack = function(){
@@ -629,6 +843,7 @@ $scope.goBack = function(){
   content: 'Loading',
   animation: 'fade-in'
 });
+ var user_id = $localStorage.userdata.user.person.id;
  $scope.onlineStatus = onlineStatus;
  $scope.doRefresh = function(){
   if($scope.onlineStatus.onLine == true){
@@ -670,7 +885,6 @@ $scope.loadMoreData = function() {
   $scope.$broadcast('scroll.infiniteScrollComplete');
 }
 }
-var user_id = $localStorage.userdata.user.person.id;
 $scope.goBack = function(){
   $state.go('app.playlists');
 };
@@ -716,7 +930,7 @@ $scope.goBack = function(){
 };
 })
 
-.controller('CategoryItemCtrl', function($ionicPopover,ImgCache,$rootScope,$scope,$state,$ionicLoading,onlineStatus,$localStorage,$ionicPopup,$timeout,$http,$stateParams,$window) {     
+.controller('CategoryItemCtrl', function($ionicPopover,$ionicModal,myData,ImgCache,$rootScope,$scope,$state,$ionicLoading,onlineStatus,$localStorage,$ionicPopup,$timeout,$http,$stateParams,$window) {     
 
  $ionicPopover.fromTemplateUrl('templates/filter.html', {
   scope: $scope,
@@ -740,6 +954,10 @@ $scope.sortType = [
 { text:"Бүх арга хэмжээ", eventType: "all"},
 { text:"Үнэгүй", eventType: "free"},
 { text:"Төлбөртэй", eventType: "paid"}
+];
+$scope.sortDate = [
+{text:"Орсон өдөр", dateType: "createDate"},
+{text:"Эхлэх хугацаа", dateType: "orderDate"}
 ];
 $scope.sortByType = function(data){
   delete data.name;
@@ -771,11 +989,11 @@ $scope.sortByName = function(data){
 $scope.sortByDate = function(data){
   delete data.eventType;
   delete data.name;
-  if(data.date == 'downDate'){
-    $scope.sortType = 'event_start_date';
-    $scope.sortReverse = false;
+  if(data.dateType == 'createDate'){
+    $scope.sortType = 'createdAt';
+    $scope.sortReverse = true;
   }
-  else if (data.date == 'upDate'){
+  else if (data.dateType== 'orderDate'){
     $scope.sortType = 'event_start_date';
     $scope.sortReverse = true;
   }
@@ -809,6 +1027,7 @@ $scope.onLoad = function(){
         eventType.free = [];
         eventType.paid = [];
         angular.forEach(result,function(event){
+          event.event_isLiked = false;
           if(event.event_isActive == true){
             $scope.events.push(event);
           }
@@ -819,8 +1038,15 @@ $scope.onLoad = function(){
             eventType.free.push(event)
           }
           $localStorage.eventType = eventType;
+        //   var person_id =  $localStorage.userdata.user.person.id;
+        //   $http.get('http://www.urilga.mn:1337/eventlike?liked_by='+person_id+'&event_info='+event.id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+        //     if(res.length > 0){
+        //       event.event_isLiked = true;
+        //     }
+        //   })
+        //   $scope.events.push(event);
         })
-         $ionicLoading.hide();
+        $ionicLoading.hide();
       }
     })  
   }
@@ -835,11 +1061,128 @@ $scope.loadMore = function() {
  if($scope.events.length > 5){
   $scope.limit += 5;
   $scope.$broadcast('scroll.infiniteScrollComplete');
+  ImgCache.$init();
 }
 }
 $scope.goBack = function(){
   $state.go('app.playlists');
 };
+
+
+$scope.likeEvent = function(data){
+  var mydata = {};
+  mydata.event_info = data.id;
+  mydata.liked_by = $localStorage.userdata.user.person.id;
+  mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+  $http.post('http://www.urilga.mn:1337/eventlike',mydata).success(function (res){
+    console.log('amjilttai');
+  })
+  $scope.event_isLiked = true;
+}
+$scope.unlikeEvent = function(data){
+  var event_id = data.id;
+  var person_id = $localStorage.userdata.user.person.id;
+  $http.get("http://www.urilga.mn:1337/eventlike?event_info="+event_id+"&liked_by="+person_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response) {
+   var id = response[0].id;
+   var token = 'dXJpbGdhbW5BY2Nlc3M=';
+   $http.delete("http://www.urilga.mn:1337/eventlike/"+id+"?____token="+token).success(function (response){
+    if(response.state == 'OK'){
+      console.log('deleted');
+      $scope.liker_function = 0;
+    }
+  })
+ });
+  $scope.event_isLiked = false;
+}
+$ionicModal.fromTemplateUrl('templates/suggest.html', {
+  scope: $scope,
+  animation: 'slide-in-up'
+}).then(function(smodal) {
+  $scope.suggestmodal = smodal;
+});
+
+$scope.suggest = function(data) {
+  $scope.list = data;
+  $scope.suggestmodal.show();
+};
+$scope.suggestclose = function() {
+  $scope.suggestmodal.hide();
+};
+$scope.suggestPerson = function(data){
+ if(!data){
+  var alertPopup = $ionicPopup.alert({
+    okType: 'button-assertive',
+    template: 'Талбарын утгыг бөглөнө үү'
+  });
+}
+else {
+  if(isNaN(data.info)){
+    var invitedata = {};
+    invitedata.email = data.info;
+    invitedata.event = $scope.list.id;
+    invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in'
+    });
+    myData.eventInviteByEmail(invitedata).success(function (res){
+      if(res){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-balanced',
+          template: 'Амжилттай илгээлээ'
+        })
+        alertPopup.then(function(res) {
+          $scope.suggestclose();
+        });
+      }
+      else {
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-assertive',
+          template: 'Амжилтгүй'
+        });
+      }
+    })
+    .error(function(err){
+      $ionicLoading.hide();
+    })
+  }
+  else {
+    var invitedata = {};
+    invitedata.phonenumber = data.info;
+    invitedata.event = $scope.list.id;
+    invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in'
+    });
+    myData.eventInviteByPhone(invitedata).success(function (res){
+      if(res){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-balanced',
+          template: 'Амжилттай илгээлээ'
+        })
+        alertPopup.then(function(res) {
+          $scope.suggestclose();
+        });
+      }
+      else {
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-assertive',
+          template: 'Амжилтгүй'
+        });
+      }
+    })
+    .error(function(err){
+      $ionicLoading.hide();
+      console.log(err);
+    })
+  }
+}
+}
 
 })
 
@@ -853,7 +1196,6 @@ $scope.goBack = function(){
     data = undefined;
   }
   $http.get('http://www.urilga.mn:1337/eventsearch?query='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-    console.log(response);
     if(response.length>0){
       $scope.items = response;
       $scope.counter = 1;
@@ -1110,22 +1452,21 @@ $scope.goBack = function(){
     })
 
   }
+  $ionicLoading.show({
+   content: 'Loading',
+   animation: 'fade-in'
+ })
   var user_id = $localStorage.userdata.user.person.id;
   $scope.doRefresh = function() {
-    $timeout(function(){
-     $ionicLoading.show({
-       content: 'Loading',
-       animation: 'fade-in'
-     })     
-     $http.get('http://www.urilga.mn:1337/ticket?ticket_type=Paid&ticket_type=Free&ticket_user='+user_id+'&ticket_event='+$scope.eventid+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-      $scope.TicketOfEvent = response;
-      $ionicLoading.hide();
-    })
-     ImgCache.$init();
-     $scope.$broadcast('scroll.refreshComplete');  
-   },1000);
-  }
-  window.onload = $scope.doRefresh();
+   $http.get('http://www.urilga.mn:1337/ticket?ticket_type=Paid&ticket_type=Free&ticket_user='+user_id+'&ticket_event='+$scope.eventid+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+    $scope.TicketOfEvent = response;
+    $ionicLoading.hide();
+  }).finally(function(){
+    ImgCache.$init();
+    $scope.$broadcast('scroll.refreshComplete'); 
+  })
+}
+window.onload = $scope.doRefresh();
 })
 
 .controller('MainCtrl',function($scope,$cordovaOauth ,myData,onlineStatus ,$state,$ionicPopup,$localStorage,$http,$ionicLoading,$window,$timeout){
@@ -1949,47 +2290,90 @@ $scope.closeModal = function() {
     content: 'Loading',
     animation: 'fade-in',
   }); 
-  var events = $localStorage.events.all;
-  angular.forEach(events , function(event){
-    if(event.id == $stateParams.playlistId){
-      $scope.list = event;
-      $ionicLoading.hide();
-    }
-  })
-  $scope.agendas = [];
-  $http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.playlistId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-   if(response.length > 0){
-    angular.forEach(response,function(agenda){
-     angular.forEach(agenda.agenda_times, function(agenda_time){
-      if(agenda_time.time_speaker){
-        $http.get('http://www.urilga.mn:1337/speaker/'+agenda_time.time_speaker+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-         agenda_time.time_speaker = response;
-         $scope.loader = {loading: true};
-       })
-      }
-      var mydata = {};
-      mydata.slot_info = agenda_time.id;
-      mydata.voted_by = $localStorage.userdata.user.person.id;
-      mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
-      SlotVote.get(mydata).success(function (response){
-        if (response.length > 0){
-          agenda_time.status = response[0].status;
-          agenda_time.vote_id = response[0].id;
-        }
-      })
-    })
-     $scope.agendas.push(agenda);
-     $scope.loader = {loading: true};
-   })
-    $ionicLoading.hide();
-  }
-  else {
-    $scope.message = 'Хөтөлбөрийн мэдээлэл ороогүй байна';
-    $ionicLoading.hide();
-    $scope.loader = {loading: true};
-  }
-})
+  // var events = $localStorage.events.all;
+  // angular.forEach(events , function(event){
+  //   if(event.id == $stateParams.playlistId){
+  //     $scope.list = event;
+  //     $ionicLoading.hide();
+  //   }
+  // })
+if(onlineStatus.onLine == false){
+  $ionicLoading.hide();
+  var alertPopup = $ionicPopup.alert({
+   template: 'Интернет холболтоо шалгана уу',
+   okType :'button-assertive'
+ });
+}
 
+$http.get('http://www.urilga.mn:1337/event/'+$stateParams.playlistId).success(function(res){
+  $scope.list = res;
+}).finally(function(){
+ $ionicLoading.hide();
+})
+$scope.agendas = [];
+$http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.playlistId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+ if(response.length > 0){
+  angular.forEach(response,function(agenda){
+   angular.forEach(agenda.agenda_times, function(agenda_time){
+    if(agenda_time.time_speaker){
+      $http.get('http://www.urilga.mn:1337/speaker/'+agenda_time.time_speaker+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+       agenda_time.time_speaker = response;
+       $scope.loader = {loading: true};
+     })
+    }
+    var mydata = {};
+    mydata.slot_info = agenda_time.id;
+    mydata.voted_by = $localStorage.userdata.user.person.id;
+    mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    SlotVote.get(mydata).success(function (response){
+      if (response.length > 0){
+        agenda_time.status = response[0].status;
+        agenda_time.vote_id = response[0].id;
+      }
+    })
+  })
+   $scope.agendas.push(agenda);
+   $scope.loader = {loading: true};
+ })
+  $ionicLoading.hide();
+}
+else {
+  $scope.message = 'Хөтөлбөрийн мэдээлэл ороогүй байна';
+  $ionicLoading.hide();
+  $scope.loader = {loading: true};
+}
+})
+var person_id = $localStorage.userdata.user.person.id;
+
+// function checkTicket() {
+  var event_id = $stateParams.playlistId;
+  $http.get('http://www.urilga.mn:1337/ticket?ticket_type=Paid&ticket_type=Free&ticket_user='+person_id+'&ticket_event='+event_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+    if(response.length>0){
+     $scope.checkTicket = response;
+     $scope.check = 1;
+   }
+ })
+// };
+// $scope.checkLike = function() {
+  var person_id = $localStorage.userdata.user.person.id;
+  var event_id = $stateParams.playlistId;
+  var events = $localStorage.events.all;
+  $http.get("http://www.urilga.mn:1337/eventlike?event_info="+event_id+"&liked_by="+person_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response) {
+    if(response.length > 0) {
+      $scope.liker_function = 1;
+    }
+    else {
+     $scope.liker_function = 0;
+   }      
+ })
+// };
+// $scope.checkLike();
+$scope.$watch('liker_function',function(newVal,oldVal){
+  $scope.liker_function = newVal;
+}) 
+$scope.$watch('checkTicket',function(newVal){
+  $scope.checkTicket = newVal;
+})
 //   if(onlineStatus.onLine ==true){
 //    $http.get("http://www.urilga.mn:1337/event/"+$stateParams.playlistId+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response) {
 //     $ionicLoading.hide();
@@ -2207,43 +2591,16 @@ function checkAll() {
       }
     }
 
-    $scope.imageSrc = 'img/slideimg.jpg';
+    // $scope.imageSrc = 'img/slideimg.jpg';
 
     $scope.showImage = function(){
-      $scope.imageSrc = 'http://www.urilga.mn:1337/'+$scope.list.event_cover;
+      $scope.imageSrc = $scope.list.event_cover;
       $scope.openModal();
     }
     $scope.goBack = function(){
       $ionicHistory.goBack();
     };
-    var person_id = $localStorage.userdata.user.person.id;
-
-    function checkTicket() {
-      var event_id = $stateParams.playlistId;
-      $http.get('http://www.urilga.mn:1337/ticket?ticket_type=Paid&ticket_type=Free&ticket_user='+person_id+'&ticket_event='+event_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-        if(response.length>0){
-         $scope.checkTicket = response;
-         $scope.check = 1;
-       }
-       else {
-        console.log('alga');
-      }
-    })
-    };
-    $scope.checkLike = function() {
-      var person_id = $localStorage.userdata.user.person.id;
-      var event_id = $stateParams.playlistId;
-      var events = $localStorage.events.all;
-      $http.get("http://www.urilga.mn:1337/eventlike?event_info="+event_id+"&liked_by="+person_id+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response) {
-        if(response.length > 0) {
-          $scope.liker_function = 1;
-        }
-        else {
-         $scope.liker_function = 0;
-       }      
-     })
-    };
-    $scope.checkLike();
+    
     $scope.unlikeEvent = function(){
       var person_id = $localStorage.userdata.user.person.id;
       var event_id = $stateParams.playlistId;
@@ -2267,12 +2624,7 @@ function checkAll() {
         $scope.liker_function = 1;
       });
     }
-    $scope.$watch('liker_function',function(newVal,oldVal){
-      $scope.liker_function = newVal;
-    }) 
-    $interval(function(){
-     checkTicket();
-   },1000);
+    
 
   })
 .controller('guestCtrl',function($scope,$ionicPopup,$rootScope,$window,$state,$ionicSideMenuDelegate){
@@ -2348,6 +2700,23 @@ $scope.sortType = [
 { text:"Үнэгүй", eventType: "free"},
 { text:"Төлбөртэй", eventType: "paid"}
 ];
+$scope.sortDate = [
+{text:"Орсон өдөр", dateType: "createDate"},
+{text:"Эхлэх хугацаа", dateType: "orderDate"}
+];
+$scope.sortByDate = function(data){
+  delete data.eventType;
+  delete data.name;
+  if(data.dateType == 'createDate'){
+    $scope.sortType = 'createdAt';
+    $scope.sortReverse = true;
+  }
+  else if (data.dateType== 'orderDate'){
+    $scope.sortType = 'event_start_date';
+    $scope.sortReverse = true;
+  }
+  $scope.hidePop();
+}
 $scope.sortByType = function(data){
   delete data.name;
   if(data.eventType == 'free'){
@@ -2424,6 +2793,7 @@ $scope.limit = 5;
 $scope.loadMore = function() {
  if($scope.events.length > 5){
   $scope.limit += 5;
+  ImgCache.$init();
   $scope.$broadcast('scroll.infiniteScrollComplete');
 }
 }
@@ -2436,6 +2806,13 @@ $scope.goBack = function(){
   $scope.goBack = function(){
     $ionicHistory.goBack();
   };
+  if(onlineStatus.onLine == false){
+    $ionicLoading.hide();
+    var alertPopup = $ionicPopup.alert({
+     template: 'Интернет холболтоо шалгана уу',
+     okType :'button-assertive'
+   });
+  }
   $scope.checkLike = function(){
    var confirmPopup = $ionicPopup.confirm({
     template: 'Арга хэмжэээ хадгалахын тулд нэвтэрнэ үү?',
@@ -2494,151 +2871,156 @@ function checkAll() {
     content: 'Loading',
     animation: 'fade-in',
   }); 
-  var events = $localStorage.events.all;
-  angular.forEach(events , function(event){
-    if(event.id == $stateParams.eventId){
-      $scope.list = event;
-      $ionicLoading.hide();
+  // var events = $localStorage.events.all;
+  // angular.forEach(events , function(event){
+  //   if(event.id == $stateParams.eventId){
+  //     $scope.list = event;
+  //     $ionicLoading.hide();
+  //   }
+  // })
+$http.get('http://www.urilga.mn:1337/event/'+$stateParams.eventId).success(function(res){
+  $scope.list = res;
+}).finally(function(){
+ $ionicLoading.hide();
+})
+$scope.agendas = [];
+$http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.eventId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+ if(response.length > 0){
+  angular.forEach(response,function(agenda){
+   angular.forEach(agenda.agenda_times, function(agenda_time){
+    if(agenda_time.time_speaker){
+      $http.get('http://www.urilga.mn:1337/speaker/'+agenda_time.time_speaker+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+       agenda_time.time_speaker = response;
+       $scope.loader = {loading: true};
+     })
     }
   })
-  $scope.agendas = [];
-  $http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.eventId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-   if(response.length > 0){
-    angular.forEach(response,function(agenda){
-     angular.forEach(agenda.agenda_times, function(agenda_time){
-      if(agenda_time.time_speaker){
-        $http.get('http://www.urilga.mn:1337/speaker/'+agenda_time.time_speaker+'?____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
-         agenda_time.time_speaker = response;
-         $scope.loader = {loading: true};
-       })
-      }
-    })
-     $scope.agendas.push(agenda);
-     $scope.loader = {loading: true};
-   })
+   $scope.agendas.push(agenda);
+   $scope.loader = {loading: true};
+ })
 
-    $ionicLoading.hide();
-  }
-  else {
-    $scope.message = 'Хөтөлбөрийн мэдээлэл ороогүй байна';
-    $ionicLoading.hide();
-    $scope.loader = {loading: true};
-  }
+  $ionicLoading.hide();
+}
+else {
+  $scope.message = 'Хөтөлбөрийн мэдээлэл ороогүй байна';
+  $ionicLoading.hide();
+  $scope.loader = {loading: true};
+}
 })
 
-  $ionicModal.fromTemplateUrl('templates/suggest.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(smodal) {
-    $scope.suggestmodal = smodal;
-  });
+$ionicModal.fromTemplateUrl('templates/suggest.html', {
+  scope: $scope,
+  animation: 'slide-in-up'
+}).then(function(smodal) {
+  $scope.suggestmodal = smodal;
+});
 
-  $scope.suggest = function() {
-    $scope.suggestmodal.show();
-  };
+$scope.suggest = function() {
+  $scope.suggestmodal.show();
+};
 
-  $scope.suggestclose = function() {
-    $scope.suggestmodal.hide();
-  };
-  $scope.suggestPerson = function(data){
-    if(!data){
-      var alertPopup = $ionicPopup.alert({
-        okType: 'button-assertive',
-        template: 'Талбарын утгыг бөглөнө үү'
+$scope.suggestclose = function() {
+  $scope.suggestmodal.hide();
+};
+$scope.suggestPerson = function(data){
+  if(!data){
+    var alertPopup = $ionicPopup.alert({
+      okType: 'button-assertive',
+      template: 'Талбарын утгыг бөглөнө үү'
+    });
+  }
+  else {
+    if(isNaN(data.info)){
+      var invitedata = {};
+      invitedata.email = data.info;
+      invitedata.event = $stateParams.playlistId;
+      invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in'
       });
+      myData.eventInviteByEmail(invitedata).success(function (res){
+        if(res){
+          $ionicLoading.hide();
+          var alertPopup = $ionicPopup.alert({
+            okType: 'button-balanced',
+            template: 'Амжилттай илгээлээ'
+          })
+          alertPopup.then(function(res) {
+            $scope.suggestclose();
+          });
+        }
+        else {
+          $ionicLoading.hide();
+          var alertPopup = $ionicPopup.alert({
+            okType: 'button-assertive',
+            template: 'Амжилтгүй'
+          });
+        }
+      })
+      .error(function(err){
+        $ionicLoading.hide();
+      })
     }
     else {
-      if(isNaN(data.info)){
-        var invitedata = {};
-        invitedata.email = data.info;
-        invitedata.event = $stateParams.playlistId;
-        invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
-        $ionicLoading.show({
-          content: 'Loading',
-          animation: 'fade-in'
-        });
-        myData.eventInviteByEmail(invitedata).success(function (res){
-          if(res){
-            $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-              okType: 'button-balanced',
-              template: 'Амжилттай илгээлээ'
-            })
-            alertPopup.then(function(res) {
-              $scope.suggestclose();
-            });
-          }
-          else {
-            $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-              okType: 'button-assertive',
-              template: 'Амжилтгүй'
-            });
-          }
-        })
-        .error(function(err){
+      var invitedata = {};
+      invitedata.phonenumber = data.info;
+      invitedata.event = $stateParams.playlistId;
+      invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in'
+      });
+      myData.eventInviteByPhone(invitedata).success(function (res){
+        if(res){
           $ionicLoading.hide();
-        })
-      }
-      else {
-        var invitedata = {};
-        invitedata.phonenumber = data.info;
-        invitedata.event = $stateParams.playlistId;
-        invitedata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
-        $ionicLoading.show({
-          content: 'Loading',
-          animation: 'fade-in'
-        });
-        myData.eventInviteByPhone(invitedata).success(function (res){
-          if(res){
-            $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-              okType: 'button-balanced',
-              template: 'Амжилттай илгээлээ'
-            })
-            alertPopup.then(function(res) {
-              $scope.suggestclose();
-            });
-          }
-          else {
-            $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-              okType: 'button-assertive',
-              template: 'Амжилтгүй'
-            });
-          }
-        })
-        .error(function(err){
+          var alertPopup = $ionicPopup.alert({
+            okType: 'button-balanced',
+            template: 'Амжилттай илгээлээ'
+          })
+          alertPopup.then(function(res) {
+            $scope.suggestclose();
+          });
+        }
+        else {
           $ionicLoading.hide();
-          console.log(err);
-        })
-      }
+          var alertPopup = $ionicPopup.alert({
+            okType: 'button-assertive',
+            template: 'Амжилтгүй'
+          });
+        }
+      })
+      .error(function(err){
+        $ionicLoading.hide();
+        console.log(err);
+      })
     }
   }
+}
 
-  $scope.voteSlot = function(id,status,slot){
-    slot.status = status;
-    var mydata = {};
-    mydata.slot_info = id;
-    mydata.status = status;
-    mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
-    if(slot.vote_id != null){
-      mydata.id = slot.vote_id;
-      SlotVote.update(mydata).success(function (response){
-        console.log('success');
-      });
-    }else{
-      if($localStorage.userdata){
-        mydata.voted_by = $localStorage.userdata.user.person;
-      }
-      SlotVote.save(mydata).success(function(response){
-        slot.vote_id = response.id;
-      });   
+$scope.voteSlot = function(id,status,slot){
+  slot.status = status;
+  var mydata = {};
+  mydata.slot_info = id;
+  mydata.status = status;
+  mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+  if(slot.vote_id != null){
+    mydata.id = slot.vote_id;
+    SlotVote.update(mydata).success(function (response){
+      console.log('success');
+    });
+  }else{
+    if($localStorage.userdata){
+      mydata.voted_by = $localStorage.userdata.user.person;
     }
-  };
-  $scope.shareAnywhere = function() {
-    $cordovaSocialSharing.share($scope.list.event_title, null, null, 'http://www.urilga.mn/#/event_details/'+$scope.list.id);
-  };
+    SlotVote.save(mydata).success(function(response){
+      slot.vote_id = response.id;
+    });   
+  }
+};
+$scope.shareAnywhere = function() {
+  $cordovaSocialSharing.share($scope.list.event_title, null, null, 'http://www.urilga.mn/#/event_details/'+$scope.list.id);
+};
 
 })
 .controller('guestHomeCtrl',function($scope,ImgCache,$ionicSideMenuDelegate,$window,onlineStatus,$ionicLoading,$state,$localStorage,$http,$timeout){
@@ -2654,50 +3036,64 @@ function checkAll() {
   $scope.index = 0;
   $scope.buttonClicked = function(index){
     $scope.index = index;
-    $scope.$apply();
+    if($scope.index == 0){
+     $http.get('http://www.urilga.mn:1337/todayevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+      $scope.events.today_event = response;
+      $ionicLoading.hide();
+    })
+   }
+   else if ($scope.index == 1){
+    $http.get('http://www.urilga.mn:1337/tomorrowevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+      $scope.events.tomorrow_event = response;
+      $ionicLoading.hide();
+    })
   }
-  $http.get("http://www.urilga.mn:1337/category?____token=dXJpbGdhbW5BY2Nlc3M=").success(function (res){
+  else {
+   $http.get('http://www.urilga.mn:1337/findevent?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+    $scope.lists = response;
+    $ionicLoading.hide();
+  })
+ }
+ $scope.$apply();
+}
+$http.get("http://www.urilga.mn:1337/category?____token=dXJpbGdhbW5BY2Nlc3M=").success(function (res){
   $localStorage.categoryEvent = res;
 })
-  $scope.doRefresh = function() {
-    if (onlineStatus.onLine == true) {
-     $timeout (function(){
-      $http.get("http://www.urilga.mn:1337/event?event_isActive=true&____token=dXJpbGdhbW5BY2Nlc3M=").success(function (response) {
-        $scope.lists = response;
-        $localStorage.events = {};
-        $localStorage.events.all = [];
-        $localStorage.events.today = [];
-        $localStorage.events.tomorrow = [];
-        $localStorage.events.all = $scope.lists;
-        $ionicLoading.hide();
-        var today = new Date();
-        var todayDate = today.toDateString();
-        var tomorrow = today.setDate(today.getDate()+1);
-        var tomorrow_date = new Date(tomorrow).toDateString();
-        $scope.events = {};
-        $scope.events.today_event = [];
-        $scope.events.tomorrow_event = [];
-        $scope.events.upcoming_event = [];
-        angular.forEach($scope.lists,function(item){
-          var event_date = new Date(item.event_start_date);
-          $scope.event_date = event_date.toDateString();
-          var event_mill = event_date.valueOf();
-          if(todayDate == $scope.event_date){
-            $scope.events.today_event.push(item);
-            $localStorage.events.today = $scope.events.today_event;
-          }
-          else if (tomorrow_date == $scope.event_date){
-            $scope.events.tomorrow_event.push(item);
-            $localStorage.events.tomorrow = $scope.events.tomorrow_event;
-          }
-        })
-      })  
-ImgCache.$init();
-$scope.$broadcast('scroll.refreshComplete');
-},1000);
+$scope.doRefresh = function() {
+ if (onlineStatus.onLine == true) {
+  $scope.events = {};
+  $scope.events.tomorrow_event = [];
+  $scope.events.today_event = [];
+  $localStorage.events = {};
+  $localStorage.events.all = [];
+  $localStorage.events.today = [];
+  $localStorage.events.tomorrow = [];
+  $http.get('http://www.urilga.mn:1337/todayevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+    $scope.events.today_event = response;
+    $localStorage.events.today = response;
+    $ionicLoading.hide();
+  })
+  $http.get('http://www.urilga.mn:1337/tomorrowevents?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+    $scope.events.tomorrow_event = response;
+    $localStorage.events.tomorrow = response;
+    $ionicLoading.hide();
+  })
+  $http.get('http://www.urilga.mn:1337/findevent?____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+    $scope.lists = response;
+    // if(response.length == 9){
+    //   $localStorage.events.all = response;
+    // }
+    // else {
+    //   console.log('tentsehgui');
+    // }
+    $ionicLoading.hide();
+  })
+  .finally(function(){
+   ImgCache.$init();
+   $scope.$broadcast('scroll.refreshComplete');
+ })
 }
-else if($scope.onlineStatus.onLine == false){
-  $ionicLoading.hide();
+else if(onlineStatus.onLine == false){
   var alertPopup = $ionicPopup.alert({
    okType :'button-assertive',
    template: 'Интернет холболтоо шалгана уу'
@@ -2723,7 +3119,7 @@ $scope.load = function(){
     $scope.doRefresh();
   }
 }
-$window.onload = $scope.load();
+$window.onload = $scope.doRefresh();
 $scope.slideChanged = function(index) {
   $scope.slideIndex = index;
 }
@@ -2739,18 +3135,256 @@ $scope.scrollTop = function() {
 // $scope.hideHeader =function(){
 //   $('#header').fadeIn();
 // }
-
-$scope.limit = 5;
+var i=1; 
 $scope.loadMore = function() {
-  var allevent = $localStorage.events.all.length;
-  if(allevent > 5){
-    $scope.limit += 5;
+  i=i+1;
+  $http.get('http://www.urilga.mn:1337/findevent?page_number='+i+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+    angular.forEach(res,function(item){
+      $scope.lists.push(item);
+    })
+    $ionicLoading.hide();
     $scope.$broadcast('scroll.infiniteScrollComplete');
-  }
+  })
+//  if($scope.lists.length > 5){
+//   $scope.limit += 5;
+//   $scope.$broadcast('scroll.infiniteScrollComplete');
+//    ImgCache.$init();
+// }
 }
 
 })
-
+.controller('addEventCtrl',function($state,$scope,$localStorage,$ionicLoading,$http,$ionicPopup){
+  $scope.goBack = function(){
+    $state.go('app.playlists');
+  }
+  $scope.checked = false;
+  $scope.check =function(data){
+    console.log(data);
+  }
+  var person = $localStorage.userdata.user.person.id;
+  $http.get('http://www.urilga.mn:1337/org?organization_created_by='+person+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+    $scope.myorgs = res;
+  })
+  $scope.event = {};
+  $scope.event.event_start_date = new Date();
+  $scope.event.event_end_date = new Date();
+  $scope.event.event_start_time = new Date();
+  $scope.event.event_title = 'Meeting';
+  $scope.event.event_location = 'Ulaanbaatar';
+  $scope.createEvent = function(data){
+     $ionicLoading.show({
+      template: 'Uploading...'
+    });
+    var mydata = {};
+    mydata = data;
+    mydata.event_isActive = false;
+    mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    mydata.event_created_by = person;
+    mydata.event_all_ticket_remaining = 100;
+    mydata.event_urilga_ticket_remaining = 100;
+    if(data.owner){
+      mydata.event_owner = [];
+      mydata.event_owner.push(data.owner);
+    }
+    $http.post('http://www.urilga.mn:1337/event',mydata).success(function(res){
+      if(res){
+        var ticketdata = {};
+        ticketdata.type = 'Urilga';
+        ticketdata.urilga_type ='basic';
+        ticketdata.all_count = 100;
+        ticketdata.remaining = 100;
+        ticketdata.description = 'Urilga Ticket';
+        ticketdata.event_info = res.id;
+        ticketdata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+        $http.post('http://www.urilga.mn:1337/tickettype',ticketdata).success(function(response){
+          $ionicLoading.hide();
+          var alertPopup = $ionicPopup.alert({
+            okType: 'button-balanced',
+            template: 'Амжилттай үүслээ'
+          });
+          alertPopup.then(function(res) {
+            $state.go('app.myevent',{},{reload:true});
+         });
+        })
+      }
+      else {
+        $ionicLoading.hide();
+      }
+    })
+  }
+})
+.controller('editEventCtrl',function($state,$window,$scope,$ionicPopup,$ionicModal,$ionicLoading,$localStorage,$ionicHistory,$stateParams,$http){
+  $scope.goBack = function(){
+    $ionicHistory.goBack();
+  }
+  $scope.is_Joined = false;
+  $scope.doRefresh = function(){
+    $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in'
+    });
+    $http.get('http://www.urilga.mn:1337/ticket?ticket_event='+$stateParams.eventId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
+      $scope.users = res;
+      $ionicLoading.hide();
+    })
+    $http.get('http://www.urilga.mn:1337/event/'+$stateParams.eventId).success(function(res){
+      $scope.event = res;
+      $scope.event.event_start_date = new Date($scope.event.event_start_date);
+      $scope.event.event_end_date = new Date($scope.event.event_end_date);
+      $scope.event.event_start_time = new Date($scope.event.event_start_time);
+      $scope.myOrgs = $scope.event.event_owner;
+      $ionicLoading.hide();
+      if($scope.myOrgs.length > 0){
+        angular.forEach($scope.myOrgs,function(org){
+         $http.get('http://www.urilga.mn:1337/person?person_org_code='+org.organization_code+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+          $scope.workers = response;
+          $ionicLoading.hide();
+          angular.forEach($scope.workers,function(worker){
+             var person_email = worker.id;
+             $http.get('http://www.urilga.mn:1337/ticket?ticket_event='+$stateParams.eventId+'&ticket_user='+person_email+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(response){
+              if(response.length > 0){
+                $scope.is_Joined = true;
+              }
+             })
+          })
+        })
+       })
+        $scope.event_ticket = {};
+        $scope.event_ticket.free = [];
+        $scope.event_ticket.paid = [];
+        $scope.event_ticket.urilga = [];
+        $scope.myevent = false;
+        if($scope.event.event_created_by.id == $localStorage.userdata.user.person.id){
+         $scope.myevent = true;
+       }
+       angular.forEach(res.event_ticket_types,function(item){
+        if(item.type == "Paid"){
+          $scope.event_ticket.paid.push(item);
+        }
+        if(item.type == "Free"){
+          $scope.event_ticket.free.push(item);
+        }
+        if(item.type == "Urilga"){
+          $scope.event_ticket.urilga.push(item);
+        }
+      })
+     }
+   })
+  }
+  $window.onload = $scope.doRefresh();
+  $ionicModal.fromTemplateUrl('templates/sendUrilga.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  $ionicModal.fromTemplateUrl('templates/editEventPopup.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.editmodal = modal;
+  });
+  $scope.editOpenModal = function() {
+    $scope.editmodal.show();
+  };
+  $scope.editCloseModal = function() {
+    $scope.editmodal.hide();
+  };
+  $scope.addWorker = function(data){
+    $scope.openModal();
+    $scope.ticket = {};
+    $scope.ticket.ticket_fullname = data.person_firstname +" "+data.person_lastname;
+    $scope.ticket.ticket_email = data.person_email;
+    $scope.ticket.ticket_phonenumber = data.person_cell_number;
+  }
+  $scope.buyTicket = function(data){
+   $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in'
+    });
+    var mydata = {};
+    mydata = data;
+    mydata.ticket_countof = 1;
+    var etype = JSON.parse(data.event_ticket_type);
+    mydata.ticket_type = etype.type;
+    mydata.ticket_type_model = etype.id;
+    mydata.ticket_description = etype.description;
+    mydata.ticket_price = etype.price;
+    mydata.ticket_urilga_type = 'basic';
+    mydata.ticket_created_by = $localStorage.userdata.user.person.id;
+    mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+    $http.get('http://www.urilga.mn:1337/person?person_email='+data.ticket_email+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
+      person_info = response[0];
+      if(person_info) {
+        mydata.ticket_event = $stateParams.eventId;
+        mydata.ticket_user_email = person_info.person_email;
+        mydata.ticket_user_name = person_info.person_lastname;
+      }
+      else {
+        mydata.ticket_event = $stateParams.eventId;
+        mydata.ticket_user_email = $localStorage.userdata.user.person.person_email;
+        mydata.ticket_user_name  = $localStorage.userdata.user.person.person_lastname;
+      }
+      $http.post('http://www.urilga.mn:1337/ticket',mydata).success(function (response){
+       if(response.state){
+        $ionicLoading.hide();
+        var popup = $ionicPopup.alert({
+          template:'Тасалбар авах боломжгүй',
+          okType :'button-assertive'
+        })
+      }
+      else{
+        $ionicLoading.hide();
+        var popup = $ionicPopup.alert({
+          template:'Худалдан авалт амжилттай боллоо.',
+          okType :'button-balanced'
+        })
+        popup.then(function(){
+          $scope.doRefresh();
+          $scope.closeModal();
+        })
+    }
+  })
+  })
+  }
+  $scope.eventId = $stateParams.eventId;
+  $scope.index = 0;
+$scope.buttonClicked = function(data){
+  $scope.index = data;
+}
+$scope.editEvent = function(data){
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in'
+  });
+  var mydata = {};
+  mydata = data;
+  mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+  console.log(mydata);
+  $http.put('http://www.urilga.mn:1337/event/'+mydata.id,mydata).success(function(response){
+    console.log(response);
+    if(response.status == true){
+      $ionicLoading.hide();
+      var popup = $ionicPopup.alert({
+        template:'Амжилттай өөрчлөгдлөө.',
+        okType :'button-balanced'
+      })
+      popup.then(function(){
+        $scope.editCloseModal();
+      })
+    }
+    else {
+      $ionicLoading.hide();
+    }
+  })
+}
+})
 ;
 
 

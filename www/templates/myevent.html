@@ -2,7 +2,7 @@
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
 <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
- <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
+<i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>  
 </button>
 </ion-nav-buttons>
 <ion-nav-title style="font-family:'Arial';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
@@ -14,9 +14,10 @@
 </ion-refresher>
 <ion-item style="padding:0" ng-repeat="event in myEvents | orderBy:'createdAt' | limitTo: limit"  class="animate-rip">
   <div class="list" style="border-bottom:1px solid #f8f8f8">
-    <a class="item item-thumbnail-left" id="myEvent" href="#/app/playlists/{{event.id}}">
-      <img ng-cache ng-src="{{backsite}}/{{event.event_cover}}" >
-      <h3 id="myeventTitle">{{event.event_title}}</h3>
+    <a class="item item-thumbnail-left" id="myEvent" ui-sref="app.editevent({eventId:event.id})">
+      <img ng-if="event.event_cover.length < 100" ng-cache ng-src="{{backsite}}/{{event.event_cover}}" >
+      <img ng-if="event.event_cover.length > 100" ng-src="{{event.event_cover}}" >
+      <h3 id="myeventTitle">{{event.event_title}} - id: {{event.event_short_id}}</h3>
       <div class="row" style="padding:0 0 5px 0">
         <div class="col col-10" style="padding:0">
           <p class="myeventText"><i class="icon ion-ios-clock-outline"></i></p>
@@ -33,6 +34,11 @@
           <p class="myeventText"> {{event.event_location}}</p>
         </div>
       </div>
+    </a>
+     <a class="col" style="border-top:1px solid #f8f8f8;text-align:right">
+        <span ng-click="makePublic(event)" ng-if="event.event_isActive == false" id="private"><i class="fa fa-lock"></i> Private</span>
+        <span  ng-click="makePrivate(event)" ng-if="event.event_isActive == true" id="public"><i class="fa fa-unlock"></i> Public</span>
+        <span id="deleteBtn" ng-click="showConfirm(event)"><i class="fa fa-trash-o"></i> Delete </span>
     </a>
   </div>
 </ion-item>

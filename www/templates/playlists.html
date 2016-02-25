@@ -8,13 +8,13 @@
  <button class="button button-clear" style="color:black;margin:0;font-weight:bold" ui-sref="app.search">
   <i class="icon ion-ios-search-strong" ></i>
 </button>
+  <button class="button-clear" ng-click="doRefresh()" style="color:black;font-size:23px">
+    <i class="fa fa-refresh"></i>
+ </button> 
 </div>
 </ion-header>
 
 <ion-content  class="has-header"  overflow-scroll='true'  id="myBody" on-scroll="getScrollPosition()" on-swipe-up="showHeader()" on-swipe-down="hideHeader()" lazy-scroll>
-<ion-refresher pulling-text="Уншиж байна..."  on-refresh="doRefresh()">
-</ion-refresher>
-
 <ion-slide-box on-slide-changed="slideChanged($index)"  auto-play="true" does-continue="true" show-pager="false" id="slider">
 <ion-slide>
 <div><img  src="img/slider/01.png" ></div>
@@ -55,19 +55,19 @@
 </div>
 <div style="height:40px"> 
 <ti-segmented-control id="segment" on-select="buttonClicked($index)" style="width:100%;padding:5px 5px 5px 5px">
-    <ti-segmented-control-button class="button-assertive" title="'Өнөөдөр'" selected></ti-segmented-control-button>
-    <ti-segmented-control-button class="button-assertive" title="'Маргааш'" ></ti-segmented-control-button>
-    <ti-segmented-control-button class="button-assertive" title="'Топ'" ></ti-segmented-control-button>
+      <ti-segmented-control-button class="button-assertive" title="'Өнөөдөр'" selected></ti-segmented-control-button>
+      <ti-segmented-control-button class="button-assertive" title="'Маргааш'" ></ti-segmented-control-button>
+      <ti-segmented-control-button class="button-assertive" title="'Топ'" ></ti-segmented-control-button>
 </ti-segmented-control>
 </div>
  <div class="animate-switch-container"
-    ng-switch on="index"  on-swipe-right="goBack(index)" on-swipe-left="goForward(index)">
-      <div class="animate-switch" ng-switch-default>
-       <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
-       <div class="list card" id="homeList">
-
-        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
-        <div class="item tem-text-wrap">
+    ng-switch on="index" on-swipe-right="goBack(index)" on-swipe-left="goForward(index)">
+      <div class="animate-switch" ng-switch-default >
+       <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
+       <div class="list card" id="homeList" >
+         <img ui-sref="app.single({playlistId:list.id})" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img  ui-sref="app.single({playlistId:list.id})" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
+        <div class="item tem-text-wrap" ui-sref="app.single({playlistId:list.id})">
          <h3 style="font-size:18px;font-family: 'm3';font-weight:bold">{{list.event_title}}</h3>
          <div class="row" style="padding:0 0 5px 0">
           <div class="col col-10" style="padding:0">
@@ -80,26 +80,39 @@
           <p id="desc">Өнөөдөр 09:00 цагт</p>
         </div>
       </div> 
-      <div class="row" style="padding:0 0 5px 0">
+      <div class="row" style="padding:0 0 5px 0;margin-bottom:17px">
         <div class="col col-10" style="padding:0">
          <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
        </div>
        <div class="col col-90" style="padding:0">
         <p id="desc">{{list.event_location}}</p>
       </div>
-    </div>    
+    </div> 
+    <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+     <p style="color:white">Үнэгүй</p>
+   </div>
+   <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
+     <p style="color:white">Төлбөртэй</p>
+   </div> 
   </div>
   <div class="item item-divider" >
-    <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-      <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
-    </h5>
+    <div class="row" style="padding:0">
+          <div class="col col-60" style="padding:0">
+            <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+              <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
+            </h5>
+          </div>
+      </div>
+      <div class="row" style="padding:0" id="homeBtns" ng>
+      <div class="col"  style="padding:0" ng-click="suggest(list)">
+           <span id="suggest"><i class="fa fa-bell-o"></i></span>
+      </div>
+      <div class="col" style="padding:0">
+           <span ng-if="list.event_isLiked == true" ng-click="unlikeEvent(list)"><i class="fa fa-bookmark"></i></span>
+           <span ng-if="list.event_isLiked == false" ng-click="likeEvent(list)"><i class="fa fa-bookmark-o"></i></span>
+      </div>
+    </div>
   </div>
-  <div id="Free" ng-if="list.event_ticket_type == 'Free'">
-   <p style="color:white">Үнэгүй</p>
- </div>
- <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
-   <p style="color:white">Төлбөртэй</p>
- </div>
 </div>
 </ion-item>
 <div class="card" ng-if="events.today_event.length == 0">
@@ -109,11 +122,11 @@
 </div>
       </div>
       <div class="animate-switch" ng-switch-when="1">
-       <ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" >
+       <ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
        <div class="list card"  id="homeList">
-
-        <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image">
-        <div class="item tem-text-wrap">
+          <img ui-sref="app.single({playlistId:list.id})" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img ui-sref="app.single({playlistId:list.id})"  ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
+        <div class="item tem-text-wrap" ui-sref="app.single({playlistId:list.id})">
           <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
           <div class="row" style="padding:0 0 5px 0">
             <div class="col col-10" style="padding:0">
@@ -126,26 +139,40 @@
             <p id="desc">Маргааш 09:00 цагт</p>
           </div>
         </div> 
-        <div class="row" style="padding:0 0 5px 0">
+        <div class="row" style="padding:0 0 5px 0;margin-bottom:17px">
           <div class="col col-10"  style="padding:0">
            <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
          </div>
          <div class="col col-90" style="padding:0" >
           <p id="desc">{{list.event_location}}</p>
         </div>
-      </div>    
-    </div>
-    <div class="item item-divider">
-      <h5 ng-repeat="category in list.event_type"  style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-        <a href="#/app/category/{{category.id}}"> #{{category.name | translate}} &nbsp</a>
-      </h5>
-    </div>
-    <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+      </div>
+      <div id="Free" ng-if="list.event_ticket_type == 'Free'">
      <p style="color:white">Үнэгүй</p>
    </div>
    <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
      <p style="color:white">Төлбөртэй</p>
-   </div>
+   </div>    
+    </div>
+    <div class="item item-divider">
+       <div class="row" style="padding:0">
+          <div class="col col-60" style="padding:0">
+            <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+              <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
+            </h5>
+          </div>
+      </div>
+          <div class="row" style="padding:0" id="homeBtns" ng>
+      <div class="col" style="padding:0" ng-click="suggest(list)">
+           <span id="suggest"><i class="fa fa-bell-o"></i></span>
+      </div>
+      <div class="col" style="padding:0">
+           <span ng-if="list.event_isLiked == true" ng-click="unlikeEvent(list)"><i class="fa fa-bookmark"></i></span>
+           <span ng-if="list.event_isLiked == false" ng-click="likeEvent(list)"><i class="fa fa-bookmark-o"></i></span>
+      </div>
+    </div>
+    </div>
+    
  </div>
 </ion-item>
 <div class="card" ng-if="events.tomorrow_event.length == 0">
@@ -155,11 +182,11 @@
 </div>
       </div>
       <div class="animate-switch" ng-switch-when="2">
-        <ion-item ng-repeat="list in lists | orderBy:'-createdAt'| limitTo:limit" href="#/app/playlists/{{list.id}}" style="width:105%;margin-left:-2%" goNative>
+        <ion-item ng-repeat="list in lists | orderBy:'-createdAt'" href="" style="width:105%;margin-left:-2%" goNative>
         <div class="list card"  id="homeList">
-
-          <img ng-cache ng-src=" {{backsite}}/{{list.event_cover}}"  id="homeImg"   class="full-image">
-          <div class="item tem-text-wrap">
+         <img ui-sref="app.single({playlistId:list.id})" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
+         <img  ui-sref="app.single({playlistId:list.id})" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
+          <div class="item tem-text-wrap" ui-sref="app.single({playlistId:list.id})">
            <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{list.event_title}}</h3>
            <div class="row" style="padding:0 0 5px 0">
             <div class="col col-10" style="padding:0">
@@ -169,37 +196,50 @@
             <p id="desc">{{list.event_start_date | date:'EEEE, MMMM d, y ' }}</p>
           </div>
         </div> 
-        <div class="row" style="padding:0 0 5px 0">
+        <div class="row" style="padding:0 0 5px 0;margin-bottom:17px">
           <div class="col col-10" style="padding:0">
            <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
          </div>
          <div class="col col-90" style="padding:0">
           <p id="desc">{{list.event_location}}</p>
         </div>
-      </div>              
-    </div>
-    <div class="item item-divider">
-      <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
-        <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
-      </h5>
-    </div>
-    <div id="Free" ng-if="list.event_ticket_type == 'Free'">
+      </div>   
+       <div id="Free" ng-if="list.event_ticket_type == 'Free'">
      <p style="color:white">Үнэгүй</p>
    </div>
    <div id="Paid" ng-if="list.event_ticket_type != 'Free'">
      <p style="color:white">Төлбөртэй</p>
-   </div>
+   </div>           
+    </div>
+    <div class="item item-divider">
+      <div class="row" style="padding:0">
+          <div class="col col-60" style="padding:0">
+            <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;padding-bottom:5px;padding-top:5px;text-transform:lowercase">
+              <a href="#/app/category/{{category.id}}">#{{category.name | translate}} &nbsp</a> 
+            </h5>
+          </div>
+      </div>
+      <div class="row" style="padding:0" id="homeBtns" ng>
+        <div class="col" style="padding:0" ng-click="suggest(list)">
+         <span id="suggest"><i class="fa fa-bell-o"></i></span>
+       </div>
+       <div class="col" style="padding:0">
+         <span ng-if="list.event_isLiked == true" ng-click="unlikeEvent(list)"><i class="fa fa-bookmark" ></i></span>
+         <span  ng-if="list.event_isLiked == false" ng-click="likeEvent(list)"><i class="fa fa-bookmark-o"></i></span>
+       </div>
+     </div>
+    </div>
  </div>
 </ion-item>
-<ion-infinite-scroll
-on-infinite="loadMore()"
-distance="1%">
-</ion-infinite-scroll>
 <div class="card" ng-if="lists.length == 0">
  <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
+<ion-infinite-scroll 
+on-infinite="loadMore()"
+distance="1%">
+</ion-infinite-scroll>
       </div>
   </div>   
 </ion-content>

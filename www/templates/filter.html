@@ -1,13 +1,16 @@
   <ion-popover-view class="fit" >
-        <ion-content>
-<div class="list">
-        <ion-radio ng-repeat="item in sortName" ng-click="sortByName(item)" ng-model="data.name" ng-value="item.name">
-          <i class="fa {{item.icon}}" style="color:#FF5700;font-size:18px"></i> &nbsp Нэрээр
-        </ion-radio>
-            <ion-radio ng-repeat="item in sortType" ng-click="sortByType(item)" ng-model="data.eventType" ng-value="item.eventType">
+      <ion-content>
+            <div class="list">
+              <ion-radio ng-repeat="item in sortName" ng-click="sortByName(item)" ng-model="data.name" ng-value="item.name">
+              <i class="fa {{item.icon}}" style="color:#FF5700;font-size:18px"></i> &nbsp Нэрээр
+            </ion-radio>
+            <ion-radio ng-repeat="item in sortDate" ng-click="sortByDate(item)" ng-model="data.dateType" ng-value="item.dateType">
+            <i class="fa fa-calendar" style="color:#FF5700;font-size:18px"></i> &nbsp {{item.text}}
+          </ion-radio>
+          <ion-radio ng-repeat="item in sortType" ng-click="sortByType(item)" ng-model="data.eventType" ng-value="item.eventType">
           <i class="fa fa-money" style="color:#FF5700;font-size:18px"></i> &nbsp {{item.text}}
-        </ion-radio>
-    
-</div>
-        </ion-content>
-      </ion-popover-view>
+          </ion-radio>
+
+          </div>
+    </ion-content>
+</ion-popover-view>

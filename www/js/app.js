@@ -6,6 +6,14 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordovaOauth','ionic-native-transitions','angular-cache','ImgCache','starter.gesture','ionic.service.core','me-lazyload','pascalprecht.translate','ionic.contrib.drawer','angular.filter','starter.controllers','ja.qr','ionicLazyLoad','starter.services','starter.auth','ui.router','ngMaterial','ionic-material','ngStorage','tabSlideBox','ngRoute','ngCordova'])
 .run(function($ionicPlatform,$cordovaSplashscreen,$cordovaPush,ImgCache,$ionicLoading,myData,$rootScope,AuthService,$localStorage,$http,$ionicPopup,$timeout,$location,$localStorage,$state,$window) {
+ document.addEventListener("deviceready", function(){
+     navigator.splashscreen.hide();
+    ImgCache.init(function(){
+        console.log('cache created successfully!');
+    }, function(){
+        console.log('check the log for errors');
+    });
+}, false);
  $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
   if(toState.name.indexOf('app') !== -1 ) {
     if(!AuthService.getAuthStatus()) {
@@ -14,19 +22,6 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
     }
   }
 })
-  setTimeout(function() {
-    $cordovaSplashscreen.hide();
-    console.log('haagdlaa');
-  }, 1000);
-
-document.addEventListener("deviceready", function(){
-    ImgCache.init(function(){
-        console.log('cache created successfully!');
-    }, function(){
-        console.log('check the log for errors');
-    });
-    navigator.splashscreen.hide();
-}, false);
  $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams) {
     $state.current = toState;
@@ -88,6 +83,9 @@ document.addEventListener("deviceready", function(){
 )
 
 $ionicPlatform.ready(function() {
+   if (navigator && navigator.splashscreen) {
+          navigator.splashscreen.hide();
+    }
  if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -96,9 +94,6 @@ $ionicPlatform.ready(function() {
           // org.apache.cordova.statusbar required
           StatusBar.style(1);
         }
-    if (navigator && navigator.splashscreen) {
-          navigator.splashscreen.hide();
-    }
     $ionicPlatform.registerBackButtonAction(function(){
       if($state.current.name == 'app.playlists'){
         navigator.app.exitApp();
@@ -127,17 +122,17 @@ $ionicPlatform.ready(function() {
 
 
 .config(function($stateProvider,$ionicNativeTransitionsProvider,CacheFactoryProvider,ImgCacheProvider,$rootScopeProvider,$translateProvider,$httpProvider,$ionicConfigProvider,$mdThemingProvider ,$urlRouterProvider,$mdGestureProvider) {
- ImgCacheProvider.setOption('debug', true);
+ ImgCacheProvider.setOption('debug', false);
  ImgCacheProvider.setOption('usePersistentCache', true);
  ImgCacheProvider.setOptions({
-  debug: true,
+  debug: false,
   usePersistentCache: true
 });
  ImgCacheProvider.manualInit = true;
  angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
     // or more options at once
     $ionicNativeTransitionsProvider.setDefaultOptions({
-        duration: 400, // in milliseconds (ms), default 400,
+        duration: 200, // in milliseconds (ms), default 400,
         slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4
         iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1
         androiddelay: -1, // same as above but for Android, default -1
@@ -172,8 +167,7 @@ $ionicPlatform.ready(function() {
       'Arts' : 'Урлаг, урлал',
       'Parties' : 'Үдэшлэг',
       'Sports & Wellness' : 'Спорт',
-      'Networking' : 'Хурал зөвлөгөөн'
-
+      'Networking' : 'Хурал зөвлөгөөн',
     });
     $translateProvider.preferredLanguage('mn');
 
@@ -259,7 +253,24 @@ $ionicPlatform.ready(function() {
         }
       }
     })
-
+     .state('app.addevent', {
+      url: '/addevent',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/addEvent.html',
+          controller : 'addEventCtrl'
+        }
+      }
+    })
+      .state('app.editevent', {
+      url: '/myevent/:eventId/editevent',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/editEvent.html',
+          controller : 'editEventCtrl'
+        }
+      }
+    })
     .state('app.changepass', {
       url: '/changepass',
       views: {

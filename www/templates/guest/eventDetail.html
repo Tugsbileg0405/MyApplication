@@ -2,7 +2,7 @@
 <ion-nav-bar  align-title="left">
 <ion-nav-buttons side="left">
 <button class="button-clear " ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black" goNative>
-    <i class="icon ion-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+    <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>
 </button>
 </ion-nav-buttons>
 <ion-nav-buttons side="right">
@@ -14,7 +14,8 @@
 </ion-nav-bar>
 <ion-content   overflow-scroll='true'  lazy-scroll  on-swipe-up="showHeader()" on-swipe-down="hideHeader()">
 
-<img class="full-image ink" id="homeImg" ng-click="showImage()" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
+<img class="full-image ink" id="homeImg" ng-click="showImage()" ng-if="list.event_cover.length < 100" ng-cache ng-src="{{backsite}}/{{list.event_cover}}" >
+<img class="full-image ink" id="homeImg" ng-click="showImage()" ng-if="list.event_cover.length > 100" ng-src="{{list.event_cover}}" >
 <div class="list" >
     <div class="item item-body">
         <h5 ng-repeat="category in list.event_type" style="font-size:16px;font-family:'m3';float:left;margin-top:0;margin-bottom:0;text-transform:lowercase">

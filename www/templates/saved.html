@@ -1,9 +1,10 @@
 <ion-view  >
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
+
       <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
-      <i class="icon ion-chevron-left" style="font-family:'m3';font-size:22px"> Буцах</i> 
-      </button>
+       <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+      </button> 
     </ion-nav-buttons>
      <ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px" >
         Хадгалагдсан: {{likedEvent.length}}
@@ -16,7 +17,8 @@
     <ion-list>
       <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" style="width:105%;margin-left:-2%" href="#/app/playlists/{{list.event_info.id}}">
          <div class="list card"  style="margin:-2%;padding:0px;width:114%;height:100%">
-          <img ng-cache ng-src="{{backsite}}/{{list.event_info.event_cover}}"  id="homeImg" class="full-image">
+          <img ng-cache ng-if="list.event_info.event_cover.length < 100" ng-src="{{backsite}}/{{list.event_info.event_cover}}"  id="homeImg" class="full-image">
+          <img ng-if="list.event_info.event_cover.length > 100" ng-src="{{list.event_info.event_cover}}"  id="homeImg" class="full-image">
          <div class="item tem-text-wrap" >
             <h3 style="font-family:'m3';font-size:18px;font-weight:bold">{{list.event_info.event_title}}</h3>
                <div class="row" style="padding:0 0 5px 0">
@@ -36,12 +38,14 @@
                     </div>
                 </div> 
           </div>
+          <br>
            <div id="savedFree" ng-if="list.event_info.event_ticket_type == 'Free'">
            <p style="font-family:'m3';font-size:18px;color:white">Үнэгүй</p>
            </div>
            <div id="savedPaid" ng-if="list.event_info.event_ticket_type != 'Free'">
-           <p style="font-family:'m3';font--size:18px;color:white">Төлбөртэй</p>
+           <p style="font-family:'m3';font-size:18px;color:white">Төлбөртэй</p>
            </div>
+          
       </div>
       <ion-option-button class="button-assertive" ng-click="deleteSavedEvent(list.event_info.id)">
         Delete

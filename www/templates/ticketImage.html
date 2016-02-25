@@ -3,23 +3,21 @@
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
 <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
-  <i class="icon ion-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+ <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
 </button>
 </ion-nav-buttons>
-<ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
+<ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px;font-family:'m3'" >
 Тасалбар
 </ion-nav-title>
 </ion-nav-bar>
 <ion-content>
-
-<ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
-<ion-slide ng-repeat="(key,ticket) in tickets" >
-
+<!-- <ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" > -->
+<div ng-repeat="(key,ticket) in tickets" >
 <div class="list card"  >
   <img ng-cache ng-src="{{backsite}}/{{ticket.ticket_event.event_cover}}"  id="homeImg" class="full-image">
   <div class="row" style="padding:0">
       <div class="col col-80" style="padding:0">
-        <div class="item tem-text-wrap">
+        <div class="item" style="padding-bottom:35px">
           <h3 style="font-size:18px;font-family: 'm3';font-weight:bold" >{{ticket.ticket_event.event_title}}</h3>
           <div class="row" style="padding:0 0 5px 0">
             <div class="col col-10" style="padding:0">
@@ -31,7 +29,7 @@
         </div> 
         <div class="row" style="padding:0 0 5px 0">
           <div class="col col-10"  style="padding:0">
-           <p id="desc"><i class="icon ion-ios-location-outline" id="icon"></i></p> 
+           <p id="desc"><i class="icon ion-ios-location-outline" id="icon" style="font-size:19px;padding-left:2px"></i></p> 
          </div>
          <div class="col col-90" style="padding:0" >
           <p id="desc">{{ticket.ticket_event.event_location}}</p>
@@ -43,15 +41,25 @@
         <div ng-click="openModal(ticket)" id="ticketQR">
          <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
        </div>
+       <p id="Free" ng-if="ticket.ticket_type == 'Free'" style="font-size:16px;bottom:43px">Үнэгүй</p>
+       <p id="Paid" ng-if="ticket.ticket_type == 'Paid'" style="font-size:16px;bottom:43px">Төлбөртэй</p>
      </div>
   </div>
-<span ng-if="ticket.ticket_isActive == true" class="deleteTicket" ng-click="deleteConfirm(ticket)" ><i class="icon ion-trash-b"></i></span>
+  <div class="item item-divider" >
+       <p ng-if="ticket.ticket_isUsed == true" id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:5px;border:1px solid;color:white;background-color:rgba(249, 37, 37, 0.7);padding-left:10px;padding-right:10px">
+          Ашиглагдсан
+      </p>
+        <p ng-if="ticket.ticket_isUsed == false" id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:5px;border:1px solid;background-color:rgba(0, 204, 82, 0.7);color:white;padding-left:10px;padding-right:10px">
+          Ашиглагдаагүй
+      </p>
+      <span ng-if="ticket.ticket_isActive == true" class="deleteTicket" ng-click="deleteConfirm(ticket)" ><i class="fa fa-trash-o"></i></span>
+  </div>
 </div>
-<div class="item" style="margin-auto;padding:auto;border:none">
+<!-- <div class="item" style="margin-auto;padding:auto;border:none">
    <span style="background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;font-weight:bold;font-size:20px" ng-click="sub()"><</span>
   <span style="font-size:22px;margin:10px"> {{$index+1}}/{{tickets.length}} </span>
     <span style="background-color:#FF5700;border-radius:5px;color:white;padding:5px;padding-left:15px;padding-right:15px;font-weight:bold;font-size:20px;margin-right:auto" ng-click="add()">></span> 
-</div>
+</div> -->
 <!-- <div class="list" ng-if="ticket.ticket_type == 'Free'" id="ticketImg" >
   <div class="item item-body" style="height:100%" >
     <p  id="ticketName" >{{ticket.ticket_event.event_title}}</p>
@@ -108,8 +116,8 @@
    <span ng-if="ticket.ticket_isActive == true" class="ticketImgNew" ng-click="deleteConfirm(ticket)" >Устгах</span>
    <span ng-if="ticket.ticket_isActive == false" class="ticketImgNew">Шинэ</span>
  </div>
- </div -->
-</ion-slide>
-</ion-slide-box>
+</div> -->
+</div>
+<!-- </ion-slide-box> -->
 </ion-content>
 </ion-view>

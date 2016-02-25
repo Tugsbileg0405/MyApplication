@@ -1,0 +1,40 @@
+  <ion-modal-view>
+    <ion-header-bar>
+      <h1 class="title" style="font-family:'m3';font-size:20px">Урилга илгээх</h1>
+      <div class="buttons">
+      	<button class="button button-clear" style="color:black;font-size:14px" ng-click="closeModal()">Хаах</button>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+    <form name="myForm" style="margin-top:30px">
+    	<div class="list"   id="buyticketfrm">
+    		<label class="item item-input" >
+    			<span class="input-label"  id="buyticketLabel">Нэр:</span>
+    			<input type="text" ng-model="ticket.ticket_fullname" placeholder="Нэр" id="ticketinput" > 
+    		</label>
+    		<label class="item item-input" >
+    			<span class="input-label"   id="buyticketLabel">И-мэйл:</span>
+    			<input type="email" ng-model="ticket.ticket_email" placeholder="И-мэйл" id="ticketinput" > 
+    		</label>
+    		<label class="item item-input" >   
+    			<span class="input-label"  id="buyticketLabel">Утас:</span>
+    			<input type="text" ng-model="ticket.ticket_phonenumber" placeholder="Утас" id="ticketinput" >
+    		</label> 
+    	</div>
+    	<div class="list" id="selectTicket">
+    		<select  ng-model="ticket.event_ticket_type" id="select" required>
+    			<option ng-if="event.event_ticket_types.length == 0" value="">Тасалбар байхгүй байна</option>
+    			<option ng-if="event.event_ticket_types.length != 0" value="" >Тасалбарын төрөлөө сонгоно уу</option>
+    			<option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
+    			<option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.remaining}})</p></option>
+    			<option ng-if="myevent == true" value="{{urilga_ticket | json}}" ng-repeat="urilga_ticket in event_ticket.urilga"><p>Урилга-{{urilga_ticket.description}} ({{urilga_ticket.remaining}})</p></option>
+    		</select>
+    	</div>
+    	<div class="item" style="border:none;padding-top:0">
+    		<button ng-disabled="myForm.$invalid" type="submit" ng-click="buyTicket(ticket)" class="button button-full disabledBtn" style="font-family:'m3';font-size:17px;background-color:#FF5700;color:white">
+    			Урилга илгээх
+    		</button>
+    	</div>
+    </form>
+    </ion-content>
+  </ion-modal-view>
