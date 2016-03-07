@@ -11,41 +11,41 @@
 </ion-nav-bar>
 	<ion-content overscroll="true" >
 	<form>
-		<div class=" card " id="createEvent">
-			<div class="item item-divider" style="border:none;color:#FF5700;font-size:16px;background-color:#f8f8f8">
+		<div class="list" id="createEvent">
+			<div class="item item-divider" style="border:none;color:#FF5700;font-size:14px;background-color:#f8f8f8;text-transform:uppercase">
 				Үндсэн мэдээлэл:
 			</div>
-			<label class="item item-input item-stacked-label">
-				<span class="input-label">Арга хэмжээний нэр:</span>
+			<label class="item item-input">
+				<span class="input-label">Нэр:</span>
 				<input type="text"  placeholder="Арга хэмжээний нэр" ng-model="event.event_title">
 			</label>
-			<label class="item item-input item-stacked-label">
+			<label class="item item-input ">
 				<span class="input-label">Байршил:</span>
 				<input type="text"  placeholder="Байршил" ng-model="event.event_location">
 			</label>
 			<br>
-			<div class="item item-divider" style="border:none;color:#FF5700;font-size:16px;background-color:#f8f8f8">
+			<div class="item item-divider" style="border:none;color:#FF5700;font-size:14px;background-color:#f8f8f8;text-transform:uppercase">
 				Хугацааны мэдээлэл:
 			</div>
-				<label class="item item-input item-stacked-label">
+				<label class="item item-input ">
 					<span class="input-label">Эхлэх өдөр:</span>
 					<input type="date" ng-model="event.event_start_date">
 				</label>
-				<label class="item item-input item-stacked-label">
+				<label class="item item-input ">
 					<span class="input-label" >Дуусах өдөр:</span>
 					<input type="date" ng-model="event.event_end_date">
 				</label>
-				<label class="item item-input item-stacked-label">
+				<label class="item item-input ">
 					<span class="input-label" >Эхлэх цаг:</span>
 					<input type="time" ng-model="event.event_start_time">
 				</label>
 			<br>
-			<div class="item item-divider" style="border:none;color:#FF5700;font-size:16px;background-color:#f8f8f8">
+			<div class="item item-divider" style="border:none;color:#FF5700;font-size:14px;background-color:#f8f8f8;text-transform:uppercase">
 				Зохион байгуулагч:
 			</div>
-			<div class="list" id="org">
+			<div class="list" id="org" >
 				<li class="item item-toggle">
-					Зохион байгуулагч сонгох:
+					<b style="text-transform:uppercase">Зохион байгуулагч:</b>
 					<label class="toggle ">
 						<input type="checkbox" ng-model="checked" ng-change="check(checked)" >
 						<div class="track">
@@ -54,13 +54,17 @@
 					</label>
 				</li>
 			</div>
-			<div class="list" ng-if="checked == true" id="selectOrg">
-					<select ng-model="event.owner" ng-options="org.organization_fullname for org in myorgs" id="select">
+			<div  class="list" ng-if="checked == true" id="selectOrg">
+					<select ng-if="myorgs.length != 0" ng-model="event.owner" ng-options="org.organization_fullname for org in myorgs" id="select">
 						<option ng-if="myorgs.length != 0" value="">Байгууллага сонгох</option>
-						<option ng-if="myorgs.length == 0" value="">Байгууллага байхгүй байна.</option>
+					</select>
+					<select ng-if="myorgs.length == 0" id="select">
+						<option ng-if="myorgs.length == 0" value="">Байгууллага бүртгэлгүй байна</option>
 					</select>
 			</div>
-				<button id="addEvent" ng-click="createEvent(event)">Арга хэмжээ үүсгэх</button>
+			<div id="addEventButton">
+					<button id="addEvent" ng-click="createEvent(event)">Арга хэмжээ үүсгэх</button>
+			</div>
 		</div>
 	</form>
     </ion-content>

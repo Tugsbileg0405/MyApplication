@@ -18,14 +18,14 @@
   content: "\f053";
 }
 .button.button-assertive.button-outline.active, .button.button-assertive.button-outline.activated {
-    background-color: #FF5700;
+    background-color: #00cc52;
     box-shadow: none;
     color: #fff;
 }
 .button.button-assertive.button-outline {
     border-color: #ef473a;
     background: transparent;
-    color: #FF5700;
+    color: #00cc52;
 }
 #profile span{
   font-family: 'Arial';
@@ -100,20 +100,57 @@
   font-family: "fontawesome";
   content: "\f002";
 }
+
 #ticket img {
   margin-top: 10px;
 }
 .content:  {
 	color: orange;
 }
+#org input {
+  background-color: #f8f8f8;
+  padding-left: 0;
+}
+#allowBtn {
+  width: 100%;
+}
+#allowBtn a{
+  margin: 0;
+}
+#addEventButton {
+  width: 91%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
 #addButton {
-  border:1px solid #f8f8f8;
+  border:1px solid #A8A8A8   ;
   padding: 5px 10px 5px 10px;
   position: absolute;
   right: 10px;
   bottom: 10px;
   border-radius: 5px;
   background-color: #f8f8f8;
+}
+#acceptedButton {
+  border:1px solid #f8f8f8;
+  padding: 5px 10px 5px 10px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 5px;
+  color: white;
+  background-color: #00CC52;;
+}
+#pendingButton {
+  border:1px solid #f8f8f8;
+  padding: 5px 10px 5px 10px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 5px;
+  color: white;
+  background-color: red;
 }
 #urilgaButton {
   border:1px solid #f8f8f8;
@@ -177,6 +214,21 @@
   right: 0;
   top:0;
 }
+#ticketBtns{
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  position: absolute;
+  right: 0;
+  top:0;
+}
+
+#ticketBtns div {
+  border:1px solid #e6e6e6;
+  text-align: center;
+  font-size: 16px;
+  color:#45b5df;;
+}
 .custom {
   color:green;
 }
@@ -187,7 +239,7 @@
   color:#45b5df;;
 }
 #homeBtns div #suggest {
-  color:#00cc52;;
+  color:#FF5700;;;
 }
 #addEvent {
   margin-top: 0;
@@ -208,12 +260,16 @@
   margin-top: 10px;
 }
 #createEvent .item-input {
-  padding: 0 17px 0 14px;
+  /*padding: 0 14px 0 14px;*/
+  width: 90%;
+  padding-left: 0;
   margin-left: auto;
   margin-right: auto;
 }
+
 #createEvent input {
   background-color: #f8f8f8;
+  padding-right: 0;
   border-bottom: 1px solid #FF5700;;
 }
 #selectOrg {
@@ -370,43 +426,57 @@ button.disabledBtn[disabled]{
 }
 #ticketUrilgaName {
   text-align: left;
-  font-size: 30px;
+  font-size: 26px;
   font-family: "m3";
   text-align: center;
-  line-height: 25px;
+  line-height: 22px;
   color: white;
-  margin-top: 450px;
+  text-transform: uppercase;
+  margin-top: 315px;
+  margin-bottom: 0;
 }
 #ticketUrilgaLocate{
+ margin-top: 10px;
+ margin-bottom: 0px;
  text-align: left;
- font-size: 25px;
- line-height: 25px;
+ font-size: 24px;
+ line-height: 22px;
  font-family: "m3";
  text-align: center;
  color: white;
 }
 #ticketUrilgaDate{
+ margin-top: 10px;
+ margin-bottom: 5px;
  text-align: left;
- font-size: 30px;
- line-height: 25px;
+ font-size: 26px;
+ line-height: 22px;
  font-family: "m3";
  text-align: center;
  color: white;
 }
 #ticketUrilga qr img {
   border: 2px solid white;
+  width: 120px;
+  height: 120px;
   margin-top: 0;
 }
 #ticketUrilga1 qr img {
   border: 2px solid white;
+   width: 120px;
+  height: 120px;
   margin-top: 0;
 }
 #ticketUrilga2 qr img {
   border: 2px solid white;
+   width: 120px;
+  height: 120px;
   margin-top: 0;
 }
 #ticketUrilga3 qr img {
   border: 2px solid white;
+   width: 120px;
+  height: 120px;
   margin-top: 0;
 }
 .deleteButton button {
@@ -467,32 +537,32 @@ button.disabledBtn[disabled]{
   background-repeat: no-repeat; 
   background-origin:padding-box;
   background-size: cover;
-  background-size: 100% 874px;
-  height:874px;
+  background-size: 100% 639px;
+  height:689px;
 }
 #ticketUrilga1 {
   background-image:url(../img/Urilga/black.jpg);
   background-repeat: no-repeat; 
   background-origin:padding-box;
   background-size: cover;
-  background-size: 100% 874px;
-  height:874px;
+  background-size: 100% 639px;
+  height:689px;
 }
 #ticketUrilga2 {
   background-image:url(../img/Urilga/green.jpg);
   background-repeat: no-repeat; 
   background-origin:padding-box;
   background-size: cover;
-  background-size: 100% 874px;
-  height:874px;
+  background-size: 100% 639px;
+  height:689px;
 }
 #ticketUrilga3 {
   background-image:url(../img/Urilga/red.jpg);
   background-repeat: no-repeat; 
   background-origin:padding-box;
   background-size: cover;
-  background-size: 100% 874px;
-  height:874px;
+  background-size: 100% 639px;
+  height:689px;
 }
 #ticketInfo {
   margin-top: 0;
@@ -968,6 +1038,19 @@ hr {
 :-ms-input-placeholder { 
  font-size: 17px; 
  color: #d0cdfa;
+}
+#profile {
+  width: 94%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#profile input {
+  text-align: right;
+  background-color: #f8f8f8;
+  border-bottom:1px solid #FF5700;;
+}
+#profile label {
+  border:none !important;
 }
 #profile hr{
   background-color:#FF5700;

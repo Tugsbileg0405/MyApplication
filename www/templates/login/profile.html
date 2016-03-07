@@ -5,7 +5,7 @@
      <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
       </button>
     </ion-nav-buttons>
-     <ion-nav-title style="font-family:'Arial';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:16px" >
+     <ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:19px" >
      Хувийн мэдээлэл
     </ion-nav-title>
 </ion-nav-bar>
@@ -19,33 +19,33 @@
               <div style="font-family:'Arial';position:absolute;bottom:20px;font-size:20px;color:white;width:100%;text-align:center">{{user_info.person_firstname + ' ' + user_info.person_lastname}}
               </div>
                 </div>
-   <div class="list" style="margin-top:0;background-color: #f8f8f8;padding-right:15px">
-
-        <div class="item item-text-wrap" id="profile" style="padding:0;padding-left:15px">
-                <label class="item item-input field-disabled">
+   <div class="list"  id="profile">
+                <label class="item item-input ">
                     <span class="input-label">И-мэйл:</span>
                      <input type="text" style="font-weight:bold;text-align:right" ng-model="user.person_email">
                 </label>
-                    <hr>
                        <label class="item item-input">
                     <span class="input-label">Овог:</span>
                      <input type="text"  style="font-weight:bold;text-align:right" ng-model="user.person_firstname" >
                 </label>
-                <hr>
                 <label class="item item-input">
                     <span class="input-label">Нэр:</span>
                      <input type="text" style="font-weight:bold;text-align:right" ng-model="user.person_lastname" >
                 </label>
-                    <hr>
                  <label class="item item-input">
                     <span class="input-label">Утасны дугаар:</span>
-                     <input type="text" style="font-weight:bold;text-align:right" ng-model="user.person_cell_number" >
+                     <input type="text" style="font-weight:bold;text-align:right" ng-model="user.person_cell_number">
                 </label>
-                <hr>
-                   <button class="button button-full" style="font-family:'Arial';background-color:#FF5700;color:white" ng-click="Update(user)">
-                       Засварлах
-                     </button>
-            </div>
+                <div class="row" style="padding:0">
+                  <div class="col" style="padding:0;margin-right:5px">
+                       <button class="button button-full" style="padding:0;font-family:'m3';font-size:16px;background-color:#00CC52;;color:white" ng-click="Update(user)">
+                         Засварлах
+                       </button>   
+                  </div>
+                  <div class="col" style="padding:0">
+                     <button  class="button button-full" style="padding:0;font-family:'m3';font-size:16px;background-color:#FF5700;color:white" ui-sref="app.changepass">Нууц үг өөрчлөх</button>
+                 </div>
+               </div> 
             </div>
         </div>
     </ion-content>

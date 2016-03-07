@@ -7,10 +7,7 @@
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
     <button class="button-clear" ui-sref="app.single({playlistId:eventId})" style="color:black;padding:6px 15px 6px 15px;height:100%;font-size:23px">
-     <i class="fa fa-eye"></i>
-    </button> 
-    <button class="button-clear" ng-click="doRefresh()" style="color:black;padding:6px 15px 6px 15px;height:100%;font-size:23px">
-      <i class="fa fa-refresh"></i>
+     <i class="fa fa-calendar-o"></i>
     </button> 
     </ion-nav-buttons>
 </ion-nav-bar>
@@ -28,8 +25,9 @@
               <img  ng-if="!worker.person_profile_img" src="img/default.png">
               <p style="margin-top:10px">{{worker.person_firstname}} {{worker.person_lastname}}</p>
               <p  ng-if="worker.person_cell_number">{{worker.person_cell_number}}</p>
-              <span ng-if="is_Joined == false" id="addButton" ng-click="addWorker(worker)"><i class="fa fa-share"></i> Add</span>
-              <span ng-if="is_Joined == true" id="addButton" ><i class="fa fa-share"></i> Sent</span>
+              <span ng-if="is_Joined == 0" id="addButton" ng-click="addWorker(worker)"><i class="fa fa-share"></i> Add</span>
+              <span ng-if="is_Joined == 1" id="acceptedButton" ><i class="fa fa-share"></i> Accepted</span>
+              <span ng-if="is_Joined == 2" id="pendingButton" ><i class="fa fa-share"></i> Pending</span>
             </a>
           </div>
           <div class="card" ng-if="workers.length == 0">
@@ -64,14 +62,20 @@
       </div>
     </div>
    </ion-content>
-<!--    <div class="bar bar-footer" id="editFooter">
-        <div class="tabs tabs-light tabs-background-light" >
+   <div class="bar bar-footer" id="editFooter">
+          <div class="tabs tabs-icon-left" >
+            <a ng-click="doRefresh()" class="tab-item" style="font-size:17px">
+              <i class="icon ion-refresh"></i>
+              Сэргээх
+            </a>
+          </div>
+    <!--     <div class="tabs tabs-light tabs-background-light" >
           <a class="tab-item active" ng-click="editOpenModal()" style="color:#ff5700;font-size:17px;padding:0;margin-right:8px;border:1px solid;border-radius:5px;height:45px">
            <i class="fa fa-cogs"></i> Засварлах
           </a>
           <a class="tab-item active" ui-sref="app.buyticket({playlistId:eventId})" style="border:1px solid;color:#00CC52;font-size:17px;padding:0;border-radius:5px;height:45px">
            <i class="fa fa-ticket"></i> Тасалбар авах
           </a>
-        </div>
-  </div> -->
+        </div> -->
+  </div>
 </ion-view>

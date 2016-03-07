@@ -90,7 +90,7 @@
 			</div>
 			<hr ng-if="list.event_location">
 		</div>
-		<div class="item item-text-wrap" id="eventlist" ng-if="list.event_owner !== undefined">
+		<div class="item item-text-wrap" id="eventlist" ng-if="list.event_owner.length != 0">
 			<div class="row" style="padding:0" ng-repeat="owner in list.event_owner">
 				<div class="col col-10">
 					<i class="icon ion-ios-briefcase-outline assertive" style="font-size:22px;color:#FF5700"></i>
@@ -100,9 +100,9 @@
 				</div>
 
 			</div>
-			<hr ng-if="list.event_owner !== undefined">
+			<hr ng-if="list.event_owner.length != 0">
 		</div>
-		<div class="item item-text-wrap" id="eventlist" ng-if="list.event_owner === undefined">
+		<div class="item item-text-wrap" id="eventlist" ng-if="list.event_owner.length == 0">
 			<div class="row" style="padding:0">
 				<div class="col col-10">
 					<i class="icon ion-ios-briefcase-outline assertive" style="font-size:22px;color:#FF5700"></i> 
@@ -111,7 +111,7 @@
 					<span id="list" >Арга хэмжээг оруулсан - {{list.event_created_by.person_lastname}}</span>
 				</div>
 			</div>
-			<hr ng-if="list.event_owner === undefined">
+			<hr ng-if="list.event_owner.length == 0">
 		</div>
 		<div class="item"  id="eventlist"   ng-repeat="price in list.event_ticket_types">
 			<div class="row" style="padding:0">

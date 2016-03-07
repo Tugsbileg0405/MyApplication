@@ -1,0 +1,218 @@
+<ion-view cache-view="false">
+<ion-nav-bar align-title="right">
+<ion-nav-buttons side="left" >
+<button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+  <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>  
+</button>
+</ion-nav-buttons>
+<ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px" >
+Таны урилга:{{tickets.length}}
+</ion-nav-title>
+</ion-nav-bar>
+<ion-content >
+<ion-slide-box on-slide-changed="slideChanged($index)" show-pager="false" >
+<ion-slide ng-repeat="ticket in tickets |  orderBy:'ticket_event.event_start_date'">
+<div class="list" id="ticketUrilga" ng-if="ticket.ticket_urilga_type == 'classic'" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'HH:mm'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+ </div>
+          <div class="tabs tabs-icon-left" style="padding:0">
+        <a ng-click="rejectedTicket(ticket)" ng-if="ticket.ticket_rejected == false " class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline-blank"></i>
+          Reject
+        </a>
+         <a ng-if="ticket.ticket_rejected == true" ng-click="unrejectedTicket(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline"></i>
+          Rejected
+        </a>
+        <a ng-if="ticket.ticket_isActive == false" ng-click="acceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-blank"></i>
+          Accept
+        </a>
+          <a ng-if="ticket.ticket_isActive == true" ng-click="unacceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox"></i>
+          Accepted
+        </a>
+        <a ng-click="deleteConfirm(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-trash-a"></i>
+          Delete
+        </a>
+      </div>
+</div>
+<div class="list" id="ticketUrilga1" ng-if="ticket.ticket_urilga_type == 'luxury'" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body"  >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'HH:mm'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+   <!-- <div class="button-bar" style="position:absolute;left:2px;top:40%" ng-if="ticket.ticket_isActive == false ">
+     <button class="button button-block button-assertive" id="reject1" ng-click="deleteTicket(ticket)" >Татгалзах</button>
+     <button class="button button-block button-balanced" id="accept1" ng-click="acceptTicket(ticket)">Зөвшөөрөх</button>
+   </div>
+   <span ng-if="ticket.ticket_isActive == true" class="new" ng-click="deleteConfirm(ticket)" >Устгах</span> -->
+ </div>
+       <div class="tabs tabs-icon-left" style="padding:0">
+        <a ng-click="rejectedTicket(ticket)" ng-if="ticket.ticket_rejected == false " class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline-blank"></i>
+          Reject
+        </a>
+         <a ng-if="ticket.ticket_rejected == true" ng-click="unrejectedTicket(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline"></i>
+          Rejected
+        </a>
+        <a ng-if="ticket.ticket_isActive == false" ng-click="acceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-blank"></i>
+          Accept
+        </a>
+          <a ng-if="ticket.ticket_isActive == true" ng-click="unacceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox"></i>
+          Accepted
+        </a>
+        <a ng-click="deleteConfirm(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-trash-a"></i>
+          Delete
+        </a>
+      </div>
+</div>
+<div class="list" ng-if="ticket.ticket_urilga_type == 'basic'" id="ticketUrilga2" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'HH:mm'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+ </div>
+        <div class="tabs tabs-icon-left" style="padding:0">
+        <a ng-click="rejectedTicket(ticket)" ng-if="ticket.ticket_rejected == false " class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline-blank"></i>
+          Reject
+        </a>
+         <a ng-if="ticket.ticket_rejected == true" ng-click="unrejectedTicket(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline"></i>
+          Rejected
+        </a>
+        <a ng-if="ticket.ticket_isActive == false" ng-click="acceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-blank"></i>
+          Accept
+        </a>
+          <a ng-if="ticket.ticket_isActive == true" ng-click="unacceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox"></i>
+          Accepted
+        </a>
+        <a ng-click="deleteConfirm(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-trash-a"></i>
+          Delete
+        </a>
+      </div>
+</div>
+<div class="list" ng-if="ticket.ticket_urilga_type == undefined" id="ticketUrilga2" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'HH:mm'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+ </div>
+           <div class="tabs tabs-icon-left" style="padding:0">
+        <a ng-click="rejectedTicket(ticket)" ng-if="ticket.ticket_rejected == false " class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline-blank"></i>
+          Reject
+        </a>
+         <a ng-if="ticket.ticket_rejected == true" ng-click="unrejectedTicket(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline"></i>
+          Rejected
+        </a>
+        <a ng-if="ticket.ticket_isActive == false" ng-click="acceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-blank"></i>
+          Accept
+        </a>
+          <a ng-if="ticket.ticket_isActive == true" ng-click="unacceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox"></i>
+          Accepted
+        </a>
+        <a ng-click="deleteConfirm(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-trash-a"></i>
+          Delete
+        </a>
+      </div>
+</div>
+<div class="list" ng-if="ticket.ticket_urilga_type == 'elite'" id="ticketUrilga3" ng-show="ticket.ticket_type == 'Urilga'">
+  <div class="item item-body" >
+    <p id="ticketUrilgaName" >{{ticket.ticket_event.event_title}}</p>
+    <p id="ticketUrilgaLocate">{{ticket.ticket_event.event_location}}</p>
+    <p id="ticketUrilgaDate" ng-if="ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | {{ticket.ticket_event.event_start_time | date:'HH:mm'}}</p>
+    <p id="ticketUrilgaDate" ng-if="!ticket.ticket_event.event_start_time">{{ticket.ticket_event.event_start_date | date:'yyyy-MM-dd '}} | 09:00</p>
+    <div class="row"> 
+      <div class="col col-10"></div>
+      <div class="col" style="text-align:center" ng-click="openModal(ticket.id)">
+       <qr text="ticket.id" type-number="0" correction-level="'H'" size="size" input-mode="'Auto'" image="true"></qr>
+     </div>
+     <div class="col col-10"></div>
+   </div>
+   <span ng-if="ticket.ticket_isActive == false" class="new">Шинэ</span>
+ </div>
+       <div class="tabs tabs-icon-left" style="padding:0">
+        <a ng-click="rejectedTicket(ticket)" ng-if="ticket.ticket_rejected == false " class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline-blank"></i>
+          Reject
+        </a>
+         <a ng-if="ticket.ticket_rejected == true" ng-click="unrejectedTicket(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-outline"></i>
+          Rejected
+        </a>
+        <a ng-if="ticket.ticket_isActive == false" ng-click="acceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox-blank"></i>
+          Accept
+        </a>
+          <a ng-if="ticket.ticket_isActive == true" ng-click="unacceptTicket(ticket)" class="tab-item" style="background-color:#00CC52;color:white;font-size:16px">
+          <i class="icon ion-android-checkbox"></i>
+          Accepted
+        </a>
+        <a ng-click="deleteConfirm(ticket)" class="tab-item" style="background-color:red;color:white;font-size:16px">
+          <i class="icon ion-trash-a"></i>
+          Delete
+        </a>
+      </div>
+</div>
+</ion-slide>
+</ion-slide-box>
+<div class="card" ng-if="urilga.length == 0">
+ <div class="item item-text-wrap" style="font-family:'m3';font-size:18px;text-align:center">
+  Мэдээлэл ороогүй байна.
+</div>
+</div>
+</ion-content>
+</ion-view>

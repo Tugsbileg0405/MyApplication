@@ -23,7 +23,8 @@
 <ion-list >
 <ion-item style="width:105%;margin-left:-2%" ng-repeat="list in events |orderBy:sortType:sortReverse | filter:eventType | limitTo:limit" href="#/guest/guestdetail/{{list.id}}" >
 <div class="list card ink" id="categoryItem" style="margin:-2%;padding:0px;width:114%;height:100%" >
-  <img ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image" >
+  <img ng-if="list.event_cover.length < 100" ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image" >
+  <img ng-if="list.event_cover.length > 100" ng-src="{{list.event_cover}}"  id="homeImg" class="full-image" >
   <div class="item tem-text-wrap">
     <h3 style="font-weight:bold;font-size:18px;font-family:'m3'">{{list.event_title}}</h3>
     <div class="row" style="padding:0 0 5px 0">

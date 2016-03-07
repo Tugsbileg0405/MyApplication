@@ -8,12 +8,11 @@
  <button class="button button-clear" style="color:black;margin:0;font-weight:bold" ui-sref="app.search">
   <i class="icon ion-ios-search-strong" ></i>
 </button>
-  <button class="button-clear" ng-click="doRefresh()" style="color:black;font-size:23px">
+<!--   <button class="button-clear" ng-click="doRefresh()" style="color:black;font-size:23px">
     <i class="fa fa-refresh"></i>
- </button> 
+ </button>  -->
 </div>
 </ion-header>
-
 <ion-content  class="has-header"  overflow-scroll='true'  id="myBody" on-scroll="getScrollPosition()" on-swipe-up="showHeader()" on-swipe-down="hideHeader()" lazy-scroll>
 <ion-slide-box on-slide-changed="slideChanged($index)"  auto-play="true" does-continue="true" show-pager="false" id="slider">
 <ion-slide>
@@ -63,7 +62,7 @@
  <div class="animate-switch-container"
     ng-switch on="index" on-swipe-right="goBack(index)" on-swipe-left="goForward(index)">
       <div class="animate-switch" ng-switch-default >
-       <ion-item ng-repeat="list in events.today_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
+       <ion-item ng-repeat="list in today_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
        <div class="list card" id="homeList" >
          <img ui-sref="app.single({playlistId:list.id})" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
          <img  ui-sref="app.single({playlistId:list.id})" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
@@ -115,14 +114,14 @@
   </div>
 </div>
 </ion-item>
-<div class="card" ng-if="events.today_event.length == 0">
+<div class="card" ng-if="today_event.length == 0">
  <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
       </div>
       <div class="animate-switch" ng-switch-when="1">
-       <ion-item ng-repeat="list in events.tomorrow_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
+       <ion-item ng-repeat="list in tomorrow_event | orderBy:'createdAt':true" href="" style="width:105%;margin-left:-2%" >
        <div class="list card"  id="homeList">
           <img ui-sref="app.single({playlistId:list.id})" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
          <img ui-sref="app.single({playlistId:list.id})"  ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
@@ -175,7 +174,7 @@
     
  </div>
 </ion-item>
-<div class="card" ng-if="events.tomorrow_event.length == 0">
+<div class="card" ng-if="tomorrow_event.length == 0">
  <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
   Мэдээлэл ороогүй байна.
 </div>
@@ -236,7 +235,7 @@
   Мэдээлэл ороогүй байна.
 </div>
 </div>
-<ion-infinite-scroll 
+<ion-infinite-scroll ng-show="lists.length > 8"
 on-infinite="loadMore()"
 distance="1%">
 </ion-infinite-scroll>

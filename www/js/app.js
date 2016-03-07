@@ -14,7 +14,7 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
         console.log('check the log for errors');
     });
 }, false);
- $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
+  $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
   if(toState.name.indexOf('app') !== -1 ) {
     if(!AuthService.getAuthStatus()) {
       event.preventDefault();
@@ -22,7 +22,7 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
     }
   }
 })
- $rootScope.$on('$stateChangeSuccess',
+  $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams) {
     $state.current = toState;
     if($state.current.name == 'app.playlists'){
@@ -81,7 +81,6 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
 }
 }
 )
-
 $ionicPlatform.ready(function() {
    if (navigator && navigator.splashscreen) {
           navigator.splashscreen.hide();
@@ -105,19 +104,18 @@ $ionicPlatform.ready(function() {
     if(window.Connection) {
       if(navigator.connection.type == Connection.NONE) {
         $ionicLoading.hide();
-        $ionicPopup.alert({
-          okType: 'button-assertive',
-          content: "Та интернетэд холбогдож байж ашиглана уу"
-        })
-        .then(function(result) {
-          if(result) {
-            $ionicLoading.hide();
-          }
-        });
+        // $ionicPopup.alert({
+        //   okType: 'button-assertive',
+        //   content: "Интернет холболтоо шалгана уу"
+        // })
+        // .then(function(result) {
+        //   if(result) {
+        //     $ionicLoading.hide();
+        //   }
+        // });
       }
     }
   });
-
 })
 
 
@@ -421,6 +419,15 @@ $ionicPlatform.ready(function() {
         'menuContent': {
           templateUrl: 'templates/invitation.html',
           controller : 'InvitationCtrl'
+        }
+      }
+    })
+       .state('app.urilgaImg', {
+      url: '/invitation/:urilgaId/img',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/urilgaImg.html',
+          controller : 'urilgaImgCtrl'
         }
       }
     })
