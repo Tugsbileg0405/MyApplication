@@ -1,0 +1,52 @@
+  <ion-modal-view class="radiusModal">
+    <ion-header-bar>
+	    <div class="buttons buttons-left">
+	    	<span class="left-buttons" >
+	    			 	<button class="button button-clear" style="color:#639BF7;font-family:'m3';font-size:18px;text-transform: capitalize;" ng-click="pollClose()">Хаах</button>
+	    	</span>
+	    </div>
+      <h1 class="title" style="font-family:'m3';font-size:20px">Санал асуулга</h1>
+      <div class="buttons">
+      		<button class="button button-clear" style="color:#639BF7" ng-click="modeChange()" >
+	    				<i class="fa fa-list-ol" ng-if="mode == 1"></i>
+	    				<i class="fa fa-list-ul" ng-if="mode ==2"></i>
+	    		</button>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+	    <div class="list" ng-repeat="poll in poll_questions" ng-if="mode == 1">
+	    	<div class="item item-divider" id="pollquestion">
+	    		<p>Асуултууд</p>
+	    	</div>
+	    	<a class="item item-icon-right" style="border-bottom:1px solid #f8f8f8;font-family:'m3';font-size:18px" ng-click="pollanswerOpen(question)" ng-repeat="(key,question) in poll.poll_questions">
+	    		 <i class="icon ion-ios-arrow-forward"></i>
+	    		{{key+1}}. {{question.question_title}}
+	    	</a>
+	    </div>
+	    <div class="list" ng-if="poll_questions.length == 0">
+	    	<div class="item" style="text-align:center">
+	    		<p>Санал асуулга байхгүй байна</p>
+	    	</div>
+	    </div>
+
+	   <div class="list" ng-repeat="question in questions" ng-if="mode == 2">
+	    	<div class="item item-divider" id="pollquestion" ion-affix >
+	    		<p>{{question.question_title}}</p>
+	    	</div>
+	   <ion-checkbox class="checkbox-stable" ng-repeat="(key,option) in question.question_options" ng-click="addPoll(option)" style="border-bottom:1px solid #f8f8f8;padding-left:48px">
+	    	<div class="row" style="padding:0;margin:0" >
+	    		<div class="col col-90" style="padding:0;padding-right:10px">
+	    			<progress id="progressbar" max="100" value="65"> </progress>
+	    			<div id="progressbarlabel">{{option.option_title}}</div>
+	    		</div>
+	    		<div class="col col-10" style="padding:0">
+	    			<span class="item-note" id="progresscounter">
+	    				+3
+	    			</span>
+	    		</div>
+	    	</div>
+	    </ion-checkbox>
+	    </div>
+	 
+    </ion-content>
+  </ion-modal-view>

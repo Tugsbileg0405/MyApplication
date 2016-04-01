@@ -4,7 +4,7 @@ AngularJS-Toaster
 **AngularJS Toaster** is an AngularJS port of the **toastr** non-blocking notification jQuery library. It requires AngularJS v1.2.6 or higher and angular-animate for the CSS3 transformations. 
 (I would suggest to use /1.2.8/angular-animate.js, there is a weird blinking in newer versions.)
 
-### Current Version 0.4.15
+### Current Version 0.4.18
 
 ## Demo
 - Simple demo is at http://plnkr.co/edit/HKTC1a
@@ -26,10 +26,10 @@ npm install --save angularjs-toaster
 * Link scripts:
 
 ```html
-<link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.9/toaster.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.16/toaster.min.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js" ></script>
 <script src="https://code.angularjs.org/1.2.0/angular-animate.min.js" ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.9/toaster.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.16/toaster.min.js"></script>
 ```
 
 * Add toaster container directive: 
@@ -64,7 +64,7 @@ The Close Button's visibility can be configured at three different levels:
 
 * Globally in the config for all toast types:
 ```html
-<toaster-container toaster-options="'close-button': true"></toaster-container>
+<toaster-container toaster-options="{'close-button': true}"></toaster-container>
 ```
 
 * Per info-class type:
@@ -87,10 +87,33 @@ toaster.pop({
 ```
 This option is given the most weight and will override the global configurations for that toast.  However, it will not persist to other toasts of that type and does not alter or pollute the global configuration.
 
+### Close Html
+
+The close button html can be overridden either globally or per toast call.
+
+ - Globally:
+
+    ```html
+    <toaster-container toaster-options="{'close-html':'<button>Close</button>', 
+        'showCloseButton':true}"></toaster-container>
+    ```
+ - Per toast:
+
+    ```js
+    toaster.pop({
+            type: 'error',
+            title: 'Title text',
+            body: 'Body text',
+            showCloseButton: true,
+            closeHtml: '<button>Close</button>'
+    });
+    ```
+
+
 ### Body Output Type
 The rendering of the body content is configurable at both the Global level, which applies to all toasts, and the individual toast level when passed as an argument to the toast.
 
-There are three types of body renderings: trustedHtml', 'template', 'templateWithData'.
+There are four types of body renderings: trustedHtml', 'template', 'templateWithData', 'directive'.
 
  - trustedHtml:  When using this configuration, the toast will parse the body content using 
 	`$sce.trustAsHtml(toast.body)`.
@@ -102,22 +125,67 @@ There are three types of body renderings: trustedHtml', 'template', 'templateWit
 	 - Will use the `toast.body` if passed as an argument, else it will fallback to the template bound to the `'body-template': 'toasterBodyTmpl.html'` configuration option.
 	 - Assigns any data associated with the template to the toast.
 
-All three options can be configured either globally for all toasts or individually per toast.pop() call.  If the `body-output-type` option is configured on the toast, it will take precedence over the global configuration for that toast instance.
+ - directive 
+	 - Will use the `toast.body` argument to represent the name of a directive that you want to render as the toast's body, else it will fallback to the template bound to the `'body-template': 'toasterBodyTmpl.html'` configuration option.
+    
+      ```js
+    // The toast pop call, passing in a directive name to be rendered
+    toaster.pop({
+		    type: 'info',
+		    body: 'bind-unsafe-html',
+		    bodyOutputType: 'directive'
+	});
+      ```
+    
+      ```js
+    // The directive that will be dynamically rendered
+    .directive('bindUnsafeHtml', [function () {
+            return {
+                template: "<span style='color:orange'>Orange directive text!</span>"
+            };
+    }])
+    ```
+     - Will use the `toast.directiveData` argument to accept data that will be bound to the directive's scope.
+    
+        ```js
+      // The toast pop call, passing in a directive name to be rendered
+      toaster.pop({
+              type: 'info',
+              body: 'bind-name',
+              bodyOutputType: 'directive',
+              directiveData: { name: 'Bob' }
+      });
+        ```
+        
+        ```js
+      // The directive that will be dynamically rendered
+      .directive('bindName', [function () {
+            return {
+                template: "<span style='color:orange'>Hi {{directiveData.name}}!</span>"
+            };
+      }])
+        ```
+        
+    There are additional documented use cases in these [tests](test/directiveTemplateSpec.js).
+    
+All four options can be configured either globally for all toasts or individually per toast.pop() call.  If the `body-output-type` option is configured on the toast, it will take precedence over the global configuration for that toast instance.
 
  - Globally:
-```html
-<toaster-container toaster-options="'body-output-type': 'template'"></toaster-container>
-```
+ 
+    ```html
+    <toaster-container toaster-options="{'body-output-type': 'template'}"></toaster-container>
+    ```
+ 
  - Per toast:
-  
-```js
-toaster.pop({
+ 
+    ```js
+    toaster.pop({
             type: 'error',
             title: 'Title text',
             body: 'Body text',
             bodyOutputType: 'trustedHtml'
-});
-```
+    });
+    ```
 
 ### On Hide Callback
 A callback function can be attached to each toast instance.  The callback will be invoked upon toast removal.  This can be used to chain toast calls.
@@ -160,28 +228,7 @@ If you do not want to use animations, you can safely remove the angular-animate.
 Inspired by http://codeseven.github.io/toastr/demo.html.
 
 ## Copyright
-Copyright © 2013 [Jiri Kavulak](https://twitter.com/jirikavi).
+Copyright © 2013-2015 [Jiri Kavulak](https://twitter.com/jirikavi).
 
 ## License 
 AngularJS-Toaster is under MIT license - http://www.opensource.org/licenses/mit-license.php
-
-##Changes Log
-## v0.4.13
-- Add option in function toaster.pop() , `toastId` to define 'uid', use the function 'toaster.clear ()'
-
-```js
-var _toaster = {
-                    type:      null,
-                    title:     null,
-                    body:      null,
-                    timeout:   null,
-                    toasterId: 'CategoryMenu',
-                    toastId:   'CategoryMenuAlert'
-                }
-```
-
-- Add option in function toaster.clear()
- * toaster.clear(); --> clearAll with ToasterId = undefined;
- * toaster.clear('*'); -> ClearAll()
- * toaster.clear('clearID'); -> clearAll() with toaster have ToasterId = 'clearID'
-* toaster.clear('clearID', 'toastID'); -> Just clearAll with toasts have uid = 'toastID' in  ToasterId = 'clearID'.

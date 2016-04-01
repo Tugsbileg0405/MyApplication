@@ -45,4 +45,117 @@ angular.module('starter.services',[])
         }
     }
 })
-;
+.service('EventService', function ($rootScope, $http, $q){
+
+    this.getTodayEvent = function() {
+        var deferred = $q.defer();
+        $http.get('http://www.urilga.mn:1337/todayevents?____token=dXJpbGdhbW5BY2Nlc3M=')
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    this.getTomorrowEvent = function() {
+        var deferred = $q.defer();
+        $http.get('http://www.urilga.mn:1337/tomorrowevents?____token=dXJpbGdhbW5BY2Nlc3M=')
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    this.getTopEvent = function() {
+        var deferred = $q.defer();
+        $http.get('http://www.urilga.mn:1337/popularevent?____token=dXJpbGdhbW5BY2Nlc3M=')
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    this.getEventDetail = function(data){
+        var deferred = $q.defer();
+        $http.get('http://www.urilga.mn:1337/event/'+data)
+        .success(function(data){
+            deferred.resolve(data);
+        })
+        .error(function(data){
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
+    this.getPollByEvent = function(data){
+          var deferred = $q.defer();
+          $http.get('http://www.urilga.mn:1337/poll?poll_event='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=')
+          .success(function(data){
+            deferred.resolve(data);
+        })
+          .error(function(data){
+            deferred.reject(data);
+        })
+          return deferred.promise;
+      };
+      this.getPoll = function(data){
+          var deferred = $q.defer();
+          $http.get('http://www.urilga.mn:1337/pollquestion/'+data+'?____token=dXJpbGdhbW5BY2Nlc3M=')
+          .success(function(data){
+            deferred.resolve(data);
+        })
+          .error(function(data){
+            deferred.reject(data);
+        })
+          return deferred.promise;
+      };
+      this.getQuestionPoll = function(data){
+          var deferred = $q.defer();
+          $http.get('http://www.urilga.mn:1337/pollquestion?question_poll='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=')
+          .success(function(data){
+            deferred.resolve(data);
+        })
+          .error(function(data){
+            deferred.reject(data);
+        })
+          return deferred.promise;
+      };
+      this.getQuestionPoll = function(data){
+          var deferred = $q.defer();
+          $http.get('http://www.urilga.mn:1337/pollquestion?question_poll='+data+'&____token=dXJpbGdhbW5BY2Nlc3M=')
+          .success(function(data){
+            deferred.resolve(data);
+        })
+          .error(function(data){
+            deferred.reject(data);
+        })
+          return deferred.promise;
+      };
+      this.postTicketRequest = function(data){
+        var deferred = $q.defer();
+        $http.post('http://www.urilga.mn:1337/ticketrequest',data)
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.postEventJoiner = function(data){
+        var deferred = $q.defer();
+        $http.post('http://www.urilga.mn:1337/eventjoiner',data)
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+
+    });

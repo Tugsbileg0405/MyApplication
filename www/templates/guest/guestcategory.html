@@ -1,8 +1,9 @@
 <ion-view >
 <ion-nav-bar id="categoryNav" align-title="center" style="background-color: transparent" >
 <ion-nav-buttons side="left" style="margin-right:0 !important">
-<button class="button-clear  " ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
-   <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+<button class="button button-icon ion-chevron-left button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+  ...
+  <!--  <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>  -->
 </button>
 </ion-nav-buttons>
 <ion-nav-title style="width:100%;font-size:20px;margin:0 !important;font-family:'m3'">
@@ -12,7 +13,7 @@
 <button class="button button-clear" style="color:black" ng-click="showPop($event)">
   <i class="fa fa-sort-amount-asc"></i>
 </button>
-<button class="button button-clear" style="color:black" ui-sref="app.search">
+<button class="button button-clear" style="color:black" ui-sref="guest.search">
   <i class="icon ion-ios-search-strong" style="padding:0 5px 0 5px"></i>
 </button>
 </ion-nav-buttons>
@@ -20,11 +21,10 @@
 <ion-content overflow-scroll='true'  >
 <ion-refresher pulling-text="Уншиж байна..." on-refresh="doRefresh()">
 </ion-refresher>
-<ion-list >
-<ion-item style="width:105%;margin-left:-2%" ng-repeat="list in events |orderBy:sortType:sortReverse | filter:eventType | limitTo:limit" href="#/guest/guestdetail/{{list.id}}" >
-<div class="list card ink" id="categoryItem" style="margin:-2%;padding:0px;width:114%;height:100%" >
-  <img ng-if="list.event_cover.length < 100" ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image" >
-  <img ng-if="list.event_cover.length > 100" ng-src="{{list.event_cover}}"  id="homeImg" class="full-image" >
+<div class="list card"  ng-repeat="list in events |orderBy:sortType:sortReverse | filter:eventType | limitTo:limit" ng-click="goDetail(list)">
+<div id="categoryItem"  >
+  <img ng-if="list.event_cover.length < 100"  ng-cache ng-src="{{backsite}}/{{list.event_cover}}"  id="homeImg" class="full-image" >
+   <img ng-if="list.event_cover.length > 100" ng-src="{{list.event_cover}}"  id="homeImg" class="full-image" >
   <div class="item tem-text-wrap">
     <h3 style="font-weight:bold;font-size:18px;font-family:'m3'">{{list.event_title}}</h3>
     <div class="row" style="padding:0 0 5px 0">
@@ -44,28 +44,32 @@
   </div>
 </div> 
 </div>
-<div class="item item-divider">
-  <p  id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:5px;text-transform:lowercase">
-    #{{items.name | translate}}
-  </p>
+<div class="item item-divider" style="padding:0">
+  <div class="row" style="padding:0">
+      <div class="col" style="padding:0;padding-left:20px">
+         <p  id="title" style="font-size:16px;font-family:'m3';float:left;padding-top:15px;text-transform:lowercase">
+          #{{items.name | translate}}
+        </p>
+      </div>
+      <div class="col" style="padding:0;text-align:right">
+        <span id="FreeCat" ng-if="list.event_ticket_type == 'Free'">
+         Үнэгүй
+       </span>
+       <span id="PaidCat" ng-if="list.event_ticket_type != 'Free'">Төлбөртэй</span>
+      </div>
+  </div>
+ </div>
 </div>
-<div id="Free" ng-if="list.event_ticket_type == 'Free'">
- <p style="color:white">Үнэгүй</p>
-</div>
-<div id="Paid" ng-if="list.event_ticket_type != 'Free'">
- <p style="color:white">Төлбөртэй</p>
 </div>
 </div>
-</ion-item>
-<ion-infinite-scroll 
-on-infinite="loadMore()"
-distance="1%">
-</ion-infinite-scroll>
-</ion-list>
 <div class="card" ng-if="events.length == 0" >
  <div class="item item-text-wrap" style="font-size:18px;font-family:'m3';text-align:center">
   Мэдээлэл ороогүй байна.
 </div>
 </div>
+<ion-infinite-scroll 
+on-infinite="loadMore()"
+distance="1%">
+</ion-infinite-scroll>
 </ion-content>
 </ion-view>

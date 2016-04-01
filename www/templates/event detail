@@ -1,1 +1,0 @@
- <p style="margin-top:5px;font-size:16px"><b>Хэзээ:</b> {{list.event_start_date | date:'yyyy/MM/dd'}}, <b>Хаана: </b> {{list.event_location}}, <b>Эхлэх цаг:</b> {{agendas[0].agenda_start_time | date:'HH:mm'}} </p>

@@ -4,8 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordovaOauth','ionic-native-transitions','angular-cache','ImgCache','starter.gesture','ionic.service.core','me-lazyload','pascalprecht.translate','ionic.contrib.drawer','angular.filter','starter.controllers','ja.qr','ionicLazyLoad','starter.services','starter.auth','ui.router','ngMaterial','ionic-material','ngStorage','tabSlideBox','ngRoute','ngCordova'])
-.run(function($ionicPlatform,$cordovaSplashscreen,$cordovaPush,ImgCache,$ionicLoading,myData,$rootScope,AuthService,$localStorage,$http,$ionicPopup,$timeout,$location,$localStorage,$state,$window) {
+angular.module('starter', ['ionic','ion-affix','ionicProcessSpinner','ngIOS9UIWebViewPatch','ti-segmented-control','ngResource','ngCordovaOauth','ionic-native-transitions','angular-cache','ImgCache','starter.gesture','ionic.service.core','pascalprecht.translate','ionic.contrib.drawer','angular.filter','starter.controllers','ja.qr','starter.services','starter.auth','ui.router','ionic-material','ngStorage','ngCordova'])
+.run(function($ionicPlatform,$location,$cordovaPush,EventService,ImgCache,$ionicLoading,myData,$rootScope,AuthService,$localStorage,$location,$localStorage,$state) {
  document.addEventListener("deviceready", function(){
      navigator.splashscreen.hide();
     ImgCache.init(function(){
@@ -14,19 +14,10 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
         console.log('check the log for errors');
     });
 }, false);
-  $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
-  if(toState.name.indexOf('app') !== -1 ) {
-    if(!AuthService.getAuthStatus()) {
-      event.preventDefault();
-      $state.go('main',{},{reload:true});
-    }
-  }
-})
-  $rootScope.$on('$stateChangeSuccess',
+   $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams) {
     $state.current = toState;
     if($state.current.name == 'app.playlists'){
-
       if(ionic.Platform.isIOS())
       {
        var iosConfig = {
@@ -34,11 +25,8 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
         "sound": true,
         "alert": true,
       };
-
       document.addEventListener("deviceready", function(){
-
        $cordovaPush.register(iosConfig).then(function(deviceToken) {
-      // Success -- send deviceToken to server, and store for future use
       console.log("deviceToken: " + deviceToken)
       myData.getpushtoken(deviceToken).success(function (response){
         if(!response[0]){
@@ -56,7 +44,7 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
         }
       })
     }, function(err) {
-      alert("Registration error: " + err)
+      console.log("Registration error: " + err);
     });
        $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
         if (notification.alert) {
@@ -81,6 +69,15 @@ angular.module('starter', ['ionic','ti-segmented-control','ngResource','ngCordov
 }
 }
 )
+$rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState, fromStateParams) {
+  if(toState.name.indexOf('app') !== -1 ) {
+    if(!AuthService.getAuthStatus()) {
+      event.preventDefault();
+      $state.go('main',{},{reload:true});
+    }
+  }
+})
+
 $ionicPlatform.ready(function() {
    if (navigator && navigator.splashscreen) {
           navigator.splashscreen.hide();
@@ -104,60 +101,55 @@ $ionicPlatform.ready(function() {
     if(window.Connection) {
       if(navigator.connection.type == Connection.NONE) {
         $ionicLoading.hide();
-        // $ionicPopup.alert({
-        //   okType: 'button-assertive',
-        //   content: "Интернет холболтоо шалгана уу"
-        // })
-        // .then(function(result) {
-        //   if(result) {
-        //     $ionicLoading.hide();
-        //   }
-        // });
       }
     }
   });
+
+
+
 })
 
 
-.config(function($stateProvider,$ionicNativeTransitionsProvider,CacheFactoryProvider,ImgCacheProvider,$rootScopeProvider,$translateProvider,$httpProvider,$ionicConfigProvider,$mdThemingProvider ,$urlRouterProvider,$mdGestureProvider) {
- ImgCacheProvider.setOption('debug', false);
- ImgCacheProvider.setOption('usePersistentCache', true);
- ImgCacheProvider.setOptions({
-  debug: false,
-  usePersistentCache: true
-});
- ImgCacheProvider.manualInit = true;
- angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
-    // or more options at once
-    $ionicNativeTransitionsProvider.setDefaultOptions({
-        duration: 200, // in milliseconds (ms), default 400,
-        slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4
-        iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1
-        androiddelay: -1, // same as above but for Android, default -1
-        winphonedelay: -1, // same as above but for Windows Phone, default -1,
-        fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
-        fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
-        triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option
-        backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back
-      });
+.config(function($stateProvider,$ionicNativeTransitionsProvider,CacheFactoryProvider,ImgCacheProvider,$rootScopeProvider,$translateProvider,$httpProvider,$ionicConfigProvider ,$urlRouterProvider) {
+     ImgCacheProvider.setOption('debug', false);
+     ImgCacheProvider.setOption('usePersistentCache', true);
+     ImgCacheProvider.setOptions({
+      debug: false,
+      usePersistentCache: true
+    });
+     ImgCacheProvider.manualInit = true;
+
+     angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
+
+     $ionicNativeTransitionsProvider.setDefaultOptions({
+      duration: 200, 
+      slowdownfactor: 4, 
+      iosdelay: -1, 
+      androiddelay: -1, 
+      winphonedelay: -1, 
+      fixedPixelsTop: 0, 
+      fixedPixelsBottom: 0,
+      triggerTransitionEvent: '$ionicView.afterEnter', 
+      backInOppositeDirection: false 
+    });
+     $ionicNativeTransitionsProvider.setDefaultTransition({
+      type: 'slide',
+      direction: 'left'
+    });
+     $ionicNativeTransitionsProvider.setDefaultBackTransition({
+      type: 'slide',
+      direction: 'right'
+    });
+
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.cache = false;
     $rootScopeProvider.digestTtl(10);
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $ionicConfigProvider.views.maxCache(10);
     $ionicConfigProvider.views.swipeBackEnabled(false);
+    $ionicConfigProvider.form.checkbox('square');
     $ionicConfigProvider.views.forwardCache(true);
-    var neonRedMap = $mdThemingProvider.extendPalette('orange', {
-      '900': 'FF5700'
-    });
-
-    $mdThemingProvider.definePalette('orange', neonRedMap);
-
-    $mdThemingProvider.theme('default')
-    .primaryPalette('grey',{
-      'default' : 'A700'
-    });
-
+    $ionicConfigProvider.backButton.text('...');
     $translateProvider.translations('mn', {
       'Music': 'Дуу хөгжим',
       'Food & Drink' : 'Хоол хүнс',
@@ -168,8 +160,6 @@ $ionicPlatform.ready(function() {
       'Networking' : 'Хурал зөвлөгөөн',
     });
     $translateProvider.preferredLanguage('mn');
-
-    $mdGestureProvider.skipClickHijack();
     $stateProvider
     .state('main',{
       url:'/main',
@@ -229,6 +219,7 @@ $ionicPlatform.ready(function() {
     })
     .state('guest.detail', {
       url: '/guestdetail/:eventId',
+       params: {data:null},
       views: {
         'guestContent': {
           templateUrl: 'templates/guest/eventDetail.html',
@@ -278,15 +269,6 @@ $ionicPlatform.ready(function() {
         }
       }
     })
-    .state('app.joined', {
-      url: '/joined',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/joined.html',
-          controller : 'JoinedItemCtrl'
-        }
-      }
-    })
     .state('app.myorg', {
       url: '/myorg',
       views: {
@@ -323,17 +305,6 @@ $ionicPlatform.ready(function() {
         'menuContent': {
           templateUrl:'templates/ticket.html',
           controller:'TicketCtrl'
-        }
-      }
-    })
-
-
-    .state('app.todayEvent',{
-      url: '/todayEvent',
-      views: {
-        'menuContent': {
-          templateUrl:'templates/today.html',
-          controller:'TodayCtrl'
         }
       }
     })
@@ -381,20 +352,12 @@ $ionicPlatform.ready(function() {
       url: '/playlists',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/events.html',
+          controller: 'EventsCtrl'
         }
       }
     })
-    .state('app.playlists.tab1', {
-      url: '/tab1',
-      views: {
-        'menuContent-1': {
-          templateUrl: 'templates/test.html',
-          controller: 'tab1Ctrl'
-        }
-      }
-    })
+    
     .state('app.categorevent', {
       url: '/category/:category_Id',
       views: {
@@ -440,12 +403,31 @@ $ionicPlatform.ready(function() {
         }
       }
     })
-    .state('app.single', {
-      url: '/playlists/:playlistId',
+     .state('app.ticketrequest', {
+      url: '/playlists/:eventId/ticketrequest',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlist.html',
-          controller: 'PlaylistCtrl'
+          templateUrl: 'templates/ticket-request.html',
+          controller: 'ticketrequestCtrl'
+        }
+      }
+    })
+     .state('app.registration', {
+      url: '/playlists/:eventId/registration',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/registration.html',
+          controller: 'registrationCtrl'
+        }
+      }
+    })
+    .state('app.single', {
+      url: '/playlists/:playlistId',
+      params: {data:null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/event-detail.html',
+          controller: 'eventDetailCtrl'
         }
       }
     })
@@ -526,4 +508,59 @@ $ionicPlatform.ready(function() {
   }
   return fallbackSrc;
 })
+.directive('searchBar', [function () {
+  return {
+    scope: {
+      ngModel: '='
+    },
+    require: ['^ionNavBar', '?ngModel'],
+    restrict: 'E',
+    replace: true,
+    template: '<ion-nav-buttons side="right">'+
+            '<div class="searchBar">'+
+              '<div class="searchTxt" ng-show="ngModel.show">'+
+                  '<div class="bgdiv"></div>'+
+                  '<div class="bgtxt">'+
+                    '<input type="text" placeholder="Procurar..." ng-model="ngModel.txt">'+
+                  '</div>'+
+                '</div>'+
+                '<i class="icon placeholder-icon" ng-click="ngModel.txt=\'\';ngModel.show=!ngModel.show"></i>'+
+            '</div>'+
+          '</ion-nav-buttons>',
+    
+    compile: function (element, attrs) {
+      var icon=attrs.icon
+          || (ionic.Platform.isAndroid() && 'ion-android-search')
+          || (ionic.Platform.isIOS()     && 'ion-ios7-search')
+          || 'ion-search';
+      angular.element(element[0].querySelector('.icon')).addClass(icon);
+      
+      return function($scope, $element, $attrs, ctrls) {
+        var navBarCtrl = ctrls[0];
+        $scope.navElement = $attrs.side === 'right' ? navBarCtrl.rightButtonsElement : navBarCtrl.leftButtonsElement;
+        
+      };
+    },
+    controller: ['$scope','$ionicNavBarDelegate', function($scope,$ionicNavBarDelegate){
+      var title, definedClass;
+      $scope.$watch('ngModel.show', function(showing, oldVal, scope) {
+        if(showing!==oldVal) {
+          if(showing) {
+            if(!definedClass) {
+              var numicons=$scope.navElement.children().length;
+              angular.element($scope.navElement[0].querySelector('.searchBar')).addClass('numicons'+numicons);
+            }
+            
+            title = $ionicNavBarDelegate.getTitle();
+            $ionicNavBarDelegate.setTitle('');
+          } else {
+            $ionicNavBarDelegate.setTitle(title);
+          }
+        } else if (!title) {
+          title = $ionicNavBarDelegate.getTitle();
+        }
+      });
+    }]
+  };
+}])
 ;

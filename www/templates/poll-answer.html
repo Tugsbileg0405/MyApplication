@@ -1,0 +1,44 @@
+  <ion-modal-view  >
+    <ion-header-bar>
+    <div class="buttons buttons-left">
+    	<span class="left-buttons" >
+    			<button ng-click="pollanswerClose()" class="button button-clear button-icon ion-chevron-left" style="color:black"> ...</button>
+    	</span>
+    </div>
+      <h1 class="title" style="font-family:'m3';font-size:20px">Санал асуулга</h1>
+    </ion-header-bar>
+    <ion-content>
+	    <div class="list">
+	    	<div class="item item-divider" id="pollquestion">
+	    		<p>{{poll_options.question_title}}</p>
+	    	</div>
+	   <ion-checkbox class="checkbox-stable" ng-repeat="(key,option) in poll_options.question_options" style="border-bottom:1px solid #f8f8f8;padding-left:48px">
+	    	<div class="row" style="padding:0;margin:0">
+	    		<div class="col col-90" style="padding:0;padding-right:10px">
+	    			<progress id="progressbar" max="100" value="65"> </progress>
+	    			<div id="progressbarlabel">{{option.option_title}}</div>
+	    		</div>
+	    		<div class="col col-10" style="padding:0">
+	    			<span class="item-note" id="progresscounter">
+	    				+3
+	    			</span>
+	    		</div>
+	    	</div>
+	    </ion-checkbox>
+
+	  <!--   	<a class="item" ng-repeat="(key,option) in poll_options.question_options" style="border-bottom:1px solid #f8f8f8">
+	    		<div class="row" style="padding:0">
+	    				<div class="col col-80" style="padding:0">
+	    					  <progress id="progressbar" max="100" value="65"> </progress>
+	    					 <div id="progressbarlabel">{{option.option_title}}</div>
+	    				</div>
+	    				<div class="col col-20" style="padding:0">
+	    					<span class="item-note" id="progresscounter">
+	    						+3
+	    					</span>
+	    				</div>
+	    		</div>
+	    	</a> -->
+	    </div>
+    </ion-content>
+  </ion-modal-view>

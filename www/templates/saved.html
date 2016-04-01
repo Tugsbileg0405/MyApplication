@@ -2,8 +2,9 @@
 <ion-nav-bar align-title="right">
 <ion-nav-buttons side="left" >
 
-      <button class="button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
-       <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i> 
+      <button class="button button-icon ion-chevron-left button-clear" ng-click="goBack()" style="width:100px;padding-left:0;background-color:white;color:black">
+        ...
+       <!-- <i class="fa fa-chevron-left" style="font-size:22px;font-family:'m3'"> Буцах</i>  -->
       </button> 
     </ion-nav-buttons>
      <ion-nav-title style="font-family:'m3';border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-size:18px" >
@@ -15,7 +16,7 @@
    </ion-refresher>
   
     <ion-list>
-      <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" style="width:105%;margin-left:-2%" href="#/app/playlists/{{list.event_info.id}}">
+      <ion-item ng-repeat="list in likedEvent | orderBy:'createdAt':true|filter:search" style="width:105%;margin-left:-2%" ng-click="goDetail(list.event_info)">
          <div class="list card"  style="margin:-2%;padding:0px;width:114%;height:100%">
           <img ng-cache ng-if="list.event_info.event_cover.length < 100" ng-src="{{backsite}}/{{list.event_info.event_cover}}"  id="homeImg" class="full-image">
           <img ng-if="list.event_info.event_cover.length > 100" ng-src="{{list.event_info.event_cover}}"  id="homeImg" class="full-image">

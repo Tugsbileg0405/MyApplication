@@ -1,6 +1,6 @@
 <ion-view >
 <ion-header-bar id="searchHeader">
-<button class="button button-clear"  ng-click="myGoBack()"   style="color:black"><i class="icon ion-ios-arrow-back"></i></button>
+<button class="button button-clear"  ng-click="myGoBack()"   style="color:black"><i class="icon ion-ios-arrow-back"></i>...</button>
 <form  style="width:100%" ng-submit="searchTitle(search)">
  <label class="item item-input" id="search">
     <i class="icon ion-ios-search-strong"></i>
@@ -12,7 +12,7 @@
 <ion-content >
 <div class="list" collection-repeat="item in items" ng-show="counter == 1" 
 >
-  <a class="item  item-thumbnail-left" ui-sref="app.single({playlistId:item.id})">
+  <a class="item  item-thumbnail-left" ng-click="goDetail(item)">
     <img ng-if="item.event_cover.length < 100" ng-cache ng-src="{{backsite}}/{{item.event_cover}}">
     <img ng-if="item.event_cover.length > 100" ng-src="{{item.event_cover}}">
     <h3 style="font-weight:bold;font-size:18px">{{item.event_title}}</h3>
