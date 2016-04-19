@@ -68,7 +68,7 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
 <div class="animate-switch" ng-switch-default>
  <div id="processSpinner" >
    <ion-process-spinner style="width:100%;text-align: center" processing="todayprocessing" spinner="bubbles" css-class="spinner-balanced">
-   <div class="list card" ng-repeat="list in today_event | orderBy:'createdAt':true" href="" >
+   <div class="list card" ng-repeat="list in today_event " href="" >
      <img ng-click="goDetail(list)" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
      <img  ng-click="goDetail(list)" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
      <div class="item tem-text-wrap" ng-click="goDetail(list)">
@@ -128,7 +128,7 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
 <div class="animate-switch" ng-switch-when="1">
   <div id="processSpinner" >
    <ion-process-spinner style="width:100%;text-align: center" processing="tomorrowprocessing" spinner="bubbles" css-class="spinner-balanced">
-   <div class="list card" ng-repeat="list in tomorrow_event | orderBy:'createdAt':true" href=""  >
+   <div class="list card" ng-repeat="list in tomorrow_event" href=""  >
     <img ng-click="goDetail(list)" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
     <img  ng-click="goDetail(list)" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
     <div class="item tem-text-wrap" ng-click="goDetail(list)">
@@ -188,7 +188,7 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
 <div class="animate-switch" ng-switch-when="2">
   <div id="processSpinner" >
    <ion-process-spinner style="width:100%;text-align: center" processing="topprocessing" spinner="bubbles" css-class="spinner-balanced">
-   <div class="list card" ng-repeat="list in lists | orderBy:'-createdAt'" href=""  >
+   <div class="list card" ng-repeat="list in lists" href=""  >
      <img ng-click="goDetail(list)" ng-cache  ng-src="{{backsite}}/{{list.event_cover}}" ng-if="list.event_cover.length < 100"  id="homeImg" class="full-image">
      <img  ng-click="goDetail(list)" ng-src="{{list.event_cover}}"  ng-if="list.event_cover.length > 100" id="homeImg" class="full-image">
      <div class="item tem-text-wrap" ng-click="goDetail(list)">

@@ -344,7 +344,7 @@ $scope.goDetail = function(data){
 $scope.goSearch = function(){
   $state.go('app.search');
 }
-var i=2; 
+var i=1; 
 $scope.loadMore = function() {
   i=i+1;
   $http.get('http://www.urilga.mn:1337/findevent?page_number='+i+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
@@ -3542,7 +3542,7 @@ $scope.toggleLeftSideMenu = function() {
   $ionicSideMenuDelegate.toggleLeft();
 };
 
-var i=2; 
+var i=1; 
 $scope.loadMore = function() {
   i=i+1;
   $http.get('http://www.urilga.mn:1337/findevent?page_number='+i+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
