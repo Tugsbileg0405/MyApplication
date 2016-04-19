@@ -956,6 +956,8 @@ ion-header-bar.bar-light.custom{
 #sched-content-inner .opening .speaker_profile , 
 #sched-content-inner .lunch .speaker_profile,
 #sched-content-inner .review .speaker_profile,
+#sched-content-inner .dinner .speaker_profile,
+#sched-content-inner .closing .speaker_profile,
 #sched-content-inner .qa .speaker_profile{
   display: none;
 }
@@ -1055,7 +1057,7 @@ h5.speaker_name {
 .sched-container-dates {
   font-family: 'm3';
 }
-#sched-content-inner .networking h3.title,#sched-content-inner .register h3.title,#sched-content-inner .opening h3.title,#sched-content-inner .coffee h3.title, #sched-content-inner .lunch h3.title, #sched-content-inner .review h3.title, #sched-content-inner .qa h3.title {
+#sched-content-inner .networking h3.title,#sched-content-inner .dinner h3.title,#sched-content-inner .closing h3.title,#sched-content-inner .register h3.title,#sched-content-inner .opening h3.title,#sched-content-inner .coffee h3.title, #sched-content-inner .lunch h3.title, #sched-content-inner .review h3.title, #sched-content-inner .qa h3.title {
   color: #fff !important;
   text-align: center;
   padding: 0;
@@ -1255,6 +1257,12 @@ a:link{
 .event.opening {
   background-color: #ED1C24;
 }
+.event.dinner {
+  background-color: rgb(120,198,183);
+}
+.event.closing {
+  background-color: rgb(81,97,125);
+}
 .event.coffee {
   background-color: #6F4E37;
 }
@@ -1274,7 +1282,7 @@ a:link{
   background-color: orange; 
 }
 
-.event.lunch,.event.networking,.event.register,.event.review,.event.qa,.event.opening,.event.coffee{
+.event.lunch,.event.dinner,.event.closing,.event.networking,.event.register,.event.review,.event.qa,.event.opening,.event.coffee{
   border-radius:4px;
   margin-left: 15px;
   width: 90%;
