@@ -1,15 +1,17 @@
-  <ion-view title="ХААНА ЮУ БОЛЖ БАЙНА...">
-  <ion-header class="bar bar-light bar-header"  id="header" style="    background: rgba(255,255,255,0.5)" >
-  <div class="buttons"  style="color:black;padding:0">
-   <button class="button button-icon icon-left button-clear button-dark fa-bars"  style="color:black;margin-top:3px;padding-left:10px" ng-click="toggleLeftSideMenu()"></button>
- </div>
- <h1 class="title" ng-click="scrollTop()" id="head">ХААНА ЮУ БОЛЖ БАЙНА ...</h1>
- <div class="buttons">
-   <button class="button button-clear" style="color:black;margin:0;font-weight:bold" ui-sref="guest.search">
-    <i class="icon ion-ios-search-strong" ></i>
-  </button>
-</div>
-</ion-header>
+  <ion-view >
+      <ion-nav-bar >
+        <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-clear button-icon icon ion-navicon" style="color:black"></button>
+      </ion-nav-buttons>
+      <ion-nav-title>
+      <h1 class="title" ng-click="scrollTop()" id="head">ХААНА ЮУ БОЛЖ БАЙНА ...</h1>
+    </ion-nav-title>
+    <ion-nav-buttons side="right" >
+    <button ui-sref="guest.search" class="button button-clear" style="color:black;margin:0;font-weight:bold" >
+      <i class="icon ion-ios-search-strong" ></i>
+    </button>
+    </ion-nav-buttons>
+    </ion-nav-bar>
 <ion-content overflow-scroll='true' class="has-header">
 <ion-slide-box on-slide-changed="slideChanged($index)"  auto-play="true" does-continue="true" show-pager="false" id="slider">
 <ion-slide>
@@ -76,7 +78,7 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
          <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
        </div>
        <div class="col col-90" ng-if="list.event_start_time" style="padding:0">
-        <p id="desc">Өнөөдөр {{list.event_start_time | date:'HH:mm' }} цагт / {{list.event_start_date | date: 'EEEE, MMMM d, y'}} /</p>
+        <p id="desc">Өнөөдөр {{list.event_start_time | date:'HH:mm' }} цагт, {{list.event_start_date | date: 'EEEE, MMMM d, y'}}</p>
       </div>
       <div class="col col-90" ng-if="!list.event_start_time" style="padding:0">
         <p id="desc">Өнөөдөр 09:00 цагт</p>
@@ -106,8 +108,8 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
     </div>
   </div>
   <div class="row" style="padding:0" id="homeBtns" ng>
-    <div class="col"  style="padding:0" ng-click="suggest(list)">
-     <span id="suggest"><i class="fa fa-bell-o"></i></span>
+    <div class="col"  style="padding:0;font-size:18px" ng-click="suggest(list)">
+     <span id="suggest"><i class="fa fa-paper-plane-o"></i></span>
    </div>
    <div class="col" style="padding:0">
      <span  ng-click="checkLike()"><i class="fa fa-bookmark-o"></i></span>
@@ -136,7 +138,7 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
          <p id="desc"><i class="icon ion-ios-time-outline" id="icon"></i></p> 
        </div>
        <div class="col col-90" ng-if="list.event_start_time" style="padding:0" >
-        <p id="desc">Маргааш {{list.event_start_time | date:'HH:mm' }} цагт / {{list.event_start_date | date: 'EEEE, MMMM d, y'}} /</p>
+        <p id="desc">Маргааш {{list.event_start_time | date:'HH:mm' }} цагт, {{list.event_start_date | date: 'EEEE, MMMM d, y'}}</p>
       </div>
       <div class="col col-90"  ng-if="!list.event_start_time" style="padding:0" >
         <p id="desc">Маргааш 09:00 цагт</p>
@@ -166,8 +168,8 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
     </div>
   </div>
   <div class="row" style="padding:0" id="homeBtns" ng>
-    <div class="col"  style="padding:0" ng-click="suggest(list)">
-     <span id="suggest"><i class="fa fa-bell-o"></i></span>
+    <div class="col"  style="padding:0;font-size:18px" ng-click="suggest(list)">
+     <span id="suggest"><i class="fa fa-paper-plane-o"></i></span>
    </div>
    <div class="col" style="padding:0">
      <span  ng-click="checkLike()"><i class="fa fa-bookmark-o"></i></span>
@@ -223,8 +225,8 @@ ng-switch on="index" ng-if="checkConn == true" on-swipe-right="goBack(index)" on
     </div>
   </div>
   <div class="row" style="padding:0" id="homeBtns" ng>
-    <div class="col"  style="padding:0" ng-click="suggest(list)">
-     <span id="suggest"><i class="fa fa-bell-o"></i></span>
+    <div class="col"  style="padding:0;font-size:18px" ng-click="suggest(list)">
+     <span id="suggest"><i class="fa fa-paper-plane-o"></i></span>
    </div>
    <div class="col" style="padding:0">
      <span  ng-click="checkLike()"><i class="fa fa-bookmark-o"></i></span>

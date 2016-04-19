@@ -121,17 +121,27 @@
             </div>
             <hr ng-if="list.event_owner.length === 0">
         </div>
-        <div id="eventlist"   ng-repeat="price in list.event_ticket_types">
-            <div class="row" style="padding:0">
+        <div  id="eventlist"   ng-repeat="price in event_ticket.paid" >
+            <div class="row" style="padding:0" >
                 <div class="col col-10">
                     <i class="icon ion-cash assertive" style="font-size:22px;color:#FF5700"></i>
                 </div>
                 <div class="col col-90">
                     <span id="list"  ng-if="price.price != 0">Тасалбар - {{price.price }} төг </span>
-                    <span id="list" ng-if="price.price == 0">Тасалбар - Үнэгүй </span>
                 </div>
             </div>
-            <hr ng-if="list.event_ticket_types">
+            <hr ng-if="event_ticket.paid">
+        </div>
+        <div  id="eventlist"   ng-if="event_ticket.free.length > 0" >
+            <div class="row" style="padding:0" >
+                <div class="col col-10">
+                    <i class="icon ion-cash assertive" style="font-size:22px;color:#FF5700"></i>
+                </div>
+                <div class="col col-90">
+                    <span id="list" >Тасалбар - Үнэгүй </span>
+                </div>
+            </div>
+            <hr ng-if="event_ticket.free.length > 0">
         </div>
         <div  style="background-color:#f8f8f8;margin-top:10px" ng-if="list.is_time_agenda == true">
             <div class="row" style="padding:0">

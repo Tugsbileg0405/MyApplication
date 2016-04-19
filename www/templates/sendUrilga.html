@@ -25,10 +25,10 @@
     	</div>
     	<div class="list" id="selectTicket">
     		<select  ng-model="ticket.event_ticket_type" id="select" required>
-    			<option ng-if="event.event_ticket_types.length == 0" value="">Тасалбар байхгүй байна</option>
-    			<option ng-if="event.event_ticket_types.length != 0" value="" >Тасалбарын төрөлөө сонгоно уу</option>
-    			<option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
-    			<option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.remaining}})</p></option>
+    			<option ng-if="event_ticket.urilga.length == 0" value="">Урилга байхгүй байна</option>
+    			<option ng-if="event_ticket.urilga.length != 0" value="" >Урилганы төрөлөө сонгоно уу</option>
+    			<!-- <option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
+    			<option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.remaining}})</p></option> -->
     			<option ng-if="myevent == true" value="{{urilga_ticket | json}}" ng-repeat="urilga_ticket in event_ticket.urilga"><p>Урилга-{{urilga_ticket.description}} ({{urilga_ticket.remaining}})</p></option>
     		</select>
     	</div>

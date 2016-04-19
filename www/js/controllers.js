@@ -322,7 +322,6 @@ if($localStorage.todaydate == today){
 else {
   $scope.doRefresh();
 }
-
 if($scope.onlineStatus.onLine == false){
   $scope.todayprocessing = false;
   $scope.tomorrowprocessing = false;
@@ -399,6 +398,7 @@ $scope.buttonClicked = function(index){
       $scope.today.push(event);
     })
   $scope.today_event = $scope.today;
+  $localStorage.today_event = $scope.today_event;
   ImgCache.$init();
   })
  }
@@ -417,6 +417,7 @@ if ($scope.index == 1){
       $scope.tomorrow.push(event);
     })
     $scope.tomorrow_event = $scope.tomorrow;
+    $localStorage.tomorrow_event = $scope.tomorrow_event;
     ImgCache.$init();
   })
 }
@@ -435,6 +436,7 @@ if($scope.index == 2) {
     $scope.top.push(event);
   })
   $scope.lists = $scope.top;
+  $localStorage.lists = $scope.lists;
   ImgCache.$init();
 })
 }
@@ -2524,14 +2526,33 @@ $scope.closeModal = function() {
   $scope.checkConn = true;
   $scope.list = $stateParams.data;
   $scope.ticket_isNo = true;
+  $scope.myevent = false;
+  $scope.event_ticket = {};
+  $scope.event_ticket.urilga = [];
+  $scope.event_ticket.paid = [];
+  $scope.event_ticket.free = [];
 $scope.doRefresh = function(){
   if(onlineStatus.onLine == true){
       $scope.checkConn = true;
       EventService.getEventDetail($stateParams.playlistId).then(function(data){
         $scope.list = data;
+        if($scope.list.event_created_by.id == $localStorage.userdata.user.person.id){
+         $scope.myevent = true;
+         }
         if($scope.list.event_paid_ticket_remaining < 1 && $scope.list.event_free_ticket_remaining < 1 && $scope.list.event_ticket_types.length > 0){
           $scope.ticket_isNo = false;
         }
+        angular.forEach(data.event_ticket_types,function(item){
+          if(item.type == "Urilga"){
+            $scope.event_ticket.urilga.push(item);
+          }
+          if(item.type == "Free"){
+            $scope.event_ticket.free.push(item);
+          }
+          if(item.type == "Paid"){
+            $scope.event_ticket.paid.push(item);
+          }
+        })
       })
       $scope.agendas = [];
       $http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.playlistId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
@@ -2572,7 +2593,8 @@ $scope.doRefresh = function(){
     $ionicLoading.hide();
   }
 }
-$window.onload = $scope.doRefresh();
+$scope.doRefresh();
+
 var person_id = $localStorage.userdata.user.person.id;
 
 // function checkTicket() {
@@ -2631,6 +2653,15 @@ function checkAll() {
 
   $window.onLoad = checkAll();
 
+  $scope.ticket_counter=1;
+  $scope.add = function(){
+    $scope.ticket_counter += 1;
+  };
+  $scope.sub = function(){
+    if($scope.ticket_counter != 1){
+      $scope.ticket_counter -= 1;
+    }
+  };
 
   $scope.voteSlot = function(id,status,slot){
     slot.status = status;
@@ -2653,6 +2684,8 @@ function checkAll() {
     }
   };
 
+  var user_id = $localStorage.userdata.user.person.id;
+  
 
   $scope.shareAnywhere = function() {
     $cordovaSocialSharing.share($scope.list.event_title, null, null, 'http://www.urilga.mn/#/event_details/'+$scope.list.id);
@@ -2674,6 +2707,115 @@ function checkAll() {
     $scope.modal.hide();
   };
 
+  $ionicModal.fromTemplateUrl('templates/addTicket-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.addTicketModal = modal;
+  });
+
+  $scope.openAddTicket= function() {
+    $scope.addTicketModal.show();
+  };
+
+  $scope.closeAddTicket = function() {
+    $scope.addTicketModal.hide();
+  };
+
+  $scope.addUrilgaForm = function(){
+    $ionicScrollDelegate.scrollBottom();
+    var mydata = {};
+    mydata.type = "Urilga";
+    mydata.all_count = 1;
+    mydata.description = "Urilga";
+    mydata.purchased = 0;
+    mydata.urilga_type = "basic";
+    $scope.event_ticket.urilga.push(mydata);
+  }
+  $scope.removeFromUrilga = function(data) {
+    $ionicScrollDelegate.scrollTop();
+    var index = $scope.event_ticket.urilga.indexOf(data);
+    $scope.event_ticket.urilga.splice(index, 1);  
+    EventService.deleteTicketType(data).then(function(response){
+      if(response.state == 'OK'){
+        console.log('amjilttai');
+      }
+    })
+  }
+
+
+  $scope.saveUrilga = function(){
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in'
+    });
+    if(onlineStatus.onLine == true){
+      var mydata = {};
+      mydata.id = $stateParams.playlistId;
+      var all_ticket_remaining = 0;
+      var urilga_ticket_remaining = 0;
+    // var paid_ticket_remaining = 0;
+    // var free_ticket_remaining = 0;
+    angular.forEach($scope.event_ticket.paid,function(paid){
+      all_ticket_remaining = all_ticket_remaining + paid.all_count;
+      // paid_ticket_remaining = paid_ticket_remaining + paid.all_count;
+      // paid.event_info = $stateParams.playlistId;
+      // paid.remaining = paid.all_count;
+      // paid.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+      // EventService.postTicketType(paid).then(function(response){
+      //   console.log('amjilttai');
+      // })
+  })
+    angular.forEach($scope.event_ticket.free,function(free){
+      all_ticket_remaining = all_ticket_remaining + free.all_count;
+      // free_ticket_remaining =free_ticket_remaining + free.all_count;
+      // free.event_info = $stateParams.playlistId;
+      // free.remaining = free.all_count;
+      // free.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+      // EventService.postTicketType(free).then(function(response){
+      //   console.log('amjilttai');
+      // })
+  })
+    angular.forEach($scope.event_ticket.urilga,function(urilga){
+      all_ticket_remaining = all_ticket_remaining + urilga.all_count;
+      urilga_ticket_remaining = urilga_ticket_remaining + urilga.all_count;
+      urilga.event_info = $stateParams.playlistId;
+      urilga.remaining = urilga.all_count;
+      urilga.____token = 'dXJpbGdhbW5BY2Nlc3M=';
+      EventService.postTicketType(urilga).then(function(response){
+        console.log('amjilttai');
+      })
+    })
+    mydata.event_all_ticket_remaining = all_ticket_remaining
+    mydata.event_urilga_ticket_remaining = urilga_ticket_remaining;
+    // mydata.event_free_ticket_remaining = free_ticket_remaining;
+    // mydata.event_paid_ticket_remaining = paid_ticket_remaining;
+    mydata.____token  = 'dXJpbGdhbW5BY2Nlc3M=';
+    EventService.updateEvent(mydata).then(function(response){
+      if(response.status == true){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-balanced',
+          template: 'Амжилттай хадгалагдлаа'
+        });
+      }
+      else {
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          okType: 'button-assertive',
+          template: 'Амжилтгүй та дахин оролдоно уу'
+        });
+      }
+    })
+    }
+    else {
+      $ionicLoading.hide();
+      var alertPopup = $ionicPopup.alert({
+        okType :'button-assertive',
+        template: 'Интернет холболтоо шалгана уу'
+      });
+    }
+  }
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
@@ -2873,7 +3015,7 @@ function checkAll() {
     okText : 'Нэвтрэх',
     okType: 'button-balanced',
     cssClass: 'guestBtn',
-    cancelText : 'Хаах'
+    cancelText : 'Буцах'
   });
    confirmPopup.then(function(res) {
      if(res) {
@@ -3053,12 +3195,28 @@ $scope.goBack = function(){
   };
 $scope.checkConn = true;
 $scope.list = $stateParams.data;
+$scope.event_ticket = {};
+$scope.event_ticket.urilga = [];
+$scope.event_ticket.paid = [];
+$scope.event_ticket.free = [];
 $scope.doRefresh = function(){
   if(onlineStatus.onLine == true){
         $scope.checkConn = true;
         EventService.getEventDetail($stateParams.eventId).then(function(data){
           $scope.list = data;
+           angular.forEach($scope.list.event_ticket_types,function(item){
+          if(item.type == "Urilga"){
+            $scope.event_ticket.urilga.push(item);
+          }
+          if(item.type == "Free"){
+            $scope.event_ticket.free.push(item);
+          }
+          if(item.type == "Paid"){
+            $scope.event_ticket.paid.push(item);
+          }
         })
+        })
+       
         $scope.agendas = [];
         $http.get("http://www.urilga.mn:1337/agenda?agenda_event="+$stateParams.eventId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
          if(response.length > 0){
@@ -3097,7 +3255,7 @@ $window.onload = $scope.doRefresh();
     okText : 'Нэвтрэх',
     cssClass: 'guestBtn',
     okType: 'button-balanced',
-    cancelText : 'Хаах'
+    cancelText : 'Буцах'
   });
    confirmPopup.then(function(res) {
      if(res) {
@@ -3113,7 +3271,7 @@ $window.onload = $scope.doRefresh();
    okText : 'Нэвтрэх',
    cssClass: 'guestBtn',
    okType: 'button-balanced',
-   cancelText : 'Хаах'
+   cancelText : 'Буцах'
  });
   confirmPopup.then(function(res) {
    if(res) {
@@ -3276,7 +3434,7 @@ $scope.shareAnywhere = function() {
     if(onlineStatus.onLine == true){
          $localStorage.todaydate = gettodaydate();
          $scope.checkConn = true;
-         EventService.getTopEvent().then(function(response){
+         EventService.getTodayEvent().then(function(response){
           $ionicLoading.hide();
           $scope.today_event = response;
           $localStorage.todayEvents = $scope.today_event;
@@ -3359,6 +3517,7 @@ $scope.buttonClicked = function(index){
     $ionicLoading.hide();
        ImgCache.$init();
     $scope.today_event = response;
+    $localStorage.todayEvents = $scope.today_event;
   })
  }
  else if ($scope.index == 1){
@@ -3366,6 +3525,7 @@ $scope.buttonClicked = function(index){
     $ionicLoading.hide();
        ImgCache.$init();
     $scope.tomorrow_event = response;
+    $localStorage.tomorrowEvents = $scope.tomorrow_event;
   })
 }
 else {
@@ -3373,6 +3533,7 @@ else {
   $ionicLoading.hide();
      ImgCache.$init();
   $scope.lists = response;
+  $localStorage.topEvents = $scope.lists;
 })
 }
 $scope.$apply();
@@ -3578,7 +3739,7 @@ else {
   }
 
 })
-.controller('editEventCtrl',function($state,$window,$scope,onlineStatus,$ionicPopup,$ionicModal,$ionicLoading,$localStorage,$ionicHistory,$stateParams,$http){
+.controller('editEventCtrl',function($state,EventService,$window,$scope,onlineStatus,$ionicPopup,$ionicModal,$ionicLoading,$localStorage,$ionicHistory,$stateParams,$http){
   $scope.goBack = function(){
     $ionicHistory.goBack();
   }
@@ -3591,6 +3752,9 @@ else {
     $http.get('http://www.urilga.mn:1337/ticket?ticket_event='+$stateParams.eventId+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function(res){
       $scope.users = res;
       $ionicLoading.hide();
+    })
+    EventService.getTicketRequest($stateParams.eventId).then(function(data){
+      $scope.ticketRequests = data;
     })
     $http.get('http://www.urilga.mn:1337/event/'+$stateParams.eventId).success(function(res){
       $scope.event = res;
@@ -3683,6 +3847,14 @@ else {
     $scope.ticket.ticket_email = data.person_email;
     $scope.ticket.ticket_phonenumber = data.person_cell_number;
   }
+  $scope.sendRequestUrilga = function(data){
+    $scope.openModal();
+    $scope.ticket = {};
+    $scope.ticket.request_id = data.id;
+    $scope.ticket.ticket_fullname = data.fullname;
+    $scope.ticket.ticket_email = data.email;
+    $scope.ticket.ticket_phonenumber = data.phonenumber;
+  }
   $scope.buyTicket = function(data){
    $ionicLoading.show({
     content: 'Loading',
@@ -3696,7 +3868,7 @@ else {
     mydata.ticket_type_model = etype.id;
     mydata.ticket_description = etype.description;
     mydata.ticket_price = etype.price;
-    mydata.ticket_urilga_type = 'basic';
+    mydata.ticket_urilga_type = etype.urilga_type;
     mydata.ticket_created_by = $localStorage.userdata.user.person.id;
     mydata.____token = 'dXJpbGdhbW5BY2Nlc3M=';
     $http.get('http://www.urilga.mn:1337/person?person_email='+data.ticket_email+'&____token=dXJpbGdhbW5BY2Nlc3M=').success(function (response){
@@ -3722,12 +3894,20 @@ else {
       else{
         $ionicLoading.hide();
         var popup = $ionicPopup.alert({
-          template:'Худалдан авалт амжилттай боллоо.',
+          template:'Амжилттай илгээлээ.',
           okType :'button-balanced'
         })
         popup.then(function(){
-          $scope.doRefresh();
-          $scope.closeModal();
+          if(data.request_id){
+              EventService.deleteTicketRequest(data.request_id).then(function(data){
+                $scope.doRefresh();
+                $scope.closeModal();
+              })
+          }
+          else {
+            $scope.doRefresh();
+            $scope.closeModal();
+          }
         })
     }
   })

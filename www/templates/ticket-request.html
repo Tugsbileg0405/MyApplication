@@ -6,7 +6,7 @@
 			</button>
 		</ion-nav-buttons>
 		<ion-nav-title style="border:1px solid;background-color:#FF5700;color:white;padding:5px;padding-left:15px;padding-right:15px;border-radius:5px;border-color:#FF5700;font-family:'m3';font-size:20px">
-		Тасалбар хүсэлт
+		Урилга хүсэлт
 		</ion-nav-title>
 	</ion-nav-bar>
 	<ion-content has-subheader="false">
@@ -40,10 +40,10 @@
 	</div>
 	<div class="list" id="selectTicket">
 		<select  ng-model="ticket.event_ticket_type" id="select" required>
-			<option ng-if="list.event_ticket_types.length == 0" value="">Тасалбар байхгүй байна</option>
-			<option ng-if="list.event_ticket_types.length != 0" value="" >Тасалбарын төрөлөө сонгоно уу</option>
-			<option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
-			<option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.price}}₮)</p></option>
+			<option ng-if="event_ticket.urilga.length == 0" value="">Урилга байхгүй байна</option>
+			<option ng-if="event_ticket.urilga.length != 0" value="" >Урилганы төрөлөө сонгоно уу</option>
+		<!-- 	<option  value="{{free_ticket | json}}"  ng-repeat="free_ticket in event_ticket.free" >Yнэгүй-{{free_ticket.description}} ({{free_ticket.remaining}})</option>
+			<option  value="{{paid_ticket | json}}" ng-repeat="paid_ticket in event_ticket.paid"><p>Төлбөртэй-{{paid_ticket.description}} ({{paid_ticket.price}}₮)</p></option> -->
 			<option  value="{{urilga_ticket | json}}" ng-repeat="urilga_ticket in event_ticket.urilga"><p>Урилга-{{urilga_ticket.description}} ({{urilga_ticket.price}}₮)</p></option>
 		</select>
 	</div>

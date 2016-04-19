@@ -9,6 +9,40 @@
   font-weight: normal;
   font-style: normal;
 }
+#addUrilgaDelete{
+  border:1px solid #f8f8f8;
+  margin: 0;
+}
+#addUrilgaDelete button {
+  border:1px solid;
+  margin: 0;
+  padding-left:20px;
+  padding-right: 20px; 
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+}
+#addUrilga{
+  padding-bottom: 0;
+  border:1px solid #f8f8f8 !important;
+}
+#addUrilga label {
+  border:none;
+  padding-left: 3px;
+}
+#addUrilga input {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ff5700;
+}
+#addUrilga span {
+  width: 100px;
+}
+#addUrilga select{
+  border:1px solid #ff5700;
+  width: 100%;
+  margin-top: 10px;
+  height: 30px;
+}
 #progressbar[value] {
   -webkit-appearance: none;
   appearance: none;
@@ -239,20 +273,17 @@ input, textarea {
   margin-bottom: 10px;
 }
 #addButton {
-  border:1px solid #A8A8A8   ;
+  border:1px solid #A8A8A8;
   padding: 5px 10px 5px 10px;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
   border-radius: 5px;
   background-color: #f8f8f8;
 }
 #acceptedButton {
   border:1px solid #f8f8f8;
   padding: 5px 10px 5px 10px;
-  position: absolute;
+  /*position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 10px;*/
   border-radius: 5px;
   color: white;
   background-color: #00CC52;;
@@ -260,9 +291,9 @@ input, textarea {
 #pendingButton {
   border:1px solid #f8f8f8;
   padding: 5px 10px 5px 10px;
-  position: absolute;
+/*  position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 10px;*/
   border-radius: 5px;
   color: white;
   background-color: red;
@@ -1707,6 +1738,9 @@ a:link{
   div#segment.buttons{
     font-size: 12px;
   }
+  #segmentEdit.buttons {
+    font-size: 11.5px;
+  }
   #dood{
     margin-bottom: 0px;
     width: 310px;
@@ -2357,6 +2391,7 @@ a:link{
 #FreeCat {
   background-color:#00cc52;
   font-family:'m3';
+  font-size: 16px;
   color:white;
   padding: 5px 20px 5px 20px;
 }

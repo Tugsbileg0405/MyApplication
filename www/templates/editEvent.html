@@ -8,14 +8,15 @@
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
     <button class="button-clear" ui-sref="app.single({playlistId:eventId})" style="color:black;padding:6px 15px 6px 15px;height:100%;font-size:23px">
-     <i class="fa fa-calendar-o"></i>
+     <i class="fa fa-calendar-o"></i> 
     </button> 
     </ion-nav-buttons>
 </ion-nav-bar>
-	<ion-content overflow-scroll='true' class="has-header has-footer">
-   <ti-segmented-control id="segment" on-select="buttonClicked($index)" style="width:100%;padding:5px 5px 5px 5px">
-  <ti-segmented-control-button class="button-assertive" title="'Ажилчид'" selected></ti-segmented-control-button>
-  <ti-segmented-control-button class="button-assertive" title="'Оролцогчид'" ></ti-segmented-control-button>
+<ion-content overflow-scroll='true' class="has-header has-footer">
+ <ti-segmented-control id="segmentEdit" on-select="buttonClicked($index)" style="width:100%;padding:5px 5px 5px 5px">
+ <ti-segmented-control-button class="button-assertive" title="'Ажилчид'" selected></ti-segmented-control-button>
+ <ti-segmented-control-button class="button-assertive" title="'Оролцогч'" ></ti-segmented-control-button>
+ <ti-segmented-control-button class="button-assertive" title="'Хүсэлт'" ></ti-segmented-control-button>
 </ti-segmented-control>
  <div class="animate-switch-container"
     ng-switch on="index">
@@ -25,11 +26,13 @@
               <img fallback-src="{{backsite}}/{{worker.person_profile_img}}" ng-if="worker.person_profile_img" src="{{worker.person_profile_img}}">
               <img  ng-if="!worker.person_profile_img" src="img/default.png">
               <p style="margin-top:10px">{{worker.person_firstname}} {{worker.person_lastname}}</p>
-              <p  ng-if="worker.person_cell_number">{{worker.person_cell_number}}</p>
-              <span ng-if="is_Joined == 0" id="addButton" ng-click="addWorker(worker)"><i class="fa fa-share"></i> Add</span>
-              <span ng-if="is_Joined == 1" id="acceptedButton" ><i class="fa fa-share"></i> Accepted</span>
-              <span ng-if="is_Joined == 2" id="pendingButton" ><i class="fa fa-share"></i> Pending</span>
+              <p  ng-if="worker.person_cell_number">Утас: {{worker.person_cell_number}}</p>
             </a>
+            <div class="col" style="border:1px solid #f8f8f8;text-align:right;padding-top:5px;padding-bottom:5px">
+              <span ng-if="is_Joined == 0" id="pendingButton" ng-click="addWorker(worker)"><i class="fa fa-share"></i> Урилга илгээх</span>
+              <span ng-if="is_Joined == 1" id="acceptedButton" ><i class="fa fa-share"></i> Зөвшөөрсөн</span>
+              <span ng-if="is_Joined == 2" id="addButton" ><i class="fa fa-share"></i> Хүлээгдэж буй</span>
+            </div>
           </div>
           <div class="card" ng-if="workers.length == 0">
             <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
@@ -48,11 +51,11 @@
           <img fallback-src="{{backsite}}/{{user.ticket_user.person_profile_img}}" ng-if="user.ticket_user.person_profile_img" src="{{user.ticket_user.person_profile_img}}">
           <img  ng-if="!user.ticket_user.person_profile_img" src="img/default.png">
           <p style="margin-top:10px">{{user.ticket_fullname}}</p>
-          <p  >Tax ID: {{user.ticket_short_id}}</p>
-          <p>Amount: {{user.ticket_countof}}</p>
-          <span id="urilgaButton" ng-if="user.ticket_type == 'Urilga'">Urilga</span>
-          <span id="paidButton" ng-if="user.ticket_type == 'Paid'">Paid</span>
-          <span id="freeButton" ng-if="user.ticket_type == 'Free'">Free</span>
+          <p  >Tасалбар ID: {{user.ticket_short_id}}</p>
+          <p>Тасалбар тоо: {{user.ticket_countof}}</p>
+          <span id="urilgaButton" ng-if="user.ticket_type == 'Urilga'">Урилга</span>
+          <span id="paidButton" ng-if="user.ticket_type == 'Paid'">Төлбөртэй</span>
+          <span id="freeButton" ng-if="user.ticket_type == 'Free'">Үнэгүй</span>
         </a>
       </div>
        <div class="card" ng-if="users.length == 0">
@@ -61,13 +64,39 @@
             </div>
           </div>
       </div>
+      <div class="animate-switch" ng-switch-when="2" >
+        <div class="list" ng-repeat="request in ticketRequests" style="margin:0">
+         <a class="item item-thumbnail-left" style="height:100px;border-bottom:1px solid #f8f8f8;padding-top:5px;padding-bottom:5px" href="">
+          <img fallback-src="{{backsite}}/{{request.person_profile_img}}" ng-if="request.person_profile_img" src="{{request.person_profile_img}}">
+          <img  ng-if="!request.person_profile_img" src="img/default.png">
+          <p style="margin-top:10px">{{request.fullname}}</p>
+          <p>Утас: {{request.phonenumber}}</p>
+          <p>Тасалбар тоо: {{request.ticket_countof}}</p>
+          <span id="urilgaButton" ng-if="request.ticket_type.type == 'Urilga'">Урилга</span>
+          <span id="paidButton" ng-if="request.ticket_type.type == 'Paid'">Төлбөртэй</span>
+          <span id="freeButton" ng-if="request.ticket_type.type == 'Free'">Үнэгүй</span>
+        </a>
+        <div class="col" style="border:1px solid #f8f8f8;text-align:right;padding-top:5px;padding-bottom:5px">
+           <span  id="pendingButton" ng-click="sendRequestUrilga(request)"><i class="fa fa-share"></i> Урилга илгээх</span>
+        </div>
+      </div>
+       <div class="card" ng-if="ticketRequests.length == 0">
+            <div class="item item-text-wrap" style="font-family: 'm3';text-align:center;font-size:18px">
+              Хүсэлт байхгүй байна.
+            </div>
+          </div>
+      </div>
     </div>
    </ion-content>
    <div class="bar bar-footer" id="editFooter">
           <div class="tabs tabs-icon-left" >
-            <a ng-click="doRefresh()" class="tab-item" style="font-size:17px">
+            <a ng-click="doRefresh()" class="tab-item" style="font-size:16px">
               <i class="icon ion-refresh"></i>
               Сэргээх
+            </a>
+             <a  ui-sref="app.single({playlistId:eventId})" class="tab-item" style="font-size:16px">
+              <i class="icon ion-calendar"></i>
+              Арга хэмжээ 
             </a>
           </div>
     <!--     <div class="tabs tabs-light tabs-background-light" >

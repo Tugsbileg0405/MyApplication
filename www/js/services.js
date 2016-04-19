@@ -157,5 +157,70 @@ angular.module('starter.services',[])
         })
         return deferred.promise;
       };
-
+      this.getTicketRequest = function(data){
+        var deferred = $q.defer();
+        $http.get('http://www.urilga.mn:1337/ticketrequest?event_info='+data+'&____token=dXJpbGdhbW5BY2Nlc3M')
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.deleteTicketRequest = function(data){
+        var deferred = $q.defer();
+        $http.delete('http://www.urilga.mn:1337/ticketrequest/'+data+'?____token=dXJpbGdhbW5BY2Nlc3M')
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.updateTicketType = function(data){
+        var deferred = $q.defer();
+        $http.put('http://www.urilga.mn:1337/tickettype/'+data.id,data)
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.postTicketType = function(data){
+        var deferred = $q.defer();
+        $http.post('http://www.urilga.mn:1337/tickettype',data)
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.deleteTicketType = function(data){
+        var deferred = $q.defer();
+        $http.delete('http://www.urilga.mn:1337/tickettype/'+data+'?____token=dXJpbGdhbW5BY2Nlc3M')
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
+      this.updateEvent = function(data){
+        var deferred = $q.defer();
+        $http.put('http://www.urilga.mn:1337/event',data)
+        .success(function(data){
+          deferred.resolve(data);
+        })
+        .error(function(data){
+          deferred.reject(data);
+        })
+        return deferred.promise;
+      };
     });

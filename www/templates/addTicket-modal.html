@@ -1,0 +1,38 @@
+  <ion-modal-view class="radiusModal">
+    <ion-header-bar>
+	    <div class="buttons buttons-left">
+	    	<span class="left-buttons" >
+	    			 	<button class="button button-clear" style="color:#639BF7;font-family:'m3';font-size:18px;text-transform: capitalize;" ng-click="closeAddTicket()">Хаах</button>
+	    	</span>
+	    </div>
+      <h1 class="title" style="font-family:'m3';font-size:20px">Урилга нэмэх</h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+	    <button class="button button-full" ng-click="addUrilgaForm()" style="background-color:red;color:white">
+	    	<i class="fa fa-plus-circle"></i> Урилга нэмэх
+	    </button>
+	 	<div class="list" ng-repeat="urilga in event_ticket.urilga" id="addUrilga">
+	 		<div class="item">
+	 			<label class="item item-input">
+	 				<span class="input-label">Нэр:</span>
+	 				<input type="text"  placeholder="tasalbariin нэр" ng-model="urilga.description">
+	 			</label>
+	 			<label class="item item-input">
+	 				<span class="input-label">Too:</span>
+	 				<input type="number"  placeholder="too" ng-model="urilga.all_count">
+	 			</label>
+	 			<select ng-model="urilga.urilga_type" >
+	 				<option value="basic" selected>Basic</option>
+	 				<option value="elite">Elite</option>
+	 				<option value="luxury">Luxury</option>
+	 				<option value="classic">Classic</option>
+	 			</select>
+	 		</div>
+	 		<div class="item item-button-right" id="addUrilgaDelete">
+	 			Устгах
+	 			<button class="button button-clear button-icon ion-trash-a" ng-click="removeFromUrilga(urilga)"></button>
+	 		</div>
+	 	</div>
+	 	<button ng-show="event_ticket.urilga.length > 0" ng-click="saveUrilga()" class="button button-full" style="color:white;background-color:#00cc52;margin-top:0">Хадгалах</button>
+    </ion-content>
+  </ion-modal-view>
